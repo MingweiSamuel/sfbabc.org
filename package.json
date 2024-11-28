@@ -15,10 +15,12 @@
     "@astrojs/check": "^0.9.4",
     "@astrojs/cloudflare": "^11.2.0",
     "astro": "^4.16.15",
+    "leaflet": "^1.9.4",
     "typescript": "^5.7.2"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241112.0",
+    "@types/leaflet": "^1.9.14",
     "wrangler": "^3.91.0"
   }
 }

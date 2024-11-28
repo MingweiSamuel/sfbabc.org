@@ -1,0 +1,35 @@
+---
+interface Props {
+}
+
+const {} = Astro.props;
+---
+
+<div class="map" style="height: 600px;">
+</div>
+<script>
+  import 'leaflet/dist/leaflet.css';
+  import L from 'leaflet';
+
+  const SHEETS_DB_LOCS = "https://script.google.com/macros/s/AKfycbxTqIU7Kyz0pLyrLfqSmgOR3wbz-zES-UpipptgY0aY8519n2DP52tXy_SPmLX1rC8Drw/exec";
+
+  const csvPromise = fetch(SHEETS_DB_LOCS).then(res => res.json<string[][]>());
+
+  const mapContainer = document.querySelector('.map')! as HTMLElement;
+  const map = L.map(mapContainer).setView([37.83, -122.3], 11);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+
+  csvPromise.then(tbl => {
+    const [head, ...rows] = tbl;
+    const headIdx = Object.fromEntries(head!.map((h, i) => [h, i]));
+
+    for (const row of rows!) {
+      if ('Good' === row[headIdx['Bench Condition']!]) {
+        L.marker([+row[headIdx['Lat']!]!, +row[headIdx['Lon']!]!]).addTo(map);
+      }
+    }
+  });
+</script>
