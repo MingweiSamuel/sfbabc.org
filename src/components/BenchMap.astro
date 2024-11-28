@@ -1,34 +1,54 @@
 ---
-interface Props {
-}
+interface Props {}
 
 const {} = Astro.props;
 ---
 
-<div class="map" style="height: 600px;">
-</div>
+<div class="map" style="height: 600px;"></div>
 <script>
-  import 'leaflet/dist/leaflet.css';
-  import L from 'leaflet';
+  import "leaflet/dist/leaflet.css";
+  import marker from "leaflet/dist/images/marker-icon.png";
+  import marker2x from "leaflet/dist/images/marker-icon-2x.png";
+  import shadow from "leaflet/dist/images/marker-shadow.png";
+  // import 'leaflet/dist/images/marker-icon-2x.png';
+  import L from "leaflet";
 
-  const SHEETS_DB_LOCS = "https://script.google.com/macros/s/AKfycbxTqIU7Kyz0pLyrLfqSmgOR3wbz-zES-UpipptgY0aY8519n2DP52tXy_SPmLX1rC8Drw/exec";
+  const icon = L.icon({
+    iconUrl: marker.src,
+    iconRetinaUrl: marker2x.src,
+    shadowUrl: shadow.src,
 
-  const csvPromise = fetch(SHEETS_DB_LOCS).then(res => res.json<string[][]>());
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    tooltipAnchor: [16, -28],
+    shadowSize: [41, 41],
+  });
 
-  const mapContainer = document.querySelector('.map')! as HTMLElement;
+  const SHEETS_DB_LOCS =
+    "https://script.google.com/macros/s/AKfycbxTqIU7Kyz0pLyrLfqSmgOR3wbz-zES-UpipptgY0aY8519n2DP52tXy_SPmLX1rC8Drw/exec";
+
+  const csvPromise = fetch(SHEETS_DB_LOCS).then((res) =>
+    res.json<string[][]>(),
+  );
+
+  const mapContainer = document.querySelector(".map")! as HTMLElement;
   const map = L.map(mapContainer).setView([37.83, -122.3], 11);
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    attribution:
+      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
 
-  csvPromise.then(tbl => {
+  csvPromise.then((tbl) => {
     const [head, ...rows] = tbl;
     const headIdx = Object.fromEntries(head!.map((h, i) => [h, i]));
 
     for (const row of rows!) {
-      if ('Good' === row[headIdx['Bench Condition']!]) {
-        L.marker([+row[headIdx['Lat']!]!, +row[headIdx['Lon']!]!]).addTo(map);
+      if ("Good" === row[headIdx["Bench Condition"]!]) {
+        L.marker([+row[headIdx["Lat"]!]!, +row[headIdx["Lon"]!]!], {
+          icon,
+        }).addTo(map);
       }
     }
   });
