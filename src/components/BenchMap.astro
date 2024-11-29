@@ -39,8 +39,19 @@ const sites = await SITES;
       });
 
       const div = this.getElementsByTagName('div')[0]!;
-      const map = L.map(div).setView([37.83, -122.3], 11);
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      const map = L.map(div, {
+        center: [37.83, -122.3],
+        zoom: 11,
+        // layers: [osm],
+        maxBounds: [
+          [37.2, -122.7],
+          [38.2, -121.7],
+        ],
+        maxBoundsViscosity: 1.0
+      });
+      // L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      // TODO(mingwei): dark/light mode
+      L.tileLayer("tile.d.{z}.{x}.{y}.{r}.png", {
         maxZoom: 19,
         attribution:
           '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
