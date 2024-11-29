@@ -1,14 +1,16 @@
 ---
 import { SITES } from '../data';
 
-interface Props {}
+interface Props {
+  highlightSiteId?: number,
+}
 
-const {} = Astro.props;
+const { highlightSiteId } = Astro.props;
 
 const sites = await SITES;
 ---
 
-<bench-map data-sites={JSON.stringify(sites)}>
+<bench-map data-sites={JSON.stringify(sites)} data-highlight={highlightSiteId}>
   <div style="height: 600px;"></div>
 </bench-map>
 <script>
@@ -49,7 +51,10 @@ const sites = await SITES;
           icon,
         }).addTo(map);
         // TODO(mingwei): prevent XSS.
-        marker.bindPopup(`<a href="/${site.id}">${site.revGeocode}</a>`);
+        const popup = marker.bindPopup(`<a href="/s/${site.id}">${site.revGeocode}</a>`);
+        if (this.dataset.highlight === `${site.id}`) {
+          popup.openPopup();
+        }
       }
     }
   }

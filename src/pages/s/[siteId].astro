@@ -1,20 +1,19 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "../../layouts/Layout.astro";
 import type { GetStaticPaths } from "astro";
-import { SITES, getSite } from "../data";
+import { SITES, getSite } from "../../data";
 
 export const prerender = true;
 export const getStaticPaths = (async () => {
-  const SITE_REGEX = /s(\S+)/;
   return (await SITES).map((site) => ({
     params: {
-      siteId: SITE_REGEX.exec(site.id)![1]!,
+      siteId: `${site.id}`,
     },
   }));
 }) satisfies GetStaticPaths;
 
 const { siteId } = Astro.params;
-const site = (await getSite(`s${siteId}`))!;
+const site = (await getSite(+siteId))!;
 ---
 
 <Layout title={`Bench.Builders - ${site.revGeocode}`} ` />

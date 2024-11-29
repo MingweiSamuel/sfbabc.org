@@ -1,5 +1,5 @@
 export interface Site {
-    id: string,
+    id: number,
     act: number | null,
     ggt: number | null,
     muni: number | null,
@@ -20,7 +20,7 @@ export const SITES: Promise<Site[]> = (async () => {
     const headIdx = Object.fromEntries(head!.map((col, i) => [col.toUpperCase(), i]));
     return rows.map(row => {
         const site: Site = {
-            id: row[headIdx['SITE ID']!]!,
+            id: +row[headIdx['SITE ID']!]!,
             act: +row[headIdx['ACT']!]! || null,
             ggt: +row[headIdx['GGT']!]! || null,
             muni: +row[headIdx['MUNI']!]! || null,
@@ -37,5 +37,5 @@ export const SITES: Promise<Site[]> = (async () => {
     .filter(site => !!site.id);
 })();
 
-export const getSite = async (sid: string) =>
+export const getSite = async (sid: number) =>
     (await SITES).find(site => sid === site.id);
