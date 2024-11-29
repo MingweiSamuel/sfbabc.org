@@ -1,55 +1,58 @@
 ---
+import { SITES } from '../data';
+
 interface Props {}
 
 const {} = Astro.props;
+
+const sites = await SITES;
 ---
 
-<div class="map" style="height: 600px;"></div>
+<bench-map data-sites={JSON.stringify(sites)}>
+  <div style="height: 600px;"></div>
+</bench-map>
 <script>
   import "leaflet/dist/leaflet.css";
   import marker from "leaflet/dist/images/marker-icon.png";
   import marker2x from "leaflet/dist/images/marker-icon-2x.png";
   import shadow from "leaflet/dist/images/marker-shadow.png";
-  // import 'leaflet/dist/images/marker-icon-2x.png';
   import L from "leaflet";
+  import type { Site } from "../data";
 
-  const icon = L.icon({
-    iconUrl: marker.src,
-    iconRetinaUrl: marker2x.src,
-    shadowUrl: shadow.src,
+  class BenchMap extends HTMLElement {
+    connectedCallback() {
+      // Read the message from the data attribute.
+      const sites: Site[] = JSON.parse(this.dataset.sites!);
 
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    tooltipAnchor: [16, -28],
-    shadowSize: [41, 41],
-  });
+      const icon = L.icon({
+        iconUrl: marker.src,
+        iconRetinaUrl: marker2x.src,
+        shadowUrl: shadow.src,
 
-  const SHEETS_DB_LOCS =
-    "https://script.google.com/macros/s/AKfycbxTqIU7Kyz0pLyrLfqSmgOR3wbz-zES-UpipptgY0aY8519n2DP52tXy_SPmLX1rC8Drw/exec";
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28],
+        shadowSize: [41, 41],
+      });
 
-  const csvPromise = fetch(SHEETS_DB_LOCS).then((res) =>
-    res.json<string[][]>(),
-  );
+      const div = this.getElementsByTagName('div')[0]!;
+      const map = L.map(div).setView([37.83, -122.3], 11);
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(map);
 
-  const mapContainer = document.querySelector(".map")! as HTMLElement;
-  const map = L.map(mapContainer).setView([37.83, -122.3], 11);
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution:
-      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  }).addTo(map);
-
-  csvPromise.then((tbl) => {
-    const [head, ...rows] = tbl;
-    const headIdx = Object.fromEntries(head!.map((h, i) => [h, i]));
-
-    for (const row of rows!) {
-      if ("Good" === row[headIdx["Bench Condition"]!]) {
-        L.marker([+row[headIdx["Lat"]!]!, +row[headIdx["Lon"]!]!], {
+      for (const site of sites) {
+        const marker = L.marker([site.lat, site.lon], {
           icon,
         }).addTo(map);
+        // TODO(mingwei): prevent XSS.
+        marker.bindPopup(`<a href="/${site.id}">${site.revGeocode}</a>`);
       }
     }
-  });
+  }
+
+  customElements.define('bench-map', BenchMap);
 </script>
