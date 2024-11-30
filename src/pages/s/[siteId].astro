@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import type { GetStaticPaths } from "astro";
 import { SITES, getSite } from "../../data";
@@ -16,63 +17,107 @@ const { siteId } = Astro.params;
 const site = (await getSite(+siteId))!;
 ---
 
-<Layout title={`Bench.Builders - ${site.revGeocode}`} ` />
+<Layout title={`${site.revGeocode} - SFBA Bench Collective`} />
 <main>
   <h1>{site.revGeocode}</h1>
-  <p>{JSON.stringify(site)}</p>
+  {
+    site.benchImageUrl && (
+      <Image
+        src={site.benchImageUrl}
+        alt="Photo of the bench."
+        width={500}
+        height={500}
+      />
+    )
+  }
+  <h3>Info</h3>
+  <ul>
+    <li>Status: {site.benchStatus}</li>
+    <li>Adopter: {site.adopter || <em>None!</em>}</li>
+    <li>Builder: {site.benchBuilder || <em>Unknown</em>}</li>
+    <li>Length: {site.benchLength} ft</li>
+    {site.benchNickname && <li>Nickname: {site.benchNickname}</li>}
+    {0 < site.lines.length ? <li>Bus Lines:
+      <ul>
+        {site.lines.map(x => <li>{x}</li>)}
+      </ul>
+    </li> : null}
+    {0 < site.notes.length ? <li>Notes:
+      <ul>
+        {site.notes.map(x => <li>{x}</li>)}
+      </ul>
+    </li> : null}
+  </ul>
   <h3>Links</h3>
   <ul>
     <li>
-      <a target="_blank" href={`https://www.google.com/maps/search/?api=1&query=${site.lat},${site.lon}`}>
+      <a
+        target="_blank"
+        href={`https://www.google.com/maps/search/?api=1&query=${site.lat},${site.lon}`}
+      >
         Google Maps
       </a>
     </li>
-      {
-        site.muni && (
-          <li>
-            <a target="_blank" href={`https://sfmta.com/${site.muni}`}>
-              SFMTA
-            </a>
-          </li>
-        )
-      }
-      {
-        site.act && (
-          <li>
-            <a target="_blank" href={`https://tp.actransit.org/#/stop/2:${site.act}`}>
-              AC Transit Trip Planner
-            </a>
-          </li>
-        )
-      }
-      {
-        site.muni && (
-          <li>
-            <a target="_blank" href={`https://sfbaytransit.org/search?q=${site.muni}`}>
-              SF Bay Transit - Muni
-            </a>
-          </li>
-        )
-      }
-      {
-        site.act && (
-          <li>
-            <a target="_blank" href={`https://sfbaytransit.org/search?q=${site.act}`}>
-              SF Bay Transit - AC Transit
-            </a>
-          </li>
-        )
-      }
-      {
-        site.ggt && (
-          <li>
-            <a target="_blank" href={`https://sfbaytransit.org/search?q=${site.ggt}`}>
-              SF Bay Transit - Golden Gate Transit
-            </a>
-          </li>
-        )
-      }
+    {
+      site.muni && (
+        <li>
+          <a target="_blank" href={`https://sfmta.com/${site.muni}`}>
+            SFMTA
+          </a>
+        </li>
+      )
+    }
+    {
+      site.act && (
+        <li>
+          <a
+            target="_blank"
+            href={`https://tp.actransit.org/#/stop/2:${site.act}`}
+          >
+            AC Transit Trip Planner
+          </a>
+        </li>
+      )
+    }
+    {
+      site.muni && (
+        <li>
+          <a
+            target="_blank"
+            href={`https://sfbaytransit.org/search?q=${site.muni}`}
+          >
+            SF Bay Transit - Muni
+          </a>
+        </li>
+      )
+    }
+    {
+      site.act && (
+        <li>
+          <a
+            target="_blank"
+            href={`https://sfbaytransit.org/search?q=${site.act}`}
+          >
+            SF Bay Transit - AC Transit
+          </a>
+        </li>
+      )
+    }
+    {
+      site.ggt && (
+        <li>
+          <a
+            target="_blank"
+            href={`https://sfbaytransit.org/search?q=${site.ggt}`}
+          >
+            SF Bay Transit - Golden Gate Transit
+          </a>
+        </li>
+      )
+    }
   </ul>
+  <h3>Raw Data</h3>
+  <pre><code>{JSON.stringify(site, null, 2)}</code></pre>
 </main>
 
 <style>

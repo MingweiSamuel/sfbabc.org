@@ -12,6 +12,10 @@ export interface Site {
   notes: string[],
   //
   benchStatus: BenchStatus,
+  benchLength: number,
+  benchBuilder: string | null,
+  benchNickname: string | null,
+  benchImageUrl: string | null,
 }
 export type BenchStatus = 'Good' | 'Replaced' | 'Removed' | 'Destroyed';
 
@@ -33,8 +37,12 @@ export const SITES: Promise<Site[]> = (async () => {
       city: row[headIdx['CITY']!]!,
       lines: row[headIdx['LINES']!]!.split(','),
       adopter: row[headIdx['ADOPTER']!]! || null,
-      notes: row.slice(headIdx['NOTES']!),
+      notes: row.slice(headIdx['NOTES']!).filter(note => 0 < note.length),
       benchStatus: row[headIdx['BENCH STATUS']!]! as BenchStatus,
+      benchLength: +row[headIdx['LENGTH']!]!,
+      benchBuilder: row[headIdx['BUILDER']!]! || null,
+      benchNickname: row[headIdx['NICKNAME']!]! || null,
+      benchImageUrl: row[headIdx['IMAGE URL']!]! || null,
     };
     return site;
   })
