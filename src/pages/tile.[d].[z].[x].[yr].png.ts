@@ -1,4 +1,5 @@
 import type { APIContext } from "astro";
+import { notFound } from "../data";
 
 export async function GET(ctx: APIContext) {
   const NUMERIC = /[0-9]+/;
@@ -7,13 +8,13 @@ export async function GET(ctx: APIContext) {
   const [y, r] = yr!.split('@');
 
   if (!['l', 'd'].includes(d!)) {
-    return badRequest(`"${d}" must be one either "l" or "d".`);
+    return notFound(`"${d}" must be one either "l" or "d".`);
   }
   if (!(NUMERIC.test(z!) && NUMERIC.test(x!) && NUMERIC.test(y!))) {
-    return badRequest(`"${z}", "${x}", "${y}" must be integers.`);
+    return notFound(`"${z}", "${x}", "${y}" must be integers.`);
   }
   if ('' !== r && '2x' !== r) {
-    return badRequest(`"${r}" must be "2x"`);
+    return notFound(`"${r}" must be "2x"`);
   }
   const vals = {
     z: +z!,
@@ -25,7 +26,6 @@ export async function GET(ctx: APIContext) {
   const URL = 'l' === d ? ctx.locals.runtime.env.MAP_URL_LIGHT : ctx.locals.runtime.env.MAP_URL_DARK;
   const reqUrl = URL.replace(/\{([a-z]+)\}/g, (_match: string, key: keyof typeof vals) => vals[key]);
 
-  console.log(reqUrl);
   const response = await fetch(reqUrl);
 
   const newHeaders = new Headers(response.headers);
@@ -37,14 +37,5 @@ export async function GET(ctx: APIContext) {
     status: response.status,
     statusText: response.statusText,
     headers: newHeaders,
-  });
-}
-
-function badRequest(msg: string): Response {
-  return new Response(msg, {
-    status: 400,
-    headers: {
-      "Content-Type": "text/plain"
-    }
   });
 }
