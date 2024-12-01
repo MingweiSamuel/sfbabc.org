@@ -6,11 +6,14 @@ import { SITES, getSite } from "../../data";
 
 export const prerender = true;
 export const getStaticPaths = (async () => {
-  return (await SITES).map((site) => ({
-    params: {
-      siteId: `${site.id}`,
-    },
-  }));
+  return (await SITES)
+    .map((site) => site.id)
+    .filter((siteId) => null != siteId)
+    .map((siteId) => ({
+      params: {
+        siteId,
+      },
+    }));
 }) satisfies GetStaticPaths;
 
 const { siteId } = Astro.params;
@@ -35,18 +38,32 @@ const site = (await getSite(+siteId))!;
     <li>Status: {site.benchStatus}</li>
     <li>Adopter: {site.adopter || <em>None!</em>}</li>
     <li>Builder: {site.benchBuilder || <em>Unknown</em>}</li>
-    <li>Length: {site.benchLength} ft</li>
+    {site.benchLength && <li>Length: {site.benchLength} ft</li>}
     {site.benchNickname && <li>Nickname: {site.benchNickname}</li>}
-    {0 < site.lines.length ? <li>Bus Lines:
-      <ul>
-        {site.lines.map(x => <li>{x}</li>)}
-      </ul>
-    </li> : null}
-    {0 < site.notes.length ? <li>Notes:
-      <ul>
-        {site.notes.map(x => <li>{x}</li>)}
-      </ul>
-    </li> : null}
+    {
+      0 < site.lines.length ? (
+        <li>
+          Bus Lines:
+          <ul>
+            {site.lines.map((x) => (
+              <li>{x}</li>
+            ))}
+          </ul>
+        </li>
+      ) : null
+    }
+    {
+      0 < site.notes.length ? (
+        <li>
+          Notes:
+          <ul>
+            {site.notes.map((x) => (
+              <li>{x}</li>
+            ))}
+          </ul>
+        </li>
+      ) : null
+    }
   </ul>
   <h3>Links</h3>
   <ul>

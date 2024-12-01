@@ -17,14 +17,15 @@ const sites = await SITES;
   import "leaflet/dist/leaflet.css";
   import L from "leaflet";
   import type { Site } from "../data";
-import { darkMode } from "../browser";
+  import { darkMode } from "../browser";
+  import { COLORS } from "../pages/marker.[color].svg";
 
   class BenchMap extends HTMLElement {
     connectedCallback() {
       // Read the message from the data attribute.
       const sites: Site[] = JSON.parse(this.dataset.sites!);
 
-      const [iconBad, iconOk, iconGood] = ["b10202", "215a6c", "11734b"].map((hex) =>
+      const [iconBad, iconOk, iconGood] = COLORS.map((hex) =>
         L.icon({
           iconUrl: `/marker.${hex}.svg`,
           shadowUrl: "/marker.shadow.svg",
@@ -32,16 +33,24 @@ import { darkMode } from "../browser";
           iconSize: [22, 32],
           iconAnchor: [11, 32],
           popupAnchor: [0, -20],
-          tooltipAnchor: [16, -28],
+          // tooltipAnchor: [16, -28],
           shadowSize: [22, 15],
           shadowAnchor: [1, 15],
         }),
       );
       const icons = {
-        'Good': iconGood,
-        'Replaced': iconOk,
-        'Removed': iconBad,
-        'Destroyed': iconBad,
+        Good: iconGood,
+        Replaced: iconOk,
+        Removed: iconBad,
+        Destroyed: iconBad,
+        Planned: L.icon({
+          iconUrl: '/marker.planned.svg',
+
+          iconSize: [20, 20],
+          iconAnchor: [10, 10],
+          popupAnchor: [0, -10],
+          // tooltipAnchor: [0, 0],
+        }),
       };
 
       const div = this.getElementsByTagName("div")[0]!;
@@ -55,7 +64,7 @@ import { darkMode } from "../browser";
         ],
         maxBoundsViscosity: 1.0,
       });
-      L.tileLayer(`tile.${darkMode() ? 'd' : 'l'}.{z}.{x}.{y}.{r}.png`, {
+      L.tileLayer(`tile.${darkMode() ? "d" : "l"}.{z}.{x}.{y}.{r}.png`, {
         maxZoom: 19,
         attribution:
           '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -66,8 +75,12 @@ import { darkMode } from "../browser";
           icon: icons[site.benchStatus],
         }).addTo(map);
         // TODO(mingwei): prevent XSS.
+        let head = site.revGeocode;
+        if (null != site.id) {
+          head = `<a href="/s/${site.id}">${head}</a>`;
+        }
         const popup = marker.bindPopup(
-          `<h3><a href="/s/${site.id}">${site.revGeocode}</a></h3>
+          `<h3>${head}</h3>
           <p>Status: ${site.benchStatus}</p>`,
         );
         if (this.dataset.highlight === `${site.id}`) {

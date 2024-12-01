@@ -1,10 +1,19 @@
-import type { APIContext } from "astro";
+import type { APIContext, GetStaticPaths } from "astro";
 import { notFound } from "../data";
 
+export const COLORS = ["b10202", "215a6c", "11734b"];
+
+export const prerender = true;
+export const getStaticPaths = (() => {
+  return COLORS.map(color => ({
+    params: { color },
+  }));
+}) satisfies GetStaticPaths;
+
 export async function GET(ctx: APIContext) {
-  const COLOR = /[0-9A-F]{6}/i;
+  const COLOR = /^[0-9A-F]{3,8}$/i;
   if (!COLOR.test(ctx.params.color!)) {
-    return notFound(`"${ctx.params.color}" must be a 6-digit hex code.`);
+    return notFound(`"${ctx.params.color}" must be a hex code.`);
   }
 
   const CACHE_TIME_SECS = 7 * 24 * 3600;

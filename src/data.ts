@@ -1,5 +1,5 @@
 export interface Site {
-  id: number,
+  id: number | null,
   act: number | null,
   ggt: number | null,
   muni: number | null,
@@ -12,12 +12,12 @@ export interface Site {
   notes: string[],
   //
   benchStatus: BenchStatus,
-  benchLength: number,
+  benchLength: number | null,
   benchBuilder: string | null,
   benchNickname: string | null,
   benchImageUrl: string | null,
 }
-export type BenchStatus = 'Good' | 'Replaced' | 'Removed' | 'Destroyed';
+export type BenchStatus = 'Good' | 'Replaced' | 'Removed' | 'Destroyed' | 'Planned';
 
 export const SITES: Promise<Site[]> = (async () => {
   const SHEETS_DB_SITES = "https://script.google.com/macros/s/AKfycbxj3hB_ZN5vzvXtMSNzprA9FHiK26Yc6_b9--n2V_W_mTIV9QvV3XLQW8J5o0njB3ihmQ/exec";
@@ -26,8 +26,9 @@ export const SITES: Promise<Site[]> = (async () => {
   const [head, ...rows] = arr;
   const headIdx = Object.fromEntries(head!.map((col, i) => [col.toUpperCase(), i]));
   return rows.map(row => {
+    const id = row[headIdx['SITE ID']!];
     const site: Site = {
-      id: +row[headIdx['SITE ID']!]!,
+      id: (null == id || 0 === id.length) ? null : +id,
       act: +row[headIdx['ACT']!]! || null,
       ggt: +row[headIdx['GGT']!]! || null,
       muni: +row[headIdx['MUNI']!]! || null,
@@ -35,18 +36,21 @@ export const SITES: Promise<Site[]> = (async () => {
       lon: +row[headIdx['LON']!]!,
       revGeocode: row[headIdx['REVERSE GEOCODE']!]!,
       city: row[headIdx['CITY']!]!,
-      lines: row[headIdx['LINES']!]!.split(','),
+      lines: row[headIdx['LINES']!]!
+        .split(',')
+        .map(line => line.trim())
+        .filter(note => 0 < note.length),
       adopter: row[headIdx['ADOPTER']!]! || null,
       notes: row.slice(headIdx['NOTES']!).filter(note => 0 < note.length),
       benchStatus: row[headIdx['BENCH STATUS']!]! as BenchStatus,
-      benchLength: +row[headIdx['LENGTH']!]!,
+      benchLength: +row[headIdx['LENGTH']!]! || null,
       benchBuilder: row[headIdx['BUILDER']!]! || null,
       benchNickname: row[headIdx['NICKNAME']!]! || null,
       benchImageUrl: row[headIdx['IMAGE URL']!]! || null,
     };
     return site;
   })
-    .filter(site => !!site.id);
+    .filter(site => site.id || (site.lat && site.lon));
 })();
 
 export const getSite = async (sid: number) =>
