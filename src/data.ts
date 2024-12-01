@@ -17,7 +17,7 @@ export interface Site {
   benchNickname: string | null,
   benchImageUrl: string | null,
 }
-export type BenchStatus = 'Good' | 'Replaced' | 'Removed' | 'Destroyed' | 'Planned';
+export type BenchStatus = 'Good' | 'Replaced' | 'Removed' | 'Destroyed' | 'Proposed';
 
 export const SITES: Promise<Site[]> = (async () => {
   const SHEETS_DB_SITES = "https://script.google.com/macros/s/AKfycbxj3hB_ZN5vzvXtMSNzprA9FHiK26Yc6_b9--n2V_W_mTIV9QvV3XLQW8J5o0njB3ihmQ/exec";
