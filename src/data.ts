@@ -5,7 +5,8 @@ export interface Site {
   muni: number | null,
   lat: number,
   lon: number,
-  revGeocode: string,
+  name: string | null,
+  revGeocode: string | null,
   city: string,
   lines: string[],
   adopter: string | null,
@@ -34,7 +35,8 @@ export const SITES: Promise<Site[]> = (async () => {
       muni: +row[headIdx['MUNI']!]! || null,
       lat: +row[headIdx['LAT']!]!,
       lon: +row[headIdx['LON']!]!,
-      revGeocode: row[headIdx['REVERSE GEOCODE']!]!,
+      name: row[headIdx['ACT STOP NAME']!] || null,
+      revGeocode: row[headIdx['REVERSE GEOCODE']!] || null,
       city: row[headIdx['CITY']!]!,
       lines: row[headIdx['LINES']!]!
         .split(',')
