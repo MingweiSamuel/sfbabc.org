@@ -35,7 +35,7 @@ export const SITES: Promise<Site[]> = (async () => {
       muni: +row[headIdx['MUNI']!]! || null,
       lat: +row[headIdx['LAT']!]!,
       lon: +row[headIdx['LON']!]!,
-      name: row[headIdx['ACT STOP NAME']!] || null,
+      name: row[headIdx['STOP NAME']!] || null,
       revGeocode: row[headIdx['REVERSE GEOCODE']!] || null,
       city: row[headIdx['CITY']!]!,
       lines: row[headIdx['LINES']!]!
