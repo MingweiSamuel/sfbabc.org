@@ -20,9 +20,9 @@ const { siteId } = Astro.params;
 const site = (await getSite(+siteId))!;
 ---
 
-<Layout title={`${site.revGeocode} - SFBA Bench Collective`} />
+<Layout title={`${site.name} - SFBA Bench Collective`} />
 <main>
-  <h1>{site.revGeocode}</h1>
+  <h1>{site.name}</h1>
   {
     site.benchImageUrl && (
       <Image
