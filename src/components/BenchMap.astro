@@ -74,7 +74,7 @@ const sites = await SITES;
           icon: icons[site.benchStatus],
         }).addTo(map);
         // TODO(mingwei): prevent XSS.
-        let head = site.name || site.revGeocode || "Unknown";
+        let head = site.name || "Unknown";
         if (null != site.id) {
           head = `<a href="/s/${site.id}">${head}</a>`;
         }

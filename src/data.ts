@@ -1,13 +1,12 @@
 export interface Site {
   id: number | null,
   act: number | null,
+  vta: number | null,
   ggt: number | null,
   muni: number | null,
   lat: number,
   lon: number,
   name: string | null,
-  revGeocode: string | null,
-  city: string,
   lines: string[],
   adopter: string | null,
   notes: string[],
@@ -31,13 +30,12 @@ export const SITES: Promise<Site[]> = (async () => {
     const site: Site = {
       id: (null == id || 0 === id.length) ? null : +id,
       act: +row[headIdx['ACT']!]! || null,
+      vta: +row[headIdx['VTA']!]! || null,
       ggt: +row[headIdx['GGT']!]! || null,
       muni: +row[headIdx['MUNI']!]! || null,
       lat: +row[headIdx['LAT']!]!,
       lon: +row[headIdx['LON']!]!,
       name: row[headIdx['STOP NAME']!] || null,
-      revGeocode: row[headIdx['REVERSE GEOCODE']!] || null,
-      city: row[headIdx['CITY']!]!,
       lines: row[headIdx['LINES']!]!
         .split(',')
         .map(line => line.trim())

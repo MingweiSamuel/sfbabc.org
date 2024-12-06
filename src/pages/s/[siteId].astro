@@ -124,6 +124,18 @@ const site = (await getSite(+siteId))!;
         )
       }
       {
+        site.vta && (
+          <li>
+            <a
+              target="_blank"
+              href={`https://sfbaytransit.org/search?q=${site.vta}`}
+            >
+              SF Bay Transit - VTA
+            </a>
+          </li>
+        )
+      }
+      {
         site.ggt && (
           <li>
             <a
