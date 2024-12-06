@@ -64,7 +64,7 @@ const sites = await SITES;
         maxBounds: MAX_BOUNDS,
         maxBoundsViscosity: 1.0,
       });
-      L.tileLayer(`tile.${darkMode() ? "d" : "l"}.{z}.{x}.{y}.{r}.png`, {
+      L.tileLayer(`/tile.${darkMode() ? "d" : "l"}.{z}.{x}.{y}.{r}.png`, {
         maxZoom: MAX_ZOOM,
         attribution: import.meta.env.PUBLIC_MAP_ATTRIBUTION,
       }).addTo(map);
@@ -84,6 +84,7 @@ const sites = await SITES;
         );
         if (this.dataset.highlight === `${site.id}`) {
           popup.openPopup();
+          map.setView([site.lat, site.lon], 17);
         }
       }
     }

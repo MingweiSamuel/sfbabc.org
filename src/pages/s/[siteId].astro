@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import type { GetStaticPaths } from "astro";
 import { SITES, getSite } from "../../data";
+import BenchMap from "../../components/BenchMap.astro";
 
 export const prerender = true;
 export const getStaticPaths = (async () => {
@@ -22,7 +23,7 @@ const site = (await getSite(+siteId))!;
 
 <Layout title={`${site.name} - SFBA Bench Collective`}>
   <header>
-    <a href="/">SFBA Bench Collective</a>
+    <a href="/">Home</a>
   </header>
   <main>
     <h1>{site.name}</h1>
@@ -36,7 +37,7 @@ const site = (await getSite(+siteId))!;
         />
       )
     }
-    <h3>Info</h3>
+    <h2>Info</h2>
     <ul>
       <li>Status: {site.benchStatus}</li>
       <li>Adopter: {site.adopter || <em>None!</em>}</li>
@@ -68,7 +69,7 @@ const site = (await getSite(+siteId))!;
         ) : null
       }
     </ul>
-    <h3>Links</h3>
+    <h2>Links</h2>
     <ul>
       <li>
         <a
@@ -148,7 +149,9 @@ const site = (await getSite(+siteId))!;
         )
       }
     </ul>
-    <h3>Raw Data</h3>
+    <h2>Bench Map</h2>
+    <BenchMap highlightSiteId={siteId} />
+    <h2>Raw Data</h2>
     <details>
       <summary>JSON</summary>
       <pre><code>{JSON.stringify(site, null, 2)}</code></pre>
