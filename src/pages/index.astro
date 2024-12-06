@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import BenchMap from "../components/BenchMap.astro";
+import LinkPreview from "../components/LinkPreview.astro";
+import { NEWS } from "./news.astro";
 
 export const prerender = true;
 ---
@@ -8,10 +10,16 @@ export const prerender = true;
 <Layout title="SFBA Bench Collective">
   <header>
     <h1>SFBA Bench Collective</h1>
-    <p class="subhead">When cities fail to provide benches we <strong>build and install our own</strong>.</p>
+    <p class="subhead">
+      When cities fail to provide benches we <strong
+        >build and install our own</strong
+      >.
+    </p>
   </header>
   <main>
     <h2>Bench Map</h2>
     <BenchMap />
+    <h2><a href="/news">News</a></h2>
+    <LinkPreview url={NEWS[0]!.url} date={NEWS[0]!.date} />
   </main>
 </Layout>

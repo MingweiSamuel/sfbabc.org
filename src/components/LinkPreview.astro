@@ -1,0 +1,113 @@
+---
+import { Image } from "astro:assets";
+import { parseHTML } from "linkedom/worker";
+
+interface Props {
+  url: string;
+  date?: Date;
+}
+
+const { url, date } = Astro.props;
+
+const resp = await fetch(url);
+const text = await resp.text();
+const { document } = parseHTML(text);
+
+const getContent = (el: Element | null) => el?.getAttribute("content");
+const getMeta = (prop: string) =>
+  getContent(document.querySelector(`meta[property=${JSON.stringify(prop)}]`));
+
+const title =
+  getMeta("og:title") || document.querySelector("title")?.textContent;
+const description =
+  getMeta("og:description") ||
+  getContent(document.querySelector(`meta[name="description"]`));
+const image =
+  getMeta("og:image:secure_url") ||
+  getMeta("og:image:url") ||
+  getMeta("og:image");
+const imageAlt = getMeta("og:image:alt");
+const domainUrl =
+  getMeta("og:url") ||
+  document.querySelector("link[rel='canonical']")?.getAttribute("href") ||
+  url;
+const domain = domainUrl
+  ? new URL(domainUrl).hostname.replace(/^www\./, "")
+  : "";
+
+const dateString = date?.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+{
+  title ? (
+    <article class="link-preview">
+      {image ? (
+        <Image src={image} alt={imageAlt || ""} width="1200" height="630" />
+      ) : null}
+      <div class="content">
+        <header>
+          <small>{domain}</small>
+          <a href={url} target="_blank">
+            {title}
+          </a>{" "}
+          <small class="text-lt">{dateString}</small>
+        </header>
+        <small class="description">{description}</small>
+      </div>
+    </article>
+  ) : (
+    <div class="link-preview">
+      <a href={url}>{url}</a>
+    </div>
+  )
+}
+
+<style>
+  .link-preview {
+    position: relative;
+    width: 100%;
+    margin-bottom: 2em;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5em 1em;
+  }
+  .link-preview img {
+    aspect-ratio: 1.4;
+    width: 100%;
+    flex-basis: 240px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    height: auto;
+    object-fit: cover;
+  }
+  .link-preview .content {
+    min-width: 350px;
+    flex-basis: 0;
+    flex-grow: 100;
+
+    display: flex;
+    flex-direction: column;
+  }
+  .link-preview header {
+    display: flex;
+    flex-direction: column;
+  }
+  .link-preview .description {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .link-preview a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+</style>

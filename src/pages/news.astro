@@ -1,0 +1,59 @@
+---
+import Layout from "../layouts/Layout.astro";
+import LinkPreview from "../components/LinkPreview.astro";
+
+export const prerender = true;
+
+export const NEWS = [
+  {
+    url: "https://oaklandside.org/2024/12/04/oakdot-wants-to-remove-100-bus-shelters-for-safety-but-not-everyones-happy-about-it/",
+    date: new Date("2024-12-04"),
+  },
+  {
+    url: "https://www.kalw.org/2024-06-12/buses-bromance-and-bureaucracy-a-love-letter-to-public-transit",
+    date: new Date("2024-06-12"),
+  },
+  {
+    url: "https://www.cbsnews.com/sanfrancisco/news/transit-activists-pushing-city-officials-to-put-up-benches-at-bus-stops-across-the-east-bay/",
+    date: new Date("2024-03-11"),
+  },
+  {
+    url: "https://www.berkeleyside.org/2024/02/27/guerrilla-bus-benches-berkeley-mingwei-samuel-darrell-owens",
+    date: new Date("2024-02-27"),
+  },
+  {
+    url: "https://nextcity.org/features/these-guerilla-bus-benches-are-spurring-berkeley-to-step-up-for-bus-riders",
+    date: new Date("2024-01-29"),
+  },
+  {
+    url: "https://www.nbcbayarea.com/news/local/east-bay/berkeley-bus-stop-benches/3424676/",
+    date: new Date("2024-01-16"),
+  },
+  {
+    url: "https://www.berkeleyside.org/2024/01/12/benches-bus-stops-berkeley-oakland-guerilla-makeshift-diy-activists",
+    date: new Date("2024-01-12"),
+  },
+  {
+    url: "https://darrellowens.substack.com/p/all-in-for-guerrilla-urbanism",
+    date: new Date("2024-01-02"),
+  },
+  {
+    url: "https://www.ktvu.com/news/bench-added-at-berkeley-bus-stop-after-cal-grad-good-samaritan-steps-up",
+    date: new Date("2023-12-24"),
+  },
+  {
+    url: "https://www.berkeleyside.org/2023/12/21/diy-bench-berkeley-bus-stop-ac-transit-rider-sat-on-sidewalk",
+    date: new Date("2023-12-21"),
+  },
+];
+---
+
+<Layout title="SFBA Bench Collective">
+  <header>
+    <a href="/">Home</a>
+  </header>
+  <main>
+    <h1>News</h1>
+    {NEWS.map(({ url, date }) => <LinkPreview {url} {date} />)}
+  </main>
+</Layout>

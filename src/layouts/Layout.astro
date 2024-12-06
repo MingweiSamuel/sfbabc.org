@@ -34,6 +34,9 @@ const { title } = Astro.props;
   a {
     color: #06c;
   }
+  .text-lt {
+    color: #555;
+  }
   @media (prefers-color-scheme: dark) {
     html {
       background: #13151a;
@@ -41,6 +44,9 @@ const { title } = Astro.props;
     }
     a {
       color: #6af;
+    }
+    .text-lt {
+      color: #aaa;
     }
   }
 
@@ -52,7 +58,7 @@ const { title } = Astro.props;
       "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace;
   }
 
-  main, header {
+  main, body > header {
     margin: auto;
     padding: 1rem;
     width: 800px;
