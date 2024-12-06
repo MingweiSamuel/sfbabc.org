@@ -8,9 +8,14 @@ interface Props {
 const { highlightSiteId } = Astro.props;
 
 const sites = await SITES;
+const mapAttribution = Astro.locals.runtime.env.MAP_ATTRIBUTION;
 ---
 
-<bench-map data-sites={JSON.stringify(sites)} data-highlight={highlightSiteId}>
+<bench-map
+  data-sites={JSON.stringify(sites)}
+  data-map-attribution={mapAttribution}
+  data-highlight={highlightSiteId}
+>
   <div style="height: 600px;"></div>
 </bench-map>
 <script>
@@ -19,7 +24,7 @@ const sites = await SITES;
   import type { Site } from "../data";
   import { darkMode } from "../browser";
   import { COLORS } from "../pages/marker.[color].svg";
-import { MAX_BOUNDS, MAX_ZOOM } from "../pages/tile.[d].[z].[x].[yr].png";
+  import { MAX_BOUNDS, MAX_ZOOM } from "../pages/tile.[d].[z].[x].[yr].png";
 
   class BenchMap extends HTMLElement {
     connectedCallback() {
@@ -45,7 +50,7 @@ import { MAX_BOUNDS, MAX_ZOOM } from "../pages/tile.[d].[z].[x].[yr].png";
         Removed: iconBad,
         Destroyed: iconBad,
         Proposed: L.icon({
-          iconUrl: '/marker.proposed.svg',
+          iconUrl: "/marker.proposed.svg",
 
           iconSize: [14, 22],
           iconAnchor: [1, 22],
@@ -57,14 +62,13 @@ import { MAX_BOUNDS, MAX_ZOOM } from "../pages/tile.[d].[z].[x].[yr].png";
       const div = this.getElementsByTagName("div")[0]!;
       const map = L.map(div, {
         center: [37.83, -122.3],
-        zoom: 10,
+        zoom: 11,
         maxBounds: MAX_BOUNDS,
         maxBoundsViscosity: 1.0,
       });
       L.tileLayer(`tile.${darkMode() ? "d" : "l"}.{z}.{x}.{y}.{r}.png`, {
         maxZoom: MAX_ZOOM,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        attribution: this.dataset.mapAttribution!,
       }).addTo(map);
 
       for (const site of sites) {
@@ -72,7 +76,7 @@ import { MAX_BOUNDS, MAX_ZOOM } from "../pages/tile.[d].[z].[x].[yr].png";
           icon: icons[site.benchStatus],
         }).addTo(map);
         // TODO(mingwei): prevent XSS.
-        let head = site.name || site.revGeocode || 'Unknown';
+        let head = site.name || site.revGeocode || "Unknown";
         if (null != site.id) {
           head = `<a href="/s/${site.id}">${head}</a>`;
         }
