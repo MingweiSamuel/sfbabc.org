@@ -8,12 +8,10 @@ interface Props {
 const { highlightSiteId } = Astro.props;
 
 const sites = await SITES;
-const mapAttribution = Astro.locals.runtime.env.MAP_ATTRIBUTION;
 ---
 
 <bench-map
   data-sites={JSON.stringify(sites)}
-  data-map-attribution={mapAttribution}
   data-highlight={highlightSiteId}
 >
   <div style="height: 600px;"></div>
@@ -68,7 +66,7 @@ const mapAttribution = Astro.locals.runtime.env.MAP_ATTRIBUTION;
       });
       L.tileLayer(`tile.${darkMode() ? "d" : "l"}.{z}.{x}.{y}.{r}.png`, {
         maxZoom: MAX_ZOOM,
-        attribution: this.dataset.mapAttribution!,
+        attribution: import.meta.env.PUBLIC_MAP_ATTRIBUTION,
       }).addTo(map);
 
       for (const site of sites) {

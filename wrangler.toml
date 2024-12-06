@@ -3,9 +3,3 @@ name = "bench-builders"
 compatibility_date = "2024-11-12"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = "./dist"
-
-[vars]
-# MAP_ATTRIBUTION="&copy; <a href='http://www.openstreetmap.org/copyright' target='_blank'>OpenStreetMap</a> contributors"
-MAP_ATTRIBUTION="""
-Map &copy; <a href='https://www.thunderforest.com' target='_blank'>Thunderforest</a>,\
-Data &copy; <a href='http://www.openstreetmap.org/copyright' target='_blank'>OpenStreetMap</a> contributors"""
