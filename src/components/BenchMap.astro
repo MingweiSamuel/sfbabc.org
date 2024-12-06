@@ -19,6 +19,7 @@ const sites = await SITES;
   import type { Site } from "../data";
   import { darkMode } from "../browser";
   import { COLORS } from "../pages/marker.[color].svg";
+import { MAX_BOUNDS, MAX_ZOOM } from "../pages/tile.[d].[z].[x].[yr].png";
 
   class BenchMap extends HTMLElement {
     connectedCallback() {
@@ -56,16 +57,12 @@ const sites = await SITES;
       const div = this.getElementsByTagName("div")[0]!;
       const map = L.map(div, {
         center: [37.83, -122.3],
-        zoom: 11,
-        // layers: [osm],
-        maxBounds: [
-          [37.2, -122.7],
-          [38.2, -121.7],
-        ],
+        zoom: 10,
+        maxBounds: MAX_BOUNDS,
         maxBoundsViscosity: 1.0,
       });
       L.tileLayer(`tile.${darkMode() ? "d" : "l"}.{z}.{x}.{y}.{r}.png`, {
-        maxZoom: 19,
+        maxZoom: MAX_ZOOM,
         attribution:
           '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       }).addTo(map);
