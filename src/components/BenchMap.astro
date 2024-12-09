@@ -76,7 +76,7 @@ const sites = await SITES;
         // TODO(mingwei): prevent XSS.
         let head = site.name || "Unknown";
         if (null != site.id) {
-          head = `<a href="/s/${site.id}">${head}</a>`;
+          head = `<a href="/${site.id}">${head}</a>`;
         }
         const popup = marker.bindPopup(
           `<h3>${head}</h3>
