@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bench.builders/sitemap-index.xml
