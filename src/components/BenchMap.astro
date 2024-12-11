@@ -62,7 +62,7 @@ import { requestForm } from "../forms";
         maxBounds: MAX_BOUNDS,
         maxBoundsViscosity: 1.0,
       });
-      L.tileLayer(`/tile.${darkMode() ? "d" : "l"}.{z}.{x}.{y}.{r}.png`, {
+      L.tileLayer(`/tile.${darkMode() ? "d" : "l"}.{z}.{x}.{y}{r}.png`, {
         maxZoom: MAX_ZOOM,
         attribution: import.meta.env.PUBLIC_MAP_ATTRIBUTION,
       }).addTo(map);

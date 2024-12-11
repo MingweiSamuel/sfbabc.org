@@ -1,7 +1,7 @@
 import type { APIContext } from "astro";
 import { notFound } from "../data";
 
-export const MAX_ZOOM = 17;
+export const MAX_ZOOM = 16;
 
 export const MIN_LAT = 37.2;
 export const MAX_LAT = 38.2;
@@ -14,7 +14,7 @@ export const MAX_BOUNDS: [[number, number], [number, number]] = [
 ];
 
 export async function GET(ctx: APIContext) {
-  const NUMERIC = /[0-9]+/;
+  const NUMERIC = /^[0-9]+$/;
 
   const { d, z, x, yr } = ctx.params;
   const [y, r] = yr!.split('@');
@@ -25,14 +25,14 @@ export async function GET(ctx: APIContext) {
   if (!(NUMERIC.test(z!) && NUMERIC.test(x!) && NUMERIC.test(y!))) {
     return notFound(`"${z}", "${x}", "${y}" must be integers.`);
   }
-  if ('' !== r && '2x' !== r) {
+  if (null != r && '2x' !== r) {
     return notFound(`"${r}" must be "2x" or not supplied.`);
   }
   const vals = {
     z: +z!,
     x: +x!,
     y: +y!,
-    r: r && `@${r}`, // "" or "@2x".
+    r: r ? `@${r}` : "", // "" or "@2x".
   };
 
   if (MAX_ZOOM < vals.z) {
