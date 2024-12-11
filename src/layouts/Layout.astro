@@ -1,21 +1,22 @@
 ---
 import "@fontsource-variable/dm-sans";
+import { LONG_NAME, SHORT_NAME } from "../vars";
 
 interface Props {
-  title: string;
+  title?: string | null;
 }
 
-const { title } = Astro.props;
+const title =
+  null == Astro.props.title
+    ? SHORT_NAME
+    : `${Astro.props.title} - ${SHORT_NAME}`;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content="San Francisco Bay Area Bench Collective"
-    />
+    <meta name="description" content={LONG_NAME} />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -59,7 +60,8 @@ const { title } = Astro.props;
       "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace;
   }
 
-  main, body > header {
+  main,
+  body > header {
     margin: auto;
     padding: 1rem;
     width: 800px;

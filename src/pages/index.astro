@@ -3,15 +3,17 @@ import Layout from "../layouts/Layout.astro";
 import BenchMap from "../components/BenchMap.astro";
 import LinkPreview from "../components/LinkPreview.astro";
 import { NEWS } from "../data";
+import { SHORT_NAME } from "../vars";
+import Link from "../components/Link.astro";
 
 export const prerender = true;
 
 const FIRST_NEWS = (await NEWS)[0]!;
 ---
 
-<Layout title="SFBA Bench Collective">
+<Layout>
   <header>
-    <h1>SFBA Bench Collective</h1>
+    <h1>{SHORT_NAME}</h1>
     <p class="subhead">
       When cities fail to provide benches we <strong
         >build and install our own</strong
@@ -20,14 +22,17 @@ const FIRST_NEWS = (await NEWS)[0]!;
   </header>
   <main>
     <h3 class="actions">
-      <a
+      <a href="/support">Support The Project</a>
+      &bull;
+      <Link
         href="https://docs.google.com/forms/d/e/1FAIpQLSeQPKKgqx_tR4Yp9kNynRpriRlsPerugbziuBVWjTHAdff_Kw/viewform"
-        >Report A Problem</a
+        >Report A Problem</Link
       >
       &bull;
-      <a
+      <Link
         href="https://docs.google.com/forms/d/e/1FAIpQLSeoh_bZOndFPvSpkW468EsgudlD8OeXM2h7TpL_yCX9HKjH3A/viewform"
-        >Request A Bench</a>
+        >Request A Bench</Link
+      >
     </h3>
     <h2>Bench Map</h2>
     <BenchMap />

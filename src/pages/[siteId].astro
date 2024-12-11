@@ -5,6 +5,7 @@ import type { GetStaticPaths } from "astro";
 import { SITES, getSite } from "../data";
 import BenchMap from "../components/BenchMap.astro";
 import { reportForm } from "../forms";
+import Link from "../components/Link.astro";
 
 export const prerender = true;
 export const getStaticPaths = (async () => {
@@ -22,21 +23,23 @@ const { siteId } = Astro.params;
 const site = (await getSite(+siteId))!;
 ---
 
-<Layout title={`${site.name} - SFBA Bench Collective`}>
+<Layout title={site.name}>
   <header>
     <a href="/">Home</a>
   </header>
   <main>
     <h1>{site.name}</h1>
     <h3 class="actions">
-      <a href={reportForm(site.name, siteId)}>Report A Problem</a>
+      <Link href={reportForm(site.name, siteId)}
+        >Report A Problem With This Bench</Link
+      >
     </h3>
     {
       site.benchImageUrl && (
         <Image
           src={site.benchImageUrl}
           alt="Photo of the bench."
-          width={800}
+          width={1.5 * 800}
           inferSize={true}
         />
       )

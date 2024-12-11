@@ -72,7 +72,7 @@ import { requestForm } from "../forms";
         const { lat, lng } = e.latlng;
         clickPopup
           .setLatLng(e.latlng)
-          .setContent(`<a href="${requestForm(`(${lat}, ${lng})`)}">Request A Bench Here</a>`)
+          .setContent(`<a href="${requestForm(`(${lat}, ${lng})`)}" target="_blank">Request A Bench Here</a>`)
           .openOn(map);
       });
 
