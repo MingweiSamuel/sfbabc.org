@@ -19,11 +19,15 @@ export interface Site {
 }
 export type BenchStatus = 'Good' | 'Replaced' | 'Removed' | 'Destroyed' | 'Proposed';
 
+export interface News {
+  url: string,
+  date: Date,
+}
+
 export const SITES: Promise<Site[]> = (async () => {
-  const SHEETS_DB_SITES = "https://script.google.com/macros/s/AKfycbxj3hB_ZN5vzvXtMSNzprA9FHiK26Yc6_b9--n2V_W_mTIV9QvV3XLQW8J5o0njB3ihmQ/exec";
+  const SHEETS_DB_SITES = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWDmQyR76rCXXmwltSZaa_5iCi-z6IOqkfNkjc52e713Rc5kfF7mDZuMxghsp-nJlAdskl-IBBbhzN/pub?gid=633984574&single=true&output=csv";
   const res = await fetch(SHEETS_DB_SITES);
-  const arr = await res.json<string[][]>();
-  const [head, ...rows] = arr;
+  const [head, ...rows] = parseCsv(await res.text());
   const headIdx = Object.fromEntries(head!.map((col, i) => [col.toUpperCase(), i]));
   return rows.map(row => {
     const id = row[headIdx['SITE ID']!];
@@ -56,6 +60,21 @@ export const SITES: Promise<Site[]> = (async () => {
 export const getSite = async (sid: number) =>
   (await SITES).find(site => sid === site.id);
 
+export const NEWS: Promise<News[]> = (async () => {
+  const SHEETS_DB_NEWS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWDmQyR76rCXXmwltSZaa_5iCi-z6IOqkfNkjc52e713Rc5kfF7mDZuMxghsp-nJlAdskl-IBBbhzN/pub?gid=6743625&single=true&output=csv";
+  const res = await fetch(SHEETS_DB_NEWS);
+  const [head, ...rows] = parseCsv(await res.text());
+  const headIdx = Object.fromEntries(head!.map((col, i) => [col.toUpperCase(), i]));
+  return rows
+    .map(row => {
+      const news: News = {
+        url: row[headIdx['URL']!]!,
+        date: new Date(row[headIdx['DATE']!]!)
+      };
+      return news;
+    })
+    .sort((a, b) => b.date.getTime() - a.date.getTime());
+})();
 
 export function notFound(msg: string): Response {
   return new Response(msg, {
@@ -64,4 +83,23 @@ export function notFound(msg: string): Response {
       "Content-Type": "text/plain"
     }
   });
+}
+
+export function parseCsv(csvText: string): string[][] {
+  const CELL_REGEX = /(,|\r?\n|^)("((?:[^"]|"")+)"|[^,\r\n]*)/g;
+
+  const grid = [];
+  let row = [];
+
+  let match;
+  while ((match = CELL_REGEX.exec(csvText))) {
+    const sep = match[1];
+    const val = match[3] ? match[3].replace(/""/g, '"') : match[2];
+
+    // Handle newlines (new rows).
+    if (',' !== sep) grid.push((row = []));
+
+    row.push(val);
+  }
+  return grid;
 }

@@ -2,9 +2,11 @@
 import Layout from "../layouts/Layout.astro";
 import BenchMap from "../components/BenchMap.astro";
 import LinkPreview from "../components/LinkPreview.astro";
-import { NEWS } from "./news.astro";
+import { NEWS } from "../data";
 
 export const prerender = true;
+
+const FIRST_NEWS = (await NEWS)[0]!;
 ---
 
 <Layout title="SFBA Bench Collective">
@@ -20,6 +22,6 @@ export const prerender = true;
     <h2>Bench Map</h2>
     <BenchMap />
     <h2><a href="/news">News</a></h2>
-    <LinkPreview url={NEWS[0]!.url} date={NEWS[0]!.date} />
+    <LinkPreview url={FIRST_NEWS.url} date={FIRST_NEWS.date} />
   </main>
 </Layout>
