@@ -10,10 +10,7 @@ const { highlightSiteId } = Astro.props;
 const sites = await SITES;
 ---
 
-<bench-map
-  data-sites={JSON.stringify(sites)}
-  data-highlight={highlightSiteId}
->
+<bench-map data-sites={JSON.stringify(sites)} data-highlight={highlightSiteId}>
   <div style="height: 600px;"></div>
 </bench-map>
 <script>
@@ -23,6 +20,7 @@ const sites = await SITES;
   import { darkMode } from "../browser";
   import { COLORS } from "../pages/marker.[color].svg";
   import { MAX_BOUNDS, MAX_ZOOM } from "../pages/tile.[d].[z].[x].[yr].png";
+import { requestForm } from "../forms";
 
   class BenchMap extends HTMLElement {
     connectedCallback() {
@@ -68,6 +66,15 @@ const sites = await SITES;
         maxZoom: MAX_ZOOM,
         attribution: import.meta.env.PUBLIC_MAP_ATTRIBUTION,
       }).addTo(map);
+
+      const clickPopup = L.popup();
+      map.on("click", e => {
+        const { lat, lng } = e.latlng;
+        clickPopup
+          .setLatLng(e.latlng)
+          .setContent(`<a href="${requestForm(`(${lat}, ${lng})`)}">Request A Bench Here</a>`)
+          .openOn(map);
+      });
 
       for (const site of sites) {
         const marker = L.marker([site.lat, site.lon], {
