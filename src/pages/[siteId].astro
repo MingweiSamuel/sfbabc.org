@@ -28,9 +28,9 @@ const site = (await getSite(+siteId))!;
   </header>
   <main>
     <h1>{site.name}</h1>
-    <h2 class="actions">
+    <h3 class="actions">
       <a href={reportForm(site.name, siteId)}>Report A Problem</a>
-    </h2>
+    </h3>
     {
       site.benchImageUrl && (
         <Image
