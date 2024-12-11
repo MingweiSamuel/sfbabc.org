@@ -68,7 +68,7 @@ export async function GET(ctx: APIContext) {
   const response = await fetch(reqUrl);
 
   const newHeaders = new Headers(response.headers);
-  const CACHE_TIME_SECS = 7 * 24 * 3600;
+  const CACHE_TIME_SECS = 30 * 24 * 3600; // 30 days.
   newHeaders.set('Cache-Control', `public, max-age=${CACHE_TIME_SECS}`);
   newHeaders.set('Expires', new Date(Date.now() + CACHE_TIME_SECS * 1000).toUTCString());
 
