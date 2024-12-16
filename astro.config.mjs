@@ -21,4 +21,8 @@ export default defineConfig({
 
   site: 'https://bench.builders',
   integrations: [sitemap()],
+
+  redirects: {
+    '/support': '/join'
+  }
 });
