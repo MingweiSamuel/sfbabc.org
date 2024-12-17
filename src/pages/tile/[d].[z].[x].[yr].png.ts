@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { notFound } from "../data";
+import { notFound } from "../../data";
 
 export const MAX_ZOOM = 16;
 

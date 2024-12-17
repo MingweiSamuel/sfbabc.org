@@ -19,8 +19,8 @@ const sites = await SITES;
   import type { Site } from "../data";
   import { darkMode } from "../browser";
   import { COLORS } from "../pages/marker.[color].svg";
-  import { MAX_BOUNDS, MAX_ZOOM } from "../pages/tile.[d].[z].[x].[yr].png";
-import { requestForm } from "../forms";
+  import { MAX_BOUNDS, MAX_ZOOM } from "../pages/tile/[d].[z].[x].[yr].png";
+  import { requestForm } from "../forms";
 
   class BenchMap extends HTMLElement {
     connectedCallback() {
@@ -63,18 +63,20 @@ import { requestForm } from "../forms";
         maxBounds: MAX_BOUNDS,
         maxBoundsViscosity: 1.0,
       });
-      L.tileLayer(`/tile.{d}.{z}.{x}.{y}{r}.png`, {
+      L.tileLayer(`/tile/{d}.{z}.{x}.{y}{r}.png`, {
         maxZoom: MAX_ZOOM,
         attribution: import.meta.env.PUBLIC_MAP_ATTRIBUTION,
-        d: () => darkMode() ? "d" : "l",
+        d: () => (darkMode() ? "d" : "l"),
       } as TileLayerOptions).addTo(map);
 
       const clickPopup = L.popup();
-      map.on("click", e => {
+      map.on("click", (e) => {
         const { lat, lng } = e.latlng;
         clickPopup
           .setLatLng(e.latlng)
-          .setContent(`<a href="${requestForm(`(${lat}, ${lng})`)}" target="_blank">Request A Bench Here</a>`)
+          .setContent(
+            `<a href="${requestForm(`(${lat}, ${lng})`)}" target="_blank">Request A Bench Here</a>`,
+          )
           .openOn(map);
       });
 
