@@ -15,7 +15,7 @@ const sites = await SITES;
 </bench-map>
 <script>
   import "leaflet/dist/leaflet.css";
-  import L from "leaflet";
+  import L, { type TileLayerOptions } from "leaflet";
   import type { Site } from "../data";
   import { darkMode } from "../browser";
   import { COLORS } from "../pages/marker.[color].svg";
@@ -59,13 +59,15 @@ import { requestForm } from "../forms";
       const map = L.map(div, {
         center: [37.83, -122.3],
         zoom: 11,
+        maxZoom: MAX_ZOOM,
         maxBounds: MAX_BOUNDS,
         maxBoundsViscosity: 1.0,
       });
-      L.tileLayer(`/tile.${darkMode() ? "d" : "l"}.{z}.{x}.{y}{r}.png`, {
+      L.tileLayer(`/tile.{d}.{z}.{x}.{y}{r}.png`, {
         maxZoom: MAX_ZOOM,
         attribution: import.meta.env.PUBLIC_MAP_ATTRIBUTION,
-      }).addTo(map);
+        d: () => darkMode() ? "d" : "l",
+      } as TileLayerOptions).addTo(map);
 
       const clickPopup = L.popup();
       map.on("click", e => {
@@ -91,7 +93,7 @@ import { requestForm } from "../forms";
         );
         if (this.dataset.highlight === `${site.id}`) {
           popup.openPopup();
-          map.setView([site.lat, site.lon], 17);
+          map.setView([site.lat, site.lon], MAX_ZOOM);
         }
       }
     }
