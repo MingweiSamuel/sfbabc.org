@@ -1,0 +1,18 @@
+---
+import Layout from './Layout.astro';
+
+interface Props {
+  title?: string | null | undefined;
+}
+
+const { title }  = Astro.props;
+---
+
+<Layout title={title}>
+  <header>
+    <a href="/">Home</a>
+  </header>
+  <main>
+    <slot />
+  </main>
+</Layout>
