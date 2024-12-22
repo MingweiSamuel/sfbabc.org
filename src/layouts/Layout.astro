@@ -4,7 +4,7 @@ import { LONG_NAME, SHORT_NAME } from "../vars";
 
 interface Props {
   title?: string | null | undefined;
-  bodyWidth?: number | null | undefined;
+  mainWidth?: number | null | undefined;
 }
 
 const title =
@@ -12,7 +12,7 @@ const title =
     ? SHORT_NAME
     : `${Astro.props.title} - ${SHORT_NAME}`;
 
-const bodyWidth = Astro.props.bodyWidth || (Astro.props as any).frontmatter?.bodyWidth || '800px';
+const mainWidth = Astro.props.mainWidth || (Astro.props as any).frontmatter?.mainWidth || '800px';
 ---
 
 <!doctype html>
@@ -30,7 +30,7 @@ const bodyWidth = Astro.props.bodyWidth || (Astro.props as any).frontmatter?.bod
     <slot />
   </body>
 </html>
-<style is:global define:vars={{ bodyWidth }}>
+<style is:global define:vars={{ mainWidth }}>
   html {
     font-family: "DM Sans Variable", sans-serif;
     font-size: 20px;
@@ -68,7 +68,7 @@ const bodyWidth = Astro.props.bodyWidth || (Astro.props as any).frontmatter?.bod
   body > header {
     margin: auto;
     padding: 1rem;
-    width: var(--bodyWidth);
+    width: var(--mainWidth);
     max-width: calc(100% - 2rem);
     line-height: 1.6;
   }
