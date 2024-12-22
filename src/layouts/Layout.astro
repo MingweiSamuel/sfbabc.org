@@ -4,12 +4,15 @@ import { LONG_NAME, SHORT_NAME } from "../vars";
 
 interface Props {
   title?: string | null | undefined;
+  bodyWidth?: number | null | undefined;
 }
 
 const title =
   null == Astro.props.title
     ? SHORT_NAME
     : `${Astro.props.title} - ${SHORT_NAME}`;
+
+const bodyWidth = Astro.props.bodyWidth || (Astro.props as any).frontmatter?.bodyWidth || '800px';
 ---
 
 <!doctype html>
@@ -27,9 +30,10 @@ const title =
     <slot />
   </body>
 </html>
-<style is:global>
+<style is:global define:vars={{ bodyWidth }}>
   html {
     font-family: "DM Sans Variable", sans-serif;
+    font-size: 20px;
     background: #fff;
     color: #111;
   }
@@ -64,22 +68,26 @@ const title =
   body > header {
     margin: auto;
     padding: 1rem;
-    width: 800px;
+    width: var(--bodyWidth);
     max-width: calc(100% - 2rem);
-    font-size: 20px;
     line-height: 1.6;
   }
   header .subhead {
     text-align: center;
   }
   h1 {
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: 700;
     line-height: 1;
     text-align: center;
-    margin-bottom: 1em;
+    margin-bottom: 3rem;
   }
   .actions {
     text-align: center;
+  }
+
+  td,
+  th {
+    padding: 0.2rem 0.5rem;
   }
 </style>
