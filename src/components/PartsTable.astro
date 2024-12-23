@@ -1,0 +1,76 @@
+---
+import { Image } from "astro:assets";
+
+interface Item {
+  qty: number;
+  name: string;
+  img: ImageMetadata;
+  width: number;
+  alt: string;
+}
+
+interface Props {
+  items: Item[];
+}
+---
+
+<div>
+  <div class="row header">
+    <div class="text">
+      <div class="qty">Qty</div>
+      <div class="name">Item</div>
+    </div>
+    <div style="flex-grow: 1; flex-shrink: 1; text-align: right;">Image</div>
+  </div>
+  {
+    Astro.props.items.map(({ qty, name, img, width, alt }) => (
+      <div class="row">
+        <div class="text">
+          <div class="qty">{qty}</div>
+          <div class="name">{name}</div>
+        </div>
+        <div class="img">
+          <Image src={img} {alt} {width} densities={[1, 1.25, 1.5, 2]} />
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5em;
+    margin: 1em 0;
+  }
+  .row.header {
+    font-weight: bold;
+  }
+  .row > .text {
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 10em;
+    min-width: 10em;
+  }
+  .row > .text > .qty {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 3em;
+  }
+  .row > .text > .name {
+    flex: 1 1;
+  }
+  .row > .img {
+    flex-grow: 0;
+    flex-shrink: 1;
+    text-align: right;
+    overflow-x: auto;
+  }
+  .row > .img > img {
+    vertical-align: middle;
+  }
+</style>

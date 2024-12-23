@@ -33,7 +33,7 @@ const mainWidth = Astro.props.mainWidth || (Astro.props as any).frontmatter?.mai
 <style is:global define:vars={{ mainWidth }}>
   html {
     font-family: "DM Sans Variable", sans-serif;
-    font-size: 20px;
+    font-size: 16px;
     background: #fff;
     color: #111;
   }
@@ -70,13 +70,14 @@ const mainWidth = Astro.props.mainWidth || (Astro.props as any).frontmatter?.mai
     padding: 1rem;
     width: var(--mainWidth);
     max-width: calc(100% - 2rem);
+    font-size: 1.25rem;
     line-height: 1.6;
   }
   header .subhead {
     text-align: center;
   }
   h1 {
-    font-size: 3rem;
+    font-size: 4rem;
     font-weight: 700;
     line-height: 1;
     text-align: center;
@@ -104,6 +105,6 @@ const mainWidth = Astro.props.mainWidth || (Astro.props as any).frontmatter?.mai
     padding: 0;
   }
   .caption td {
-    width: 0;
+    max-width: 0;
   }
 </style>
