@@ -80,7 +80,7 @@ const mainWidth = Astro.props.mainWidth || (Astro.props as any).frontmatter?.mai
     font-weight: 700;
     line-height: 1;
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 1em;
   }
   .actions {
     text-align: center;
@@ -88,6 +88,22 @@ const mainWidth = Astro.props.mainWidth || (Astro.props as any).frontmatter?.mai
 
   td,
   th {
-    padding: 0.2rem 0.5rem;
+    padding: 0.2em 0.5em;
+  }
+
+  .caption.left {
+    float: left;
+    margin-right: 1em;
+  }
+  .caption.right {
+    float: right;
+    margin-left: 1em;
+  }
+  .caption.left th :has(> img),
+  .caption.right th :has(> img) {
+    padding: 0;
+  }
+  .caption td {
+    width: 0;
   }
 </style>
