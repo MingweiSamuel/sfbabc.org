@@ -54,7 +54,8 @@ export const SITES: Promise<Site[]> = (async () => {
     };
     return site;
   })
-    .filter(site => site.id || (site.lat && site.lon));
+    .filter(site => site.id || (site.lat && site.lon))
+    .sort((a, b) => (10 * b.lat - b.lon) - (10 * a.lat - a.lon));
 })();
 
 export const getSite = async (sid: number) =>

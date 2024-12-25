@@ -34,7 +34,8 @@ const mainWidth = Astro.props.mainWidth || (Astro.props as any).frontmatter?.mai
   html {
     font-family: "DM Sans Variable", sans-serif;
     font-size: 16px;
-    background: #fff;
+    --bg-color: #fff;
+    background-color: var(--bg-color);
     color: #111;
   }
   a {
@@ -45,7 +46,8 @@ const mainWidth = Astro.props.mainWidth || (Astro.props as any).frontmatter?.mai
   }
   @media (prefers-color-scheme: dark) {
     html {
-      background: #13151a;
+      --bg-color: #13151a;
+      background-color: var(--bg-color);
       color: #fff;
     }
     a {

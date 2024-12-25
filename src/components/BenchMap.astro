@@ -11,7 +11,9 @@ const sites = await SITES;
 ---
 
 <bench-map data-sites={JSON.stringify(sites)} data-highlight={highlightSiteId}>
+  <a class="hidden-nav before" href="#">Skip after map</a>
   <div style="height: 600px;"></div>
+  <a class="hidden-nav after" href="#">Skip before map</a>
 </bench-map>
 <script>
   import "leaflet/dist/leaflet.css";
@@ -102,4 +104,36 @@ const sites = await SITES;
   }
 
   customElements.define("bench-map", BenchMap);
+
+  document
+    .querySelector<HTMLAnchorElement>(".hidden-nav.before")!
+    .addEventListener("click", (e) => {
+      e.preventDefault();
+      document.querySelector<HTMLAnchorElement>(".hidden-nav.after")!.focus();
+    });
+  document
+    .querySelector<HTMLAnchorElement>(".hidden-nav.after")!
+    .addEventListener("click", (e) => {
+      e.preventDefault();
+      document.querySelector<HTMLAnchorElement>(".hidden-nav.before")!.focus();
+    });
 </script>
+
+<style>
+  bench-map {
+    display: block;
+    position: relative;
+  }
+  .hidden-nav {
+    position: absolute;
+    left: -9999px;
+    background-color: var(--bg-color);
+  }
+  .hidden-nav:focus {
+    left: 0;
+    z-index: 9999;
+  }
+  .hidden-nav.after {
+    bottom: 0;
+  }
+</style>
