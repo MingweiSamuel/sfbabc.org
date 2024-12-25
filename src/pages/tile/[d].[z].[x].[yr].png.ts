@@ -1,7 +1,7 @@
 import type { APIContext } from "astro";
 import { notFound } from "../../data";
 
-export const MAX_ZOOM = 16;
+export const MAX_ZOOM = 17;
 
 export const MIN_LAT = 37.2;
 export const MAX_LAT = 38.2;
