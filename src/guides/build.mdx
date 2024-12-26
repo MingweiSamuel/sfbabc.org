@@ -1,0 +1,108 @@
+---
+title: Build A Bench
+description: How to build a bench.
+order: 1
+---
+
+import { Image } from 'astro:assets';
+import PartsTable from '../components/PartsTable.astro';
+import cbLong from '../../public/img/cb_long.png';
+import cbShort from '../../public/img/cb_short.png';
+import nut from '../../public/img/nut.png';
+import washer from '../../public/img/washer.png';
+import screw from '../../public/img/screw.png';
+import kdHtDfir from '../../public/img/kd_ht_dfir.jpg';
+
+# Build A Bench
+
+Welcome to the guide. This is WIP.
+
+## Tools
+
+* Templates
+* Marker or pencil
+* Workbench and sawhorses
+* Sander
+* Jigsaw and/or circular saw (both recommended)
+* Impact driver and drill
+  * 9/16 in. nut driver/hex socket (for 3/8" inner diameter nut/bolts)
+  * 3/8 in. drill bit
+  * DrillBlock with 3/8 in. hole (optional)
+  * thin drill bit (between 3/32 in. and 1/8 in.)
+* Rubber mallet
+* 2 bar clamps, 8 in. or larger
+* Tape measure
+* SDS+ rotary hammer (or hammer drill) with 3/8 in. masonry bit (for installation)
+
+## Materials
+
+### 2x4 Lumber
+
+* 6 pieces, 2x4 x 7 ft.
+* 1 piece, 2x4 x 8 ft.
+* 1 piece, 2x4 x 8 ft. pressure-treated
+
+(Note that 2x4s are actually 1.5 in. by 3.5 in.)
+
+### Prep & Paint
+
+* ~80 grit sanding disc
+* Wood filler (optional - must be waterproof, or painted over)
+* Deck stain & sealer, or exterior primer and paint
+
+One gallon of product typically covers 5-6 benches (7 ft. wide) with a single coat.
+
+### Hardware
+
+<PartsTable items={[
+    { qty: 2, name: "3/8 in. x 5 in. carriage bolt", img: cbLong, width: 0.75 * 512, alt: "Carriage bolt with a matte galvanized surface." },
+    { qty: 8, name: "3/8 in. x 3-1/2 in. carriage bolt", img: cbShort, width: 0.75 * 364, alt: "Carriage bolt with a matte galvanized surface." },
+    { qty: 10, name: "3/8 in. hex nut", img: nut, width: 0.75 * 56, alt: "Hexagonal nut." },
+    { qty: 10, name: "3/8 in. flat washer", img: washer, width: 0.75 * 100, alt: "Round flat washer." },
+    { qty: 40, name: "#8 x 2-1/2 in. exterior screw", img: screw, width: 0.75 * 248, alt: "Shiny bronze-colored screw." },
+]} />
+
+## Material Selection Notes
+
+### Lumber
+
+The 6 pieces are for the slats spanning the width of the bench.
+You can substitute 6x 8' pieces for an 8' bench, or 3x 8' pieces cut in half for a 4' bench.
+
+<div class="caption right">
+| <Image src={kdHtDfir} alt="Close up of a 2x4 with stamp KD HT and D FIR, among other markings." width={200} densities={[1, 1.25, 1.5, 2]} /> |
+| --- |
+| A kiln-dried heat-treated Douglas fir 2x4 ("KD HT DFIR") |
+</div>
+
+For the slats, select straight or bowed pieces.
+Bow warping is OK as it can act as an arch to counter-act the weight of people sitting on the bench.
+Avoid twisted wood as it will prevent the bench from sitting flat.
+Select pieces with a smooth top side to avoid extra sanding and filling.
+Prefer kiln-dried heat-treated ("KD HT") lumber over wet "green" lumber,
+as it is often smoother, less likely to warp, and easier to paint/stain.
+
+For weather resistance, prefer Southern Yellow Pine ("SYP"), Douglas Fir ("D-FIR"), and Hemlock Fir ("HEM-FIR"), in that order, over generic whitewood ("SPF" spruce, pine, fir).
+Redwood and Cedar are even more decay resistant, but 3-4x the cost.
+
+The pressure treated piece is for the feet; look for "ground contact" lumber.
+
+### Prep & Paint
+
+Sanding is necessary to remove splinters and rough edges.
+Filling is optional. Most wood fillers are not waterproof (despite "exterior" marketing) and must be painted over.
+However epoxy (Bondo or JB-Weld) and CA glue (Starbond) based fillers are waterproof.
+Sander sawdust mixed with a [waterproof wood glue (Titebond III)](https://www.youtube.com/watch?v=k-g3efGa3sI&t=725s)
+makes a decently water-resistant (though hard-to-sand) wood filler.
+
+Stain is easier to apply than paint, but will need to be reapplied every 2-3 years.
+
+### Hardware
+
+Stainless steel ("SS") is expensive overkill (unless near saltwater), so hot-dip galvanized ("HDG") is the best option.
+Zinc plated (electro-galvanized) is ok but not as weather resistant.
+3/8 in. hardware is conveniently standard for street furniture including anchor bolts for mounting benches on pavement, but thinner 5/16 in. bolts will also work.
+
+Screws should be exterior-coated construction/framing screws, or deck screws.
+There are a lot of brands but [GRK, Grip-Rite, and SPAX are good options](https://www.youtube.com/watch?v=eikOUFoIZ-Y).
+Thicker #9 screws will also work, but overly-thick screws can cause wood to split if you don't pre-drill pilot holes.

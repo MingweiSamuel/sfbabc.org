@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 
 interface Item {
-  qty: number;
+  qty?: number;
   name: string;
   img: ImageMetadata;
   width: number;
@@ -12,12 +12,14 @@ interface Item {
 interface Props {
   items: Item[];
 }
+
+const hasQty = Astro.props.items.some(item => null != item.qty) || null;
 ---
 
-<div>
+<div class="highlight">
   <div class="row header">
     <div class="text">
-      <div class="qty">Qty</div>
+      {hasQty && <div class="qty">Qty</div>}
       <div class="name">Item</div>
     </div>
     <div style="flex-grow: 1; flex-shrink: 1; text-align: right;">Image</div>
@@ -26,7 +28,7 @@ interface Props {
     Astro.props.items.map(({ qty, name, img, width, alt }) => (
       <div class="row">
         <div class="text">
-          <div class="qty">{qty}</div>
+          {hasQty && <div class="qty">{qty}</div>}
           <div class="name">{name}</div>
         </div>
         <div class="img">
@@ -44,7 +46,7 @@ interface Props {
     justify-content: flex-end;
     align-items: center;
     gap: 0.5em;
-    margin: 1em 0;
+    margin: 0.75em 1em;
   }
   .row.header {
     font-weight: bold;

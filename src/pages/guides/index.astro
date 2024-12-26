@@ -1,0 +1,23 @@
+---
+import { getCollection } from "astro:content";
+import Page from "../../layouts/Page.astro";
+
+const guides = (await getCollection("guides")).sort(
+    (a, b) => a.data.order - b.data.order,
+);
+---
+
+<Page title="Guides">
+    <h1>Guides</h1>
+    <ul>
+        {
+            guides.map((guide) => (
+                <li>
+                    <a href={`/guides/${guide.id}`}>
+                        {guide.data.title}: {guide.data.description}
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+</Page>

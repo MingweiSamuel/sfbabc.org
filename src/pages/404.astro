@@ -1,15 +1,10 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Page from "../layouts/Page.astro";
 
 export const prerender = true;
 ---
 
-<Layout title="404 Not Found">
-  <header>
-    <a href="/">Home</a>
-  </header>
-  <main>
-    <h1>404</h1>
-    <h3 class="actions">Page Not Found</h3>
-  </main>
-</Layout>
+<Page title="404 Not Found">
+  <h1>404</h1>
+  <h3 class="actions">Page Not Found</h3>
+</Page>

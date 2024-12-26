@@ -1,0 +1,23 @@
+---
+import { getCollection, render } from "astro:content";
+import Page from "../../layouts/Page.astro";
+
+export async function getStaticPaths() {
+  const guides = await getCollection("guides");
+  return guides.map((guide) => ({
+    params: { guideSlug: guide.id },
+    props: guide,
+  }));
+}
+
+export const prerender = true;
+
+const guide = Astro.props;
+const { Content } = await render(guide);
+---
+
+<Page title={guide.data.title} upHref="/guides" upNav="Guides">
+  <div style="font-size: 0.9em">
+    <Content />
+  </div>
+</Page>
