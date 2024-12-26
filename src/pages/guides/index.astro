@@ -5,6 +5,8 @@ import Page from "../../layouts/Page.astro";
 const guides = (await getCollection("guides")).sort(
     (a, b) => a.data.order - b.data.order,
 );
+
+export const prerender = true
 ---
 
 <Page title="Guides">
