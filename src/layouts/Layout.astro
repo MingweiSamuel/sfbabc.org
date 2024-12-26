@@ -35,8 +35,9 @@ const mainWidth = Astro.props.mainWidth || (Astro.props as any).frontmatter?.mai
     font-family: "DM Sans Variable", sans-serif;
     font-size: 16px;
     --bg-color: #fff;
+    --txt-color: #111;
     background-color: var(--bg-color);
-    color: #111;
+    color: var(--txt-color);
   }
   a {
     color: #06c;
@@ -47,11 +48,12 @@ const mainWidth = Astro.props.mainWidth || (Astro.props as any).frontmatter?.mai
   @media (prefers-color-scheme: dark) {
     html {
       --bg-color: #13151a;
+      --txt-color: #eee;
       background-color: var(--bg-color);
-      color: #fff;
+      color: var(--txt-color);
     }
     a {
-      color: #6af;
+      color: #7af;
     }
     .text-lt {
       color: #aaa;
@@ -100,6 +102,11 @@ const mainWidth = Astro.props.mainWidth || (Astro.props as any).frontmatter?.mai
   .caption, .highlight {
     background-color: rgba(128, 128, 128, 0.1);
     border: 1px solid rgba(128, 128, 128, 0.2);
+  }
+  @meda prefers-contrast: more {
+    .caption, .highlight {
+      border: 1px solid var(--txt-color) !important;
+    }
   }
   .caption th {
     padding-bottom: 0;

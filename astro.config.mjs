@@ -26,6 +26,7 @@ export default defineConfig({
   integrations: [sitemap(), mdx()],
 
   redirects: {
-    '/support': '/join'
-  }
+    '/support': '/join',
+    '/guide': '/guides',
+  },
 });
