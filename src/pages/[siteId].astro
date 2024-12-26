@@ -43,8 +43,7 @@ const site = (await getSite(+siteId))!;
   <h2>Info</h2>
   <ul>
     <li>Status: {site.benchStatus}</li>
-    <li>Adopter: {site.adopter || <em>None!</em>}</li>
-    <li>Builder: {site.benchBuilder || <em>Unknown</em>}</li>
+    <li>Adopted? <em>{site.adopted ? "Yes" : "No!"}</em></li>
     {site.benchLength && <li>Length: {site.benchLength} ft</li>}
     {site.benchNickname && <li>Nickname: {site.benchNickname}</li>}
     {

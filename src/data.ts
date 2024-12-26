@@ -8,12 +8,11 @@ export interface Site {
   lon: number,
   name: string | null,
   lines: string[],
-  adopter: string | null,
+  adopted: boolean,
   notes: string[],
   //
   benchStatus: BenchStatus,
   benchLength: number | null,
-  benchBuilder: string | null,
   benchNickname: string | null,
   benchImageUrl: string | null,
 }
@@ -44,11 +43,10 @@ export const SITES: Promise<Site[]> = (async () => {
         .split(',')
         .map(line => line.trim())
         .filter(note => 0 < note.length),
-      adopter: row[headIdx['ADOPTER']!]! || null,
+      adopted: null != row[headIdx['ADOPTER']!],
       notes: row.slice(headIdx['NOTES']!).filter(note => 0 < note.length),
       benchStatus: row[headIdx['BENCH STATUS']!]! as BenchStatus,
       benchLength: +row[headIdx['LENGTH']!]! || null,
-      benchBuilder: row[headIdx['BUILDER']!]! || null,
       benchNickname: row[headIdx['NICKNAME']!]! || null,
       benchImageUrl: row[headIdx['IMAGE URL']!]! || null,
     };
