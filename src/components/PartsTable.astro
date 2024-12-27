@@ -4,6 +4,9 @@ import { Image } from "astro:assets";
 interface Item {
   qty?: number;
   name: string;
+  imgs: ImageInfo[];
+}
+interface ImageInfo {
   img: ImageMetadata;
   width: number;
   alt: string;
@@ -11,29 +14,33 @@ interface Item {
 
 interface Props {
   items: Item[];
+  kind?: string;
 }
 
-const hasQty = Astro.props.items.some(item => null != item.qty) || null;
+const hasQty = Astro.props.items.some((item) => null != item.qty) || null;
+const imgPlural = Astro.props.items.some((item) => item.imgs.length > 1) ? "s" : "";
 ---
 
 <div class="highlight">
   <div class="row header">
     <div class="text">
       {hasQty && <div class="qty">Qty</div>}
-      <div class="name">Item</div>
+      <div class="name">{Astro.props.kind || "Item"}</div>
     </div>
-    <div style="flex-grow: 1; flex-shrink: 1; text-align: right;">Image</div>
+    <div style="flex-grow: 1; flex-shrink: 1; text-align: right;">Image{imgPlural}</div>
   </div>
   {
-    Astro.props.items.map(({ qty, name, img, width, alt }) => (
+    Astro.props.items.map(({ qty, name, imgs }) => (
       <div class="row">
         <div class="text">
           {hasQty && <div class="qty">{qty}</div>}
           <div class="name">{name}</div>
         </div>
-        <div class="img">
-          <Image src={img} {alt} {width} densities={[1, 1.25, 1.5, 2]} />
-        </div>
+        {imgs.map(({ img, width, alt }) => (
+          <div class="img">
+            <Image src={img} {alt} {width} densities={[1, 1.25, 1.5, 2]} />
+          </div>
+        ))}
       </div>
     ))
   }
