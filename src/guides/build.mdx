@@ -12,6 +12,9 @@ import nut from '../../public/img/nut.png';
 import washer from '../../public/img/washer.png';
 import screw from '../../public/img/screw.png';
 import kdHtDfir from '../../public/img/kd_ht_dfir.jpg';
+import legFrame from '../../public/img/leg_frame.png';
+import cadCutsLegs from '../../public/img/cad_cuts_legs.png';
+import cadCutsRests from '../../public/img/cad_cuts_rests.png';
 
 # Build A Bench
 
@@ -38,17 +41,18 @@ Welcome to the guide. This is WIP.
 
 ### 2x4 Lumber
 
-* 6 pieces, 2x4 x 7 ft.
-* 1 piece, 2x4 x 8 ft.
-* 1 piece, 2x4 x 8 ft. pressure-treated
+* 6 pieces, 2x4 x 7 ft. (for slats)
+* 1 piece, 2x4 x 8 ft. (for seat/backrest frame)
+* 1 piece, 2x4 x 8 ft. pressure-treated (for legs)
 
 (Note that 2x4s are actually 1.5 in. by 3.5 in.)
 
-### Prep & Paint
+### Prep & Finish
 
-* ~80 grit sanding disc
+* \~80 grit sanding disc
 * Wood filler (optional - must be waterproof, or painted over)
 * Deck stain & sealer, or exterior primer and paint
+* Paint brush
 
 One gallon of product typically covers 5-6 benches (7 ft. wide) with a single coat.
 
@@ -62,7 +66,7 @@ One gallon of product typically covers 5-6 benches (7 ft. wide) with a single co
   { qty: 40, name: "#8 x 2-1/2 in. exterior screw", imgs: [{ img: screw, width: 0.75 * 248, alt: "Shiny bronze-colored screw." }]},
 ]} />
 
-## Material Selection Notes
+## Material Selection
 
 ### Lumber
 
@@ -106,3 +110,94 @@ Zinc plated (electro-galvanized) is ok but not as weather resistant.
 Screws should be exterior-coated construction/framing screws, or deck screws.
 There are a lot of brands but [GRK, Grip-Rite, and SPAX are good options](https://www.youtube.com/watch?v=eikOUFoIZ-Y).
 Thicker #9 screws will also work, but overly-thick screws can cause wood to split if you don't pre-drill pilot holes.
+
+## Steps
+
+### Slats
+
+The "slats" are the 6 pieces that span the width of the bench.
+Because they will be sat on, the slats especially should be smooth and free of splinters.
+
+Begin by sanding the slats with your sander, using an \~80 grit sanding disc.
+Ensure the top side and adjacent edges are smooth and free of splinters.
+Give the edges a small round-over for comfort and to prevent splintering.
+Holes may be filled with (waterproof) wood filler, but this is optional as long as the hole is not large enough to pose a hazard to small fingers or clothing.
+
+<div class="caption right">
+| Bench W. | Hole Dist |
+| --- | --- |
+| 4-5 ft. | 6 in. |
+| 6-7 ft. | 12 in. |
+| 8 ft. | 18 in. |
+</div>
+
+We will need to drill pilot holes for the screws that will hold the slats to the legs.
+The template has small pairs of holes which are 6, 12, and 18 in. from the end.
+The hole distance is determined by the width of the bench, as shown in the table to the right.
+Use the small (3/32 to 1/8 in.) drill bit to drill two pairs of pilot holes in each end of the slats (four holes total per slat).
+
+&lt;IMAGE of template&gt;
+
+At this point the slats are complete.
+You may apply your choice of finish now, or after the bench is assembled, see the [finishing section below](#finishing).
+
+### Leg Frame Pieces
+
+<div class="caption right">
+| <Image src={legFrame} alt="Leg frame diagram with pieces labeled A, B, C, L, and S." width={160} densities={[1, 1.25, 1.5, 2]} class="dark-invert" /> |
+| --- |
+| Leg frame side view with labels. |
+</div>
+
+Each bench has two leg frames at each end of the bench (and possibly more in the middle) to support the seat and backrest slats.
+Each leg frame has two legs: a long forwards leg (`L`), and a short backwards leg (`S`),
+as well as a seat rest (`A`), a backrest (`B`), and a center spacer (`C`) positioned between `L` and `S`.
+
+Trace two short `S` legs and two long `L` legs from the template onto your pressure-treated 2x4x8.
+The angled foot cut of adjacent legs should touch, as shown, to ensure all pieces fit.
+Each leg pieces uses three of the four template holes: the long leg uses the three holes closest to the top, and the short leg uses the three holes closest to the bottom.
+
+<div class="caption full">
+| <a href={cadCutsLegs.src}><Image src={cadCutsLegs} alt="A wide image of how to cut four leg pieces from a single 2x4x8." width={778} densities={[1, 1.25, 1.5, 2]} /></a> |
+| --- |
+| Four legs cut from a single 2x4x8. |
+</div>
+
+Trace two `A` seat rests, two `B` backrests, and two `C` center spacers from the template onto your other 2x4x8.
+The angled back sides of the `A` pieces should touch, as shown, to ensure all pieces fit.
+On the template, the `A` pieces use the two innermost holes, while the `B` pieces use the two outermost holes.
+
+<div class="caption full">
+| <a href={cadCutsRests.src}><Image src={cadCutsRests} alt="A wide image of how to cut the rests and spacers from a single 2x4x8." width={778} densities={[1, 1.25, 1.5, 2]} /></a> |
+| --- |
+| Rests and spacers cut from a single 2x4x8. |
+</div>
+
+Once all pieces are traced, use your 3/8 in. drill bit to drill out all the holes as marked.
+A DrillBlock will help keep your holes aligned and vertical.
+The `S` spacer pieces are especially small and difficult to drill after cutting, so make sure to drill the holes first.
+
+Use your jigsaw and/or circular saw to cut out all the pieces as traced.
+Make sure to look up how to safely use your tools if you are not familiar with them.
+Clamp your wood to a stable surface while cutting.
+The seat dent of the `A` piece is particularly tricky to cut with just a circular saw,
+so you may want to start one side of the cut with your circular saw and finish the other side with your jigsaw.
+
+At this point you should sand the sharp cut edges of your pieces.
+In particular, the front of the `A` piece, and top/back of the `B` piece, and the top/back of the `L` piece are all places people may touch.
+
+You may apply your choice of finish now, or after the bench is assembled, see the [finishing section below](#finishing).
+
+### Finishing
+
+It is easiest to apply deck stain & sealer before assembly.
+Many but not all deck stains require the wood to be dry before application.
+Follow the instructions on your product for best results.
+
+Use a brush to apply the stain in the direction of the grain to the four sides of each piece, as well as the end grain.
+Brush away any excess stain to prevent drips.
+Make sure there is adequate time for the stain to dry, usually 12-24 hours depending on temperature, and avoid finishing when rain is expected.
+
+### Leg Frame Assembly
+
+Each leg frame is assembled from the pieces you cut earlier, connected using the 3/8 in. carriage bolts, nuts, and washers.

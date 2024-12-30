@@ -28,5 +28,6 @@ export default defineConfig({
   redirects: {
     '/support': '/join',
     '/guide': '/guides',
+    '/guide/[..._]': '/guides',
   },
 });
