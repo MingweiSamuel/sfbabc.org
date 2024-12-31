@@ -74,11 +74,15 @@ const sites = await SITES;
       const clickPopup = L.popup();
       map.on("click", (e) => {
         const { lat, lng } = e.latlng;
+
+        const a = document.createElement("a");
+        a.href = requestForm(`(${lat}, ${lng})`);
+        a.target = "_blank";
+        a.innerText = "Request A Bench Here";
+
         clickPopup
           .setLatLng(e.latlng)
-          .setContent(
-            `<a href="${requestForm(`(${lat}, ${lng})`)}" target="_blank">Request A Bench Here</a>`,
-          )
+          .setContent(a)
           .openOn(map);
       });
 
@@ -87,14 +91,25 @@ const sites = await SITES;
           icon: icons[site.benchStatus],
         }).addTo(map);
         // TODO(mingwei): prevent XSS.
-        let head = site.name || "Unknown";
+        let head: Node = document.createTextNode(site.name || "Unknown");
         if (null != site.id) {
-          head = `<a href="/${site.id}">${head}</a>`;
+          const a = document.createElement("a");
+          a.href = `/${site.id}`;
+          a.appendChild(head);
+          head = a;
         }
-        const popup = marker.bindPopup(
-          `<h3>${head}</h3>
-          <p>Status: ${site.benchStatus}</p>`,
-        );
+
+        const popupDiv = document.createElement("div");
+        {
+          const h3 = document.createElement("h3");
+          h3.appendChild(head);
+          const p = document.createElement("p");
+          p.innerText = `Status: ${site.benchStatus}`;
+          popupDiv.appendChild(h3);
+          popupDiv.appendChild(p);
+        }
+
+        const popup = marker.bindPopup(popupDiv);
         if (this.dataset.highlight === `${site.id}`) {
           popup.openPopup();
           map.setView([site.lat, site.lon], MAX_ZOOM);
