@@ -6,6 +6,7 @@ order: 1
 
 import { Image } from 'astro:assets';
 import PartsTable from '../components/PartsTable.astro';
+import Steps from '../components/Steps.astro';
 import cbLong from '../../public/img/cb_long.png';
 import cbShort from '../../public/img/cb_short.png';
 import nut from '../../public/img/nut.png';
@@ -15,6 +16,13 @@ import kdHtDfir from '../../public/img/kd_ht_dfir.jpg';
 import legFrame from '../../public/img/leg_frame.png';
 import cadCutsLegs from '../../public/img/cad_cuts_legs.png';
 import cadCutsRests from '../../public/img/cad_cuts_rests.png';
+import legFrameAssemblyLeft from '../../public/img/leg_frame_assembly_left.png';
+import legFrameAssemblyLeft1 from '../../public/img/leg_frame_assembly_left_1.png';
+import legFrameAssemblyLeft2 from '../../public/img/leg_frame_assembly_left_2.png';
+import legFrameAssemblyLeft3 from '../../public/img/leg_frame_assembly_left_3.png';
+import legFrameAssemblyLeft4 from '../../public/img/leg_frame_assembly_left_4.png';
+import legFrameAssemblyLeft5 from '../../public/img/leg_frame_assembly_left_5.png';
+import legFrameAssemblyLeft6 from '../../public/img/leg_frame_assembly_left_6.png';
 
 # Build A Bench
 
@@ -111,9 +119,7 @@ Screws should be exterior-coated construction/framing screws, or deck screws.
 There are a lot of brands but [GRK, Grip-Rite, and SPAX are good options](https://www.youtube.com/watch?v=eikOUFoIZ-Y).
 Thicker #9 screws will also work, but overly-thick screws can cause wood to split if you don't pre-drill pilot holes.
 
-## Steps
-
-### Slats
+## Slats Preparation
 
 The "slats" are the 6 pieces that span the width of the bench.
 Because they will be sat on, the slats especially should be smooth and free of splinters.
@@ -141,7 +147,7 @@ Use the small (3/32 to 1/8 in.) drill bit to drill two pairs of pilot holes in e
 At this point the slats are complete.
 You may apply your choice of finish now, or after the bench is assembled, see the [finishing section below](#finishing).
 
-### Leg Frame Pieces
+## Cutting Leg Frame Pieces
 
 <div class="caption right">
 | <Image src={legFrame} alt="Leg frame diagram with pieces labeled A, B, C, L, and S." width={160} densities={[1, 1.25, 1.5, 2]} class="dark-invert" /> |
@@ -184,11 +190,13 @@ The seat dent of the `A` piece is particularly tricky to cut with just a circula
 so you may want to start one side of the cut with your circular saw and finish the other side with your jigsaw.
 
 At this point you should sand the sharp cut edges of your pieces.
-In particular, the front of the `A` piece, and top/back of the `B` piece, and the top/back of the `L` piece are all places people may touch.
+In particular, the front of the `A` piece, top/back of the `B` piece, and the top/back of the `L` piece are all places people may touch.
 
 You may apply your choice of finish now, or after the bench is assembled, see the [finishing section below](#finishing).
 
-### Finishing
+## Finishing Pieces
+
+### Stain & Sealer
 
 It is easiest to apply deck stain & sealer before assembly.
 Many but not all deck stains require the wood to be dry before application.
@@ -198,6 +206,58 @@ Use a brush to apply the stain in the direction of the grain to the four sides o
 Brush away any excess stain to prevent drips.
 Make sure there is adequate time for the stain to dry, usually 12-24 hours depending on temperature, and avoid finishing when rain is expected.
 
-### Leg Frame Assembly
+### Prime & Paint
 
-Each leg frame is assembled from the pieces you cut earlier, connected using the 3/8 in. carriage bolts, nuts, and washers.
+Painting can be done before or after assembly, although some areas are hard to reach on an assembled bench.
+
+Chris Duderstadt, the original designer of the bench, paints his benches after assembly using a spray gun.
+He recommends two coats of good primer followed by one or two coats of exterior paint.
+He has found Kelly-Moore exterior semi-gloss paint to hold up best.
+
+After assembly, other art or graphics can be added on top.
+An optional clear coat such as an anti-graffiti epoxy can protect graphics from vandalism.
+
+## Leg Frame Assembly
+
+Each leg frame is assembled from the pieces you cut earlier and connected using the 3/8 in. carriage bolts.
+You will need one _long_ 5 in. carriage bolt and four _short_ 3-1/2 in. carriage bolts for each leg frame.
+The pieces can be assembled in pretty much any order, but starting with the legs may be the least confusing.
+
+<Steps steps={[
+  {
+    text: "Tap the long (5 in.) carriage bolt fully through the lowest hole in the `L` long leg.",
+    img: legFrameAssemblyLeft1,
+    width: 200,
+    alt: "A long leg piece with a bolt visibly sticking thru the lowest of three holes.",
+  },
+  {
+    text: "Continue tapping the long bolt through the `C` spacer piece, supporting it on both sides to prevent splitting, then through the middle hole of the `S` short leg.",
+    img: legFrameAssemblyLeft2,
+    width: 200,
+    alt: "The previous leg piece with a short leg opposite the long leg, separated by a small square spacer.",
+  },
+  {
+    text: "Tap a short (3-1/2 in.) carriage bolt through the middle hole of the `A` seat rest, then through the top hole of the `S` short leg. Tap a second short bolt _partially_ through the middle hole of the `L` long leg.",
+    img: legFrameAssemblyLeft3,
+    width: 200,
+    alt: "The previous assembly with a seat piece attached askew to the top of the short leg.",
+  },
+  {
+    text: "Use the protrusion of the second bolt to align it with the second hole of the `A` seat rest, then tap the bolt fully thru.",
+    img: legFrameAssemblyLeft4,
+    width: 200,
+    alt: "The previous assembly with the seat piece now properly aligned, attached to both legs above the spacer.",
+  },
+  {
+    text: "Tap a short bolt through the bottom hole of the `B` backrest, then through the bottom hole of the `S` short leg. Tap a second short bolt _partially_ through the top hole of the `L` long leg.",
+    img: legFrameAssemblyLeft5,
+    width: 200,
+    alt: "The previous assembly with a backrest piece attached askew at its bottom to the bottom of the short leg.",
+  },
+  {
+    text: "Push the `B` backrest agains the `A` seat rest and visually confirm that the top `L` hole and top `B` hole are aligned. Tap a short bolt thru both.",
+    img: legFrameAssemblyLeft6,
+    width: 180,
+    alt: "The final assembly with all pieces now properly aligned and attached.",
+  },
+]} />
