@@ -49,7 +49,9 @@ const dateString = date?.toLocaleDateString("en-US", {
   title ? (
     <article class="link-preview">
       {image ? (
-        <Image src={image} alt={imageAlt || ""} width="1200" height="630" />
+        <div class="image">
+          <Image src={image} alt={imageAlt || ""} width="600" height="315" densities={[1, 1.25, 1.5, 2]} />
+        </div>
       ) : null}
       <div class="content">
         <header>
@@ -80,13 +82,16 @@ const dateString = date?.toLocaleDateString("en-US", {
     flex-wrap: wrap;
     gap: 0.5em 1em;
   }
-  .link-preview img {
+  .link-preview .image {
     aspect-ratio: 1.4;
-    width: 100%;
     flex-basis: 240px;
     flex-grow: 1;
     flex-shrink: 1;
-    height: auto;
+  }
+  .link-preview .image img {
+    display: block;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
   }
   .link-preview .content {
