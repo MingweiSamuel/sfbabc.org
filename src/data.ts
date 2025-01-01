@@ -21,6 +21,8 @@ export type BenchStatus = 'Good' | 'Replaced' | 'Removed' | 'Destroyed' | 'Propo
 export interface News {
   url: string,
   date: Date,
+  title: string | null,
+  description: string | null,
 }
 
 export const SITES: Promise<Site[]> = (async () => {
@@ -68,7 +70,9 @@ export const NEWS: Promise<News[]> = (async () => {
     .map(row => {
       const news: News = {
         url: row[headIdx['URL']!]!,
-        date: new Date(row[headIdx['DATE']!]!)
+        date: new Date(row[headIdx['DATE']!]!),
+        title: row[headIdx['TITLE']!] || null,
+        description: row[headIdx['DESCRIPTION']!] || null,
       };
       return news;
     })

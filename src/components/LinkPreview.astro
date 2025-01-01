@@ -4,10 +4,12 @@ import { parseHTML } from "linkedom/worker";
 
 interface Props {
   url: string;
-  date?: Date;
+  date?: Date | null;
+  title?: string | null;
+  description?: string | null;
 }
 
-const { url, date } = Astro.props;
+const { url, date, title, description } = Astro.props;
 
 const resp = await fetch(url).then(
   (resp) => (2 === resp.status / 100 ? resp : fetch(url)),
@@ -20,9 +22,10 @@ const getContent = (el: Element | null) => el?.getAttribute("content");
 const getMeta = (prop: string) =>
   getContent(document.querySelector(`meta[property=${JSON.stringify(prop)}]`));
 
-const title =
-  getMeta("og:title") || document.querySelector("title")?.textContent;
-const description =
+const finalTitle =
+  title || getMeta("og:title") || document.querySelector("title")?.textContent;
+const finalDesc =
+  description ||
   getMeta("og:description") ||
   getContent(document.querySelector(`meta[name="description"]`));
 const image =
@@ -46,22 +49,28 @@ const dateString = date?.toLocaleDateString("en-US", {
 ---
 
 {
-  title ? (
+  finalTitle ? (
     <article class="link-preview">
       {image ? (
         <div class="image">
-          <Image src={image} alt={imageAlt || ""} width="600" height="315" densities={[1, 1.25, 1.5, 2]} />
+          <Image
+            src={image}
+            alt={imageAlt || ""}
+            width="600"
+            height="315"
+            densities={[1, 1.25, 1.5, 2]}
+          />
         </div>
       ) : null}
       <div class="content">
         <header>
           <small>{domain}</small>
           <a href={url} target="_blank">
-            {title}
+            {finalTitle}
           </a>{" "}
           <small class="text-lt">{dateString}</small>
         </header>
-        <small class="description">{description}</small>
+        <small class="description">{finalDesc}</small>
       </div>
     </article>
   ) : (

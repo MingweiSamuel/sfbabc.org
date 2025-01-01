@@ -14,6 +14,6 @@ const NEWS_ALL = await NEWS;
   </header>
   <main>
     <h1>News</h1>
-    {NEWS_ALL.map(({ url, date }) => <LinkPreview {url} {date} />)}
+    {NEWS_ALL.map((props) => <LinkPreview {...props} />)}
   </main>
 </Layout>
