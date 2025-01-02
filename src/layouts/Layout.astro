@@ -12,7 +12,10 @@ const title =
     ? SHORT_NAME
     : `${Astro.props.title} - ${SHORT_NAME}`;
 
-const mainWidth = Astro.props.mainWidth || (Astro.props as any).frontmatter?.mainWidth || '800px';
+const mainWidth =
+  Astro.props.mainWidth ||
+  (Astro.props as any).frontmatter?.mainWidth ||
+  "800px";
 ---
 
 <!doctype html>
@@ -34,6 +37,7 @@ const mainWidth = Astro.props.mainWidth || (Astro.props as any).frontmatter?.mai
   html {
     font-family: "DM Sans Variable", sans-serif;
     font-size: 16px;
+
     --bg-color: #fff;
     --txt-color: #111;
     background-color: var(--bg-color);
@@ -62,6 +66,9 @@ const mainWidth = Astro.props.mainWidth || (Astro.props as any).frontmatter?.mai
       filter: invert(1) hue-rotate(180deg);
     }
   }
+  body {
+    margin: 0;
+  }
 
   pre {
     white-space: pre-wrap;
@@ -74,7 +81,7 @@ const mainWidth = Astro.props.mainWidth || (Astro.props as any).frontmatter?.mai
   main,
   body > header {
     margin: auto;
-    padding: 1rem;
+    padding: 0.5rem;
     width: var(--mainWidth);
     max-width: calc(100% - 2rem);
     font-size: 1.25rem;
@@ -99,12 +106,14 @@ const mainWidth = Astro.props.mainWidth || (Astro.props as any).frontmatter?.mai
     padding: 0.2em 0.5em;
   }
 
-  .caption, .highlight {
+  .caption,
+  .highlight {
     background-color: rgba(128, 128, 128, 0.1);
     border: 1px solid rgba(128, 128, 128, 0.2);
   }
   @meda prefers-contrast: more {
-    .caption, .highlight {
+    .caption,
+    .highlight {
       border: 1px solid var(--txt-color) !important;
     }
   }
