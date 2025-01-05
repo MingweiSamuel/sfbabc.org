@@ -20,7 +20,8 @@ const sites = await SITES;
   import L, { type TileLayerOptions } from "leaflet";
   import type { Site } from "../data";
   import { darkMode } from "../browser";
-  import { COLORS } from "../pages/marker.[color].svg";
+  import * as marker from "../pages/marker.[color].svg";
+  import * as proposed from "../pages/proposed.[color].svg";
   import { MAX_BOUNDS, MAX_ZOOM } from "../pages/tile/[d].[z].[x].[yr].png";
   import { requestForm } from "../forms";
 
@@ -29,7 +30,7 @@ const sites = await SITES;
       // Read the message from the data attribute.
       const sites: Site[] = JSON.parse(this.dataset.sites!);
 
-      const [iconBad, iconOk, iconGood] = COLORS.map((hex) =>
+      const [iconBad, iconOk, iconGood] = marker.COLORS.map((hex) =>
         L.icon({
           iconUrl: `/marker.${hex}.svg`,
           shadowUrl: "/marker.shadow.svg",
@@ -47,15 +48,15 @@ const sites = await SITES;
         Replaced: iconOk,
         Removed: iconBad,
         Destroyed: iconBad,
-        Proposed: L.icon({
-          iconUrl: "/marker.proposed.svg",
-
+      };
+      const proposedIcons = proposed.COLORS.map((hex) =>
+        L.icon({
+          iconUrl: `/proposed.${hex}.svg`,
           iconSize: [14, 22],
           iconAnchor: [1, 22],
           popupAnchor: [5, -15],
-          // tooltipAnchor: [0, 0],
         }),
-      };
+      );
 
       const div = this.getElementsByTagName("div")[0]!;
       const map = L.map(div, {
@@ -80,16 +81,28 @@ const sites = await SITES;
         a.target = "_blank";
         a.innerText = "Request A Bench Here";
 
-        clickPopup
-          .setLatLng(e.latlng)
-          .setContent(a)
-          .openOn(map);
+        clickPopup.setLatLng(e.latlng).setContent(a).openOn(map);
       });
 
       for (const site of sites) {
-        const marker = L.marker([site.lat, site.lon], {
-          icon: icons[site.benchStatus],
-        }).addTo(map);
+        let icon;
+        let scale = 0;
+        if ("Proposed" === site.benchStatus) {
+          const c = 0.075;
+          scale = Math.log2(c * site.avgWeekdayBoardings + 1);
+          scale /= Math.log2(c * 200 + 1); // Scale so that 200 riders is 100%.
+          scale = Math.max(0, Math.min(1, scale));
+          const idx = Math.floor(scale * (proposedIcons.length - 1));
+          icon = proposedIcons[idx];
+        } else {
+          icon = icons[site.benchStatus];
+        }
+        console.assert(
+          null != icon,
+          `Unknown bench status: ${site.benchStatus}`,
+        );
+
+        const marker = L.marker([site.lat, site.lon], { icon }).addTo(map);
         // TODO(mingwei): prevent XSS.
         let head: Node = document.createTextNode(site.name || "Unknown");
         if (null != site.id) {
@@ -104,7 +117,11 @@ const sites = await SITES;
           const h3 = document.createElement("h3");
           h3.appendChild(head);
           const p = document.createElement("p");
-          p.innerText = `Status: ${site.benchStatus}`;
+          if ("Proposed" === site.benchStatus) {
+            p.innerText = `Proposed (relative ridership: ${Math.round(100 * scale)}%)`;
+          } else {
+            p.innerText = `Status: ${site.benchStatus}`;
+          }
           popupDiv.appendChild(h3);
           popupDiv.appendChild(p);
         }

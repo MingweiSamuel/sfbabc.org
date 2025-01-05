@@ -7,8 +7,9 @@ export interface Site {
   lat: number,
   lon: number,
   name: string | null,
-  lines: string[],
   adopted: boolean,
+  lines: string[],
+  avgWeekdayBoardings: number,
   notes: string[],
   //
   benchStatus: BenchStatus,
@@ -41,11 +42,12 @@ export const SITES: Promise<Site[]> = (async () => {
       lat: +row[headIdx['LAT']!]!,
       lon: +row[headIdx['LON']!]!,
       name: row[headIdx['STOP NAME']!] || null,
+      adopted: null != row[headIdx['ADOPTER']!],
       lines: row[headIdx['LINES']!]!
         .split(',')
         .map(line => line.trim())
         .filter(note => 0 < note.length),
-      adopted: null != row[headIdx['ADOPTER']!],
+      avgWeekdayBoardings: +row[headIdx['AVG WEEKDAY BOARDINGS']!]!,
       notes: row.slice(headIdx['NOTES']!).filter(note => 0 < note.length),
       benchStatus: row[headIdx['BENCH STATUS']!]! as BenchStatus,
       benchLength: +row[headIdx['LENGTH']!]! || null,
