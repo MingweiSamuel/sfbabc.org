@@ -42,7 +42,7 @@ export const SITES: Promise<Site[]> = (async () => {
       lat: +row[headIdx['LAT']!]!,
       lon: +row[headIdx['LON']!]!,
       name: row[headIdx['STOP NAME']!] || null,
-      adopted: null != row[headIdx['ADOPTER']!],
+      adopted: !!row[headIdx['ADOPTER']!],
       lines: row[headIdx['LINES']!]!
         .split(',')
         .map(line => line.trim())
