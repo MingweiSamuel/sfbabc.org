@@ -1,7 +1,7 @@
 import type { APIContext, GetStaticPaths } from "astro";
 import { notFound } from "../data";
 
-export const COLORS = ["b10202", "215a6c", "11734b"];
+export const COLORS = ["b10202", "215a6c", "11734b", "753800"];
 
 export const prerender = true;
 export const getStaticPaths = (() => {

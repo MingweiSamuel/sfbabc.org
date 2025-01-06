@@ -30,7 +30,7 @@ const sites = await SITES;
       // Read the message from the data attribute.
       const sites: Site[] = JSON.parse(this.dataset.sites!);
 
-      const [iconBad, iconOk, iconGood] = marker.COLORS.map((hex) =>
+      const [iconBad, iconOk, iconGood, iconWarn] = marker.COLORS.map((hex) =>
         L.icon({
           iconUrl: `/marker.${hex}.svg`,
           shadowUrl: "/marker.shadow.svg",
@@ -46,6 +46,7 @@ const sites = await SITES;
       const icons = {
         Good: iconGood,
         Replaced: iconOk,
+        ['Attention Needed']: iconWarn,
         Removed: iconBad,
         Destroyed: iconBad,
       };
