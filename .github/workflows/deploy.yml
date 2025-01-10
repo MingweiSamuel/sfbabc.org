@@ -12,6 +12,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
 
