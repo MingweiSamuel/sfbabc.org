@@ -3,7 +3,6 @@ import { SITES } from "../data";
 
 interface Props {
   highlightSiteId?: number;
-  target?: string | null;
   height?: string | null;
 }
 
@@ -13,7 +12,7 @@ const height = Astro.props.height || "600px";
 const sites = await SITES;
 ---
 
-<bench-map data-sites={JSON.stringify(sites)} data-highlight={highlightSiteId} data-target={Astro.props.target}>
+<bench-map data-sites={JSON.stringify(sites)} data-highlight={highlightSiteId}>
   <a class="hidden-nav before" href="#">Skip after map</a>
   <div style={`height: ${height};`}></div>
   <a class="hidden-nav after" href="#">Skip before map</a>
@@ -123,7 +122,10 @@ const sites = await SITES;
         if (null != site.id) {
           const a = document.createElement("a");
           a.href = `/${site.id}`;
-          a.target = this.dataset.target || "_self";
+          const target = new URLSearchParams(window.location.search).get(
+            "target",
+          );
+          a.target = /_[a-z]+/i.test(target!) ? target! : "_self";
           a.appendChild(head);
           head = a;
         }
