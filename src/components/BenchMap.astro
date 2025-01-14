@@ -46,7 +46,7 @@ const sites = await SITES;
       const icons = {
         Good: iconGood,
         Replaced: iconOk,
-        ['Attention Needed']: iconWarn,
+        ["Attention Needed"]: iconWarn,
         Removed: iconBad,
         Destroyed: iconBad,
       };
@@ -85,9 +85,16 @@ const sites = await SITES;
         clickPopup.setLatLng(e.latlng).setContent(a).openOn(map);
       });
 
+      const benchesGroup = L.layerGroup().addTo(map);
+      const proposedGroup = L.layerGroup();
+      const layerControl = L.control.layers().addTo(map);
+      layerControl.addOverlay(benchesGroup, "Benches");
+      layerControl.addOverlay(proposedGroup, "Proposed Locations");
+
       for (const site of sites) {
-        let icon;
         let scale = 0;
+        let icon;
+        let group;
         if ("Proposed" === site.benchStatus) {
           const c = 0.075;
           scale = Math.log2(c * site.avgWeekdayBoardings + 1);
@@ -95,15 +102,17 @@ const sites = await SITES;
           scale = Math.max(0, Math.min(1, scale));
           const idx = Math.floor(scale * (proposedIcons.length - 1));
           icon = proposedIcons[idx];
+          group = proposedGroup;
         } else {
           icon = icons[site.benchStatus];
+          group = benchesGroup;
         }
         console.assert(
           null != icon,
           `Unknown bench status: ${site.benchStatus}`,
         );
 
-        const marker = L.marker([site.lat, site.lon], { icon }).addTo(map);
+        const marker = L.marker([site.lat, site.lon], { icon }).addTo(group);
         // TODO(mingwei): prevent XSS.
         let head: Node = document.createTextNode(site.name || "Unknown");
         if (null != site.id) {
