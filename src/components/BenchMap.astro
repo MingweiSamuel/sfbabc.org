@@ -3,16 +3,18 @@ import { SITES } from "../data";
 
 interface Props {
   highlightSiteId?: number;
+  height?: string | null;
 }
 
 const { highlightSiteId } = Astro.props;
+const height = Astro.props.height || "600px";
 
 const sites = await SITES;
 ---
 
 <bench-map data-sites={JSON.stringify(sites)} data-highlight={highlightSiteId}>
   <a class="hidden-nav before" href="#">Skip after map</a>
-  <div style="height: 600px;"></div>
+  <div style={`height: ${height};`}></div>
   <a class="hidden-nav after" href="#">Skip before map</a>
 </bench-map>
 <script>
