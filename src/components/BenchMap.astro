@@ -3,6 +3,7 @@ import { SITES } from "../data";
 
 interface Props {
   highlightSiteId?: number;
+  target?: string | null;
   height?: string | null;
 }
 
@@ -12,7 +13,7 @@ const height = Astro.props.height || "600px";
 const sites = await SITES;
 ---
 
-<bench-map data-sites={JSON.stringify(sites)} data-highlight={highlightSiteId}>
+<bench-map data-sites={JSON.stringify(sites)} data-highlight={highlightSiteId} data-target={Astro.props.target}>
   <a class="hidden-nav before" href="#">Skip after map</a>
   <div style={`height: ${height};`}></div>
   <a class="hidden-nav after" href="#">Skip before map</a>
@@ -81,7 +82,9 @@ const sites = await SITES;
 
         const a = document.createElement("a");
         a.href = requestForm(`(${lat}, ${lng})`);
-        a.target = "_blank";
+        if (this.dataset.embed === "true") {
+          a.target = "_top";
+        }
         a.innerText = "Request A Bench Here";
 
         clickPopup.setLatLng(e.latlng).setContent(a).openOn(map);
@@ -120,6 +123,7 @@ const sites = await SITES;
         if (null != site.id) {
           const a = document.createElement("a");
           a.href = `/${site.id}`;
+          a.target = this.dataset.target || "_self";
           a.appendChild(head);
           head = a;
         }
