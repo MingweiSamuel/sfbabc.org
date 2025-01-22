@@ -117,6 +117,13 @@ const mainWidth =
       border: 1px solid var(--txt-color) !important;
     }
   }
+  .caption {
+    max-width: 100%;
+  }
+  .caption img {
+    max-width: 100%;
+    height: auto;
+  }
   .caption th {
     padding-bottom: 0;
   }
@@ -130,6 +137,10 @@ const mainWidth =
   .caption.right {
     float: right;
     margin-left: 1em;
+  }
+  .caption.center {
+    width: fit-content;
+    margin: 0 auto;
   }
   .caption.full {
     clear: both;
