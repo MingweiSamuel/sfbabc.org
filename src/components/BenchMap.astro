@@ -100,7 +100,7 @@ const sites = await SITES;
         let icon;
         let group;
         if ("Proposed" === site.benchStatus) {
-          const c = 0.075;
+          const c = 0.04;
           scale = Math.log2(c * site.avgWeekdayBoardings + 1);
           scale /= Math.log2(c * 200 + 1); // Scale so that 200 riders is 100%.
           scale = Math.max(0, Math.min(1, scale));
