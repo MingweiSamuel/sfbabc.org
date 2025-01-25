@@ -1,12 +1,11 @@
 ---
 interface Props {
   href: string;
+  [key: string]: string;
 }
-
-const { href } = Astro.props;
 ---
 
-<a {href} target="_blank"><slot /></a><style>
+<a {...Astro.props} target="_blank"><slot /></a><style>
   a:after {
     content: url(/img/external_link.png);
     margin: 0 2px 0 2px;

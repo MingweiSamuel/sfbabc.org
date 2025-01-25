@@ -25,7 +25,6 @@ const sites = await SITES;
   import * as marker from "../pages/marker.[color].svg";
   import * as proposed from "../pages/proposed.[color].svg";
   import { MAX_BOUNDS, MAX_ZOOM } from "../pages/tile/[d].[z].[x].[yr].png";
-  import { requestForm } from "../forms";
 
   class BenchMap extends HTMLElement {
     connectedCallback() {
@@ -80,7 +79,7 @@ const sites = await SITES;
         const { lat, lng } = e.latlng;
 
         const a = document.createElement("a");
-        a.href = requestForm(`(${lat}, ${lng})`);
+        a.href = "/request?loc=" + encodeURIComponent(`(${lat}, ${lng})`);
         if (this.dataset.embed === "true") {
           a.target = "_top";
         }

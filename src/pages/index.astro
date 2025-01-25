@@ -4,7 +4,6 @@ import BenchMap from "../components/BenchMap.astro";
 import LinkPreview from "../components/LinkPreview.astro";
 import { NEWS } from "../data";
 import { SHORT_NAME } from "../vars";
-import Link from "../components/Link.astro";
 
 export const prerender = true;
 
@@ -24,15 +23,9 @@ const FIRST_NEWS = (await NEWS)[0]!;
     <h3 class="actions">
       <a href="/join">Join The Project</a>
       &bull;
-      <Link
-        href="https://docs.google.com/forms/d/e/1FAIpQLSeQPKKgqx_tR4Yp9kNynRpriRlsPerugbziuBVWjTHAdff_Kw/viewform"
-        >Report A Problem</Link
-      >
+      <a href="/report">Report A Problem</a>
       &bull;
-      <Link
-        href="https://docs.google.com/forms/d/e/1FAIpQLSeoh_bZOndFPvSpkW468EsgudlD8OeXM2h7TpL_yCX9HKjH3A/viewform"
-        >Request A Bench</Link
-      >
+      <a href="/request">Request A Bench</a>
     </h3>
     <h2>Bench Map</h2>
     <BenchMap />

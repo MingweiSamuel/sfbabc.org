@@ -1,0 +1,49 @@
+---
+import Link from "../components/Link.astro";
+import Layout from "../layouts/Layout.astro";
+
+export const prerender = true;
+---
+
+<Layout title="Report A Problem">
+  <header>
+    <a href="/">Home</a>
+    <h1>Report A Problem</h1>
+    <p class="subhead">
+      <Link id="form-link" href="#">Open form in a new tab</Link>
+    </p>
+  </header>
+  <main>
+    <div class="dark-invert">
+      <iframe src="#" width="100%" height="1000">Loading…</iframe>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  function formUrl(
+    embedded?: boolean,
+    loc?: string | null,
+    siteId?: `${number}` | null,
+  ): string {
+    const url = new URL(
+      "https://docs.google.com/forms/d/e/1FAIpQLSeQPKKgqx_tR4Yp9kNynRpriRlsPerugbziuBVWjTHAdff_Kw/viewform",
+    );
+    if (embedded) url.searchParams.append("embedded", "true");
+    if (null != loc) url.searchParams.append("entry.1051599017", loc);
+    if (null != siteId) url.searchParams.append("entry.757375298", `${siteId}`);
+    return url.toString();
+  }
+
+  const formLink = document.getElementById("form-link")! as HTMLAnchorElement;
+  const iframe = document.getElementsByTagName(
+    "iframe",
+  )[0]! as HTMLIFrameElement;
+
+  const searchParams = new URLSearchParams(window.location.search);
+  const loc = searchParams.get("loc");
+  const siteId = searchParams.get("siteId")! as `${number}`;
+
+  formLink.href = formUrl(false, loc, siteId);
+  iframe.src = formUrl(true, loc, siteId);
+</script>

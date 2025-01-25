@@ -11,9 +11,9 @@ const NEWS_ALL = await NEWS;
 <Layout title="News">
   <header>
     <a href="/">Home</a>
+    <h1>News</h1>
   </header>
   <main>
-    <h1>News</h1>
     {NEWS_ALL.map((props) => <LinkPreview {...props} />)}
   </main>
 </Layout>
