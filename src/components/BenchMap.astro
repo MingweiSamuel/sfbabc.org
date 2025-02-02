@@ -19,31 +19,46 @@ const sites = await SITES;
 </bench-map>
 <script>
   import "leaflet/dist/leaflet.css";
-  import L, { type TileLayerOptions } from "leaflet";
-  import type { Site } from "../data";
+  import "leaflet.markercluster/dist/MarkerCluster.css";
+
+  import L, { MarkerClusterGroup, type TileLayerOptions } from "leaflet";
+  import "leaflet.markercluster";
+  import type { BenchStatus, Site } from "../data";
   import { darkMode } from "../browser";
-  import * as marker from "../pages/marker.[color].svg";
   import * as proposed from "../pages/proposed.[color].svg";
   import { MAX_BOUNDS, MAX_ZOOM } from "../pages/tile/[d].[z].[x].[yr].png";
+  import type { LayerGroup, MarkerOptions } from "leaflet";
+
+  const COLOR_BAD = "#b10202";
+  const COLOR_OK = "#215a6c";
+  const COLOR_GOOD = "#11734b";
+  const COLOR_WARN = "#753800";
+
+  function makeIcon(color: string, text?: string): L.DivIcon {
+    const div = document.createElement("div");
+    div.style.setProperty("--bgColor", color);
+    div.innerText = text || "";
+
+    return new L.DivIcon({
+      html: div.outerHTML, // Using `div` directly doesn't work as it can only exist once in the DOM.
+      className: "pin",
+      iconSize: [22, 22],
+      iconAnchor: [11, 22 * 1.5],
+      popupAnchor: [0, -20],
+    });
+  }
 
   class BenchMap extends HTMLElement {
     connectedCallback() {
       // Read the message from the data attribute.
       const sites: Site[] = JSON.parse(this.dataset.sites!);
 
-      const [iconBad, iconOk, iconGood, iconWarn] = marker.COLORS.map((hex) =>
-        L.icon({
-          iconUrl: `/marker.${hex}.svg`,
-          shadowUrl: "/marker.shadow.svg",
-
-          iconSize: [22, 32],
-          iconAnchor: [11, 32],
-          popupAnchor: [0, -20],
-          // tooltipAnchor: [16, -28],
-          shadowSize: [22, 15],
-          shadowAnchor: [1, 15],
-        }),
-      );
+      const [iconBad, iconOk, iconGood, iconWarn] = [
+        COLOR_BAD,
+        COLOR_OK,
+        COLOR_GOOD,
+        COLOR_WARN,
+      ].map((color) => makeIcon(color));
       const icons = {
         Good: iconGood,
         Replaced: iconOk,
@@ -88,8 +103,32 @@ const sites = await SITES;
         clickPopup.setLatLng(e.latlng).setContent(a).openOn(map);
       });
 
-      const benchesGroup = L.layerGroup().addTo(map);
+      const benchesGroup = L.markerClusterGroup({
+        showCoverageOnHover: false,
+        disableClusteringAtZoom: MAX_ZOOM,
+        maxClusterRadius: 10,
+        iconCreateFunction(cluster) {
+          const childCount = cluster.getChildCount();
+          const benchStatuses = cluster
+            .getAllChildMarkers()
+            .map(
+              (m) => (m.options as { benchStatus: BenchStatus }).benchStatus,
+            );
+
+          let color = COLOR_WARN;
+          if (benchStatuses.every((s) => "Good" === s || "Replaced" === s)) {
+            color = COLOR_GOOD;
+          } else if (
+            benchStatuses.every((s) => "Removed" === s || "Destroyed" === s)
+          ) {
+            color = COLOR_BAD;
+          }
+
+          return makeIcon(color, "" + childCount);
+        },
+      }).addTo(map);
       const proposedGroup = L.layerGroup();
+
       const layerControl = L.control.layers().addTo(map);
       layerControl.addOverlay(benchesGroup, "Benches");
       layerControl.addOverlay(proposedGroup, "Proposed Locations");
@@ -97,7 +136,7 @@ const sites = await SITES;
       for (const site of sites) {
         let scale = 0;
         let icon;
-        let group;
+        let group: LayerGroup | MarkerClusterGroup;
         if ("Proposed" === site.benchStatus) {
           const c = 0.04;
           scale = Math.log2(c * site.avgWeekdayBoardings + 1);
@@ -115,8 +154,11 @@ const sites = await SITES;
           `Unknown bench status: ${site.benchStatus}`,
         );
 
-        const marker = L.marker([site.lat, site.lon], { icon }).addTo(group);
-        // TODO(mingwei): prevent XSS.
+        const marker = L.marker([site.lat, site.lon], {
+          icon,
+          benchStatus: site.benchStatus,
+        } as MarkerOptions).addTo(group);
+
         let head: Node = document.createTextNode(site.name || "Unknown");
         if (null != site.id) {
           const a = document.createElement("a");
@@ -184,5 +226,29 @@ const sites = await SITES;
   }
   .hidden-nav.after {
     bottom: 0;
+  }
+</style>
+<style is:global>
+  bench-map .pin > div {
+    text-align: center;
+    font-size: 14px;
+    line-height: 22px;
+
+    color: #fff;
+  }
+  bench-map .pin > div:before {
+    content: "";
+    display: block;
+    z-index: -1;
+
+    width: 100%;
+    height: 100%;
+    background-color: var(--bgColor);
+    border-radius: 0 60% 100% 45% / 0 45% 100% 60%;
+
+    box-sizing: border-box;
+    border: 2.2px solid #000;
+    position: absolute;
+    transform: scaleY(1.5) rotate(225deg);
   }
 </style>

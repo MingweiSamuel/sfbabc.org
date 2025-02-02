@@ -17,7 +17,7 @@ export interface Site {
   benchNickname: string | null,
   benchImageUrl: string | null,
 }
-export type BenchStatus = 'Good' | 'Replaced' | 'Removed' | 'Destroyed' | 'Proposed';
+export type BenchStatus = 'Good' | 'Replaced' | 'Removed' | 'Destroyed' | 'Proposed' | 'Attention Needed';
 
 export interface News {
   url: string,
