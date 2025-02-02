@@ -19,8 +19,6 @@ const sites = await SITES;
 </bench-map>
 <script>
   import "leaflet/dist/leaflet.css";
-  import "leaflet.markercluster/dist/MarkerCluster.css";
-
   import L, { MarkerClusterGroup, type TileLayerOptions } from "leaflet";
   import "leaflet.markercluster";
   import type { BenchStatus, Site } from "../data";
@@ -275,5 +273,12 @@ const sites = await SITES;
 
     transform-origin: top left;
     transform: matrix(1, 0, -0.5, 0.6, 1, 0) scaleY(1.5) rotate(225deg);
+  }
+
+  bench-map .leaflet-cluster-anim .leaflet-marker-icon,
+  bench-map .leaflet-cluster-anim .leaflet-marker-shadow {
+    transition:
+      transform 0.25s cubic-bezier(0, 0, 0.25, 1),
+      opacity 0.3s ease-in;
   }
 </style>
