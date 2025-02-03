@@ -19,30 +19,77 @@ const sites = await SITES;
 </bench-map>
 <script>
   import "leaflet/dist/leaflet.css";
-  import L, { MarkerClusterGroup, type TileLayerOptions } from "leaflet";
+  import L, { MarkerClusterGroup } from "leaflet";
+  import type {
+    TileLayerOptions,
+    LayerGroup,
+    MarkerOptions,
+    DivIcon,
+  } from "leaflet";
   import "leaflet.markercluster";
+  import { Hsluv } from "hsluv";
   import type { BenchStatus, Site } from "../data";
   import { darkMode } from "../browser";
-  import * as proposed from "../pages/proposed.[color].svg";
   import { MAX_BOUNDS, MAX_ZOOM } from "../pages/tile/[d].[z].[x].[yr].png";
-  import type { LayerGroup, MarkerOptions } from "leaflet";
 
-  const COLOR_BAD = "#b10202";
-  const COLOR_OK = "#215a6c";
+  function hsluvToHex(h: number, s: number, l: number): string {
+    const conv = new Hsluv();
+    conv.hsluv_h = h;
+    conv.hsluv_s = s;
+    conv.hsluv_l = l;
+    conv.hsluvToHex();
+    return conv.hex;
+  }
+
   const COLOR_GOOD = "#11734b";
+  const COLOR_OK = "#215a6c";
+  const COLOR_BAD = "#b10202";
   const COLOR_WARN = "#753800";
 
-  function makeIcon(color: string, text?: string): L.DivIcon {
+  const ShadowDivIcon = L.DivIcon.extend({
+    createShadow(oldIcon?: HTMLElement) {
+      return this.createIcon(oldIcon);
+    },
+  }) as any as typeof DivIcon;
+
+  function makePin(iconColor: string, text?: string): L.DivIcon {
+    const size = 22;
     const div = document.createElement("div");
-    div.style.setProperty("--bgColor", color);
+    div.style.setProperty("--icon-color", iconColor);
+    div.style.lineHeight = `${size}px`;
+    div.style.fontSize = `${size * 0.65}px`;
+    div.innerText = text || "";
+
+    return new ShadowDivIcon({
+      html: div.outerHTML, // Using `div` directly doesn't work as it can only exist once in the DOM.
+      className: "pin",
+      iconSize: [size, size],
+      iconAnchor: [size / 2, size * 1.5],
+      popupAnchor: [0, -size],
+    });
+  }
+  function makeFlag(scale: number, text?: string): L.DivIcon {
+    const width = 6 + 6 * (text?.length || 1);
+    const height = 24;
+    const div = document.createElement("div");
+
+    const h = (260 + 120 * scale) % 360;
+    const s = 20 + 80 * scale;
+    const l = 5 + 55 * scale;
+
+    div.style.setProperty("--icon-color", hsluvToHex(h, s, l));
+    div.style.color = `hsl(0 0 ${60 + 40 * scale}%)`;
+    const lineHeight = 0.7 * height;
+    div.style.lineHeight = `${lineHeight}px`;
+    div.style.fontSize = `${0.7 * lineHeight}px`;
     div.innerText = text || "";
 
     return new L.DivIcon({
       html: div.outerHTML, // Using `div` directly doesn't work as it can only exist once in the DOM.
-      className: "pin",
-      iconSize: [22, 22],
-      iconAnchor: [11, 22 * 1.5],
-      popupAnchor: [0, -20],
+      className: "flag",
+      iconSize: [width, height],
+      iconAnchor: [1, height],
+      popupAnchor: [0.5 * width, -0.9 * height],
     });
   }
 
@@ -56,7 +103,7 @@ const sites = await SITES;
         COLOR_OK,
         COLOR_GOOD,
         COLOR_WARN,
-      ].map((color) => makeIcon(color));
+      ].map((color) => makePin(color));
       const icons = {
         Good: iconGood,
         Replaced: iconOk,
@@ -64,14 +111,6 @@ const sites = await SITES;
         Removed: iconBad,
         Destroyed: iconBad,
       };
-      const proposedIcons = proposed.COLORS.map((hex) =>
-        L.icon({
-          iconUrl: `/proposed.${hex}.svg`,
-          iconSize: [14, 22],
-          iconAnchor: [1, 22],
-          popupAnchor: [5, -15],
-        }),
-      );
 
       const div = this.getElementsByTagName("div")[0]!;
       const map = L.map(div, {
@@ -122,10 +161,23 @@ const sites = await SITES;
             color = COLOR_BAD;
           }
 
-          return makeIcon(color, "" + childCount);
+          return makePin(color, "" + childCount);
         },
       }).addTo(map);
-      const proposedGroup = L.layerGroup();
+      const proposedGroup = L.markerClusterGroup({
+        showCoverageOnHover: false,
+        disableClusteringAtZoom: MAX_ZOOM,
+        maxClusterRadius: 10,
+        iconCreateFunction(cluster) {
+          const childCount = cluster.getChildCount();
+          const allScales = cluster
+            .getAllChildMarkers()
+            .map((m) => (m.options as { scale: number }).scale);
+          const maxScale = Math.max(...allScales);
+
+          return makeFlag(maxScale, "" + childCount);
+        },
+      });
 
       const layerControl = L.control.layers().addTo(map);
       layerControl.addOverlay(benchesGroup, "Benches");
@@ -138,10 +190,9 @@ const sites = await SITES;
         if ("Proposed" === site.benchStatus) {
           const c = 0.04;
           scale = Math.log2(c * site.avgWeekdayBoardings + 1);
-          scale /= Math.log2(c * 200 + 1); // Scale so that 200 riders is 100%.
+          scale /= Math.log2(c * 150 + 1); // Scale so that 150 riders is 100%.
           scale = Math.max(0, Math.min(1, scale));
-          const idx = Math.floor(scale * (proposedIcons.length - 1));
-          icon = proposedIcons[idx];
+          icon = makeFlag(scale);
           group = proposedGroup;
         } else {
           icon = icons[site.benchStatus];
@@ -155,6 +206,7 @@ const sites = await SITES;
         const marker = L.marker([site.lat, site.lon], {
           icon,
           benchStatus: site.benchStatus,
+          scale,
         } as MarkerOptions).addTo(group);
 
         let head: Node = document.createTextNode(site.name || "Unknown");
@@ -175,7 +227,7 @@ const sites = await SITES;
           h3.appendChild(head);
           const p = document.createElement("p");
           if ("Proposed" === site.benchStatus) {
-            p.innerText = `Proposed (relative ridership: ${Math.round(100 * scale)}%)`;
+            p.innerText = `Proposed (${site.avgWeekdayBoardings} weekday boardings)`;
           } else {
             p.innerText = `Status: ${site.benchStatus}`;
           }
@@ -229,40 +281,33 @@ const sites = await SITES;
 <style is:global>
   bench-map .pin > div {
     text-align: center;
-    font-size: 14px;
-    line-height: 22px;
 
     color: #fff;
   }
-  bench-map .pin > div:after {
+  bench-map .pin > div::after {
     content: "";
     display: block;
     position: absolute;
     z-index: -1;
 
+    box-sizing: border-box;
+  }
+  bench-map .leaflet-marker-pane .pin > div::after {
     top: 0;
     width: 100%;
     height: 100%;
 
     border-radius: 0 60% 100% 45% / 0 45% 100% 60%;
-    background-color: var(--bgColor);
+    background-color: var(--icon-color);
 
-    box-sizing: border-box;
     border: 2.2px solid #000;
     transform: scaleY(1.5) rotate(225deg);
   }
-
-  bench-map .pin > div:before {
-    content: "";
-    display: block;
-    position: absolute;
-    z-index: -1;
-
+  bench-map .leaflet-shadow-pane .pin > div:after {
     left: 50%;
     top: 155%;
     width: 100%;
     height: 100%;
-    box-sizing: border-box;
 
     border-radius: 0 60% 100% 45% / 0 45% 100% 60%;
     background: radial-gradient(
@@ -275,8 +320,36 @@ const sites = await SITES;
     transform: matrix(1, 0, -0.5, 0.6, 1, 0) scaleY(1.5) rotate(225deg);
   }
 
+  bench-map .flag > div {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    text-align: center;
+    color: black;
+    border-left: 3px solid #000;
+    padding-right: 1.5px;
+  }
+  bench-map .flag > div::after {
+    position: absolute;
+    display: block;
+    content: "";
+    z-index: -1;
+
+    top: 0;
+    left: 0;
+    right: -1.5px;
+    bottom: 30%; /* must match `0.7 * height` */
+
+    background-color: var(--icon-color);
+
+    border: 3px solid #000;
+    border-left: none;
+  }
+
   bench-map .leaflet-cluster-anim .leaflet-marker-icon,
   bench-map .leaflet-cluster-anim .leaflet-marker-shadow {
+    /* `transform` needs to match Leaflet's tile zoom transition to prevent pins from moving around during zoom. */
     transition:
       transform 0.25s cubic-bezier(0, 0, 0.25, 1),
       opacity 0.3s ease-in;
