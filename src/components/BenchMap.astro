@@ -140,10 +140,14 @@ const sites = await SITES;
         clickPopup.setLatLng(e.latlng).setContent(a).openOn(map);
       });
 
-      const benchesGroup = L.markerClusterGroup({
+      const clusterOptions: L.MarkerClusterGroupOptions = {
         showCoverageOnHover: false,
+        spiderfyOnMaxZoom: false,
         disableClusteringAtZoom: MAX_ZOOM,
-        maxClusterRadius: 10,
+        maxClusterRadius: 20,
+      };
+
+      const benchesGroup = L.markerClusterGroup({
         iconCreateFunction(cluster) {
           const childCount = cluster.getChildCount();
           const benchStatuses = cluster
@@ -163,11 +167,9 @@ const sites = await SITES;
 
           return makePin(color, "" + childCount);
         },
+        ...clusterOptions,
       }).addTo(map);
       const proposedGroup = L.markerClusterGroup({
-        showCoverageOnHover: false,
-        disableClusteringAtZoom: MAX_ZOOM,
-        maxClusterRadius: 10,
         iconCreateFunction(cluster) {
           const childCount = cluster.getChildCount();
           const allScales = cluster
@@ -177,6 +179,7 @@ const sites = await SITES;
 
           return makeFlag(maxScale, "" + childCount);
         },
+        ...clusterOptions,
       });
 
       const layerControl = L.control.layers().addTo(map);
