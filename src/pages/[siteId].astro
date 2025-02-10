@@ -91,6 +91,14 @@ const site = (await getSite(+siteId))!;
     }
     {
       site.act && (
+      <li>
+          <a
+            target="_blank"
+            href={`https://www.actransit.org/stop/${site.act}`}
+          >
+            AC Transit Stop Info
+          </a>
+        </li>
         <li>
           <a
             target="_blank"
