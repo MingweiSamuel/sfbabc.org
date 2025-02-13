@@ -1,11 +1,9 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-
 import cloudflare from '@astrojs/cloudflare';
-
 import sitemap from '@astrojs/sitemap';
-
 import mdx from '@astrojs/mdx';
+import { SITES } from './src/data';
 
 // https://astro.build/config
 export default defineConfig({
@@ -29,5 +27,10 @@ export default defineConfig({
     '/support': '/join',
     '/guide': '/guides',
     '/guide/[..._]': '/guides',
+    ...Object.fromEntries((await SITES).flatMap(({ id, muni, act, ggt, vta }) => {
+      return [
+        muni, act, ggt, vta
+      ].filter(stopId => stopId).map(stopId => ['/' + stopId, '/' + id])
+    })),
   },
 });
