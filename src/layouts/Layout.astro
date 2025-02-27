@@ -78,6 +78,22 @@ const mainWidth =
       "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace;
   }
 
+  details {
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    border-width: 1px 0;
+  }
+  summary > h1,
+  summary > h2,
+  summary > h3,
+  summary > h4,
+  summary > h5,
+  summary > h6 {
+    display: inline-block;
+  }
+  details > p:first-of-type {
+    margin-top: 0;
+  }
+
   main,
   body > header {
     margin: auto;

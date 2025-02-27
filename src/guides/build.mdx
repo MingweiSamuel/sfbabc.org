@@ -16,13 +16,15 @@ import kdHtDfir from '../../public/img/kd_ht_dfir.jpg';
 import legFrame from '../../public/img/leg_frame.png';
 import cadCutsLegs from '../../public/img/cad_cuts_legs.png';
 import cadCutsRests from '../../public/img/cad_cuts_rests.png';
-import legFrameAssemblyLeft from '../../public/img/leg_frame_assembly_left.png';
 import legFrameAssemblyLeft1 from '../../public/img/leg_frame_assembly_left_1.png';
 import legFrameAssemblyLeft2 from '../../public/img/leg_frame_assembly_left_2.png';
 import legFrameAssemblyLeft3 from '../../public/img/leg_frame_assembly_left_3.png';
 import legFrameAssemblyLeft4 from '../../public/img/leg_frame_assembly_left_4.png';
 import legFrameAssemblyLeft5 from '../../public/img/leg_frame_assembly_left_5.png';
 import legFrameAssemblyLeft6 from '../../public/img/leg_frame_assembly_left_6.png';
+import legFrameAssemblyRight from '../../public/img/leg_frame_assembly_right.png';
+import slatHoles from '../../public/img/slat_holes.svg';
+import cbAssembly from '../../public/img/cb_assembly.png';
 
 # Build A Bench
 
@@ -33,7 +35,7 @@ Welcome to the guide. This is WIP.
 * Templates
 * Marker or pencil
 * Workbench and sawhorses
-* Sander
+* Power sander
 * Jigsaw and/or circular saw (both recommended)
 * Impact driver and drill
   * 9/16 in. nut driver/hex socket (for 3/8" inner diameter nut/bolts)
@@ -53,39 +55,19 @@ Welcome to the guide. This is WIP.
 * 1 piece, 2x4 x 8 ft. (for seat/backrest frame)
 * 1 piece, 2x4 x 8 ft. pressure-treated (for legs)
 
-(Note that 2x4s are actually 1.5 in. by 3.5 in.)
+(Note that nominal 2x4s are actually 1.5 in. by 3.5 in.)
 
-### Prep & Finish
-
-* \~80 grit sanding disc
-* Wood filler (optional - must be waterproof, or painted over)
-* Deck stain & sealer, or exterior primer and paint
-* Paint brush
-
-One gallon of product typically covers 5-6 benches (7 ft. wide) with a single coat.
-
-### Hardware
-
-<PartsTable items={[
-  { qty: 2, name: "3/8 in. x 5 in. carriage bolt", imgs: [{ img: cbLong, width: 0.75 * 512, alt: "Carriage bolt with a matte galvanized surface." }]},
-  { qty: 8, name: "3/8 in. x 3-1/2 in. carriage bolt", imgs: [{ img: cbShort, width: 0.75 * 364, alt: "Carriage bolt with a matte galvanized surface." }]},
-  { qty: 10, name: "3/8 in. hex nut", imgs: [{ img: nut, width: 0.75 * 56, alt: "Hexagonal nut." }]},
-  { qty: 10, name: "3/8 in. flat washer", imgs: [{ img: washer, width: 0.75 * 100, alt: "Round flat washer." }]},
-  { qty: 44, name: "#8 x 2-1/2 in. exterior screw", imgs: [{ img: screw, width: 0.75 * 248, alt: "Shiny bronze-colored screw." }]},
-]} />
-
-## Material Selection
-
-### Lumber
-
-The 6 pieces are for the slats spanning the width of the bench.
-You can substitute 6x 8' pieces for an 8' bench, or 3x 8' pieces cut in half for a 4' bench.
-
+<details>
+<summary>
+#### Lumber Selection
+</summary>
 <div class="caption right">
 | <Image src={kdHtDfir} alt="Close up of a 2x4 with stamp KD HT and D FIR, among other markings." width={200} densities={[1, 1.25, 1.5, 2]} /> |
 | --- |
 | A kiln-dried heat-treated Douglas fir 2x4 ("KD HT DFIR") |
 </div>
+The 6 pieces are for the slats spanning the length of the bench.
+You can substitute 6x 8' pieces for an 8' bench, or 3x 8' pieces cut in half for a 4' bench.
 
 For the slats, select straight or bowed pieces.
 Bow warping is OK as it can act as an arch to counter-act the weight of people sitting on the bench.
@@ -98,51 +80,89 @@ For weather resistance, prefer Southern Yellow Pine ("SYP"), Douglas Fir ("D-FIR
 Redwood and Cedar are even more decay resistant, but 3-4x the cost.
 
 The pressure treated piece is for the feet; look for "ground contact" lumber.
+</details>
 
-### Prep & Paint
+### Prep & Finish
 
+* \~80 grit sandpaper/discs (for power sander)
+* Wood filler (optional - must be waterproof, or painted over)
+* Deck stain & sealer, or exterior primer and paint
+* Paint brush
+
+One gallon of product typically covers 5-6 benches (7 ft. wide) with a single coat.
+
+<details>
+<summary>
+#### Prep Notes
+</summary>
 Sanding is necessary to remove splinters and rough edges.
-Filling is optional. Most wood fillers are not waterproof (despite "exterior" marketing) and must be painted over.
+
+Filling is optional. Most wood fillers are not waterproof (despite "exterior" marketing) and **must be painted over**.
 However epoxy (Bondo or JB-Weld) and CA glue (Starbond) based fillers are waterproof.
 Sander sawdust mixed with a [waterproof wood glue (Titebond III)](https://www.youtube.com/watch?v=k-g3efGa3sI&t=725s)
-makes a decently water-resistant (tho hard-to-sand) wood filler.
-
-Stain is easier to apply than paint, but will need to be reapplied every 2-3 years.
+makes a somewhat water-resistant (tho hard-to-sand) wood filler.
+</details>
 
 ### Hardware
 
-Stainless steel ("SS") is expensive overkill (unless near saltwater), so hot-dip galvanized ("HDG") is the best option.
-Zinc plated (electro-galvanized) is ok but not as weather resistant.
+<PartsTable items={[
+  { qty: 2, name: "3/8 in. x 5 in. carriage bolt", imgs: [{ img: cbLong, width: 0.75 * 512, alt: "Carriage bolt with a matte galvanized surface." }]},
+  { qty: 8, name: "3/8 in. x 3-1/2 in. carriage bolt", imgs: [{ img: cbShort, width: 0.75 * 364, alt: "Carriage bolt with a matte galvanized surface." }]},
+  { qty: 10, name: "3/8 in. hex nut", imgs: [{ img: nut, width: 0.75 * 56, alt: "Hexagonal nut." }]},
+  { qty: 10, name: "3/8 in. flat washer", imgs: [{ img: washer, width: 0.75 * 100, alt: "Round flat washer." }]},
+  { qty: 44, name: "#8 x 2-1/2 in. exterior screw", imgs: [{ img: screw, width: 0.75 * 248, alt: "Shiny bronze-colored screw." }]},
+]} />
+
+<details>
+<summary>
+#### Hardware Notes
+</summary>
+Hardware is commonly available in a few different materials/coatings with varying weather resistance:
+* Stainless steel ("SS") is the most weather resistant, but is expensive and unncessary unless your bench is near saltwater or you want a nice brushed finish.
+* **Hot-dip galvanized ("HDG") is weather resistant and relatively cheap, so it is what we recommend.**
+* Zinc plated (electro-galvanized) is ok but not very weather resistant.
+
+_Connecting together different types_ of bolts/nuts/washers is not recommended due to [galvanic corrosion](https://en.wikipedia.org/wiki/Galvanic_corrosion).
+
 3/8 in. hardware is conveniently standard for street furniture including anchor bolts for mounting benches on pavement, but thinner 5/16 in. bolts will also work.
 
 Screws should be exterior-coated construction/framing screws, or deck screws.
 There are a lot of brands but [GRK, Grip-Rite, and SPAX are good options](https://www.youtube.com/watch?v=eikOUFoIZ-Y).
 Thicker #9 screws will also work, but overly-thick screws can cause wood to split if you don't pre-drill pilot holes.
+</details>
 
 ## Slats Preparation
 
-The "slats" are the 6 pieces that span the width of the bench.
+The "slats" are the 6 pieces that span the length of the bench.
 Because they will be sat on, the slats especially should be smooth and free of splinters.
 
-Begin by sanding the slats with your sander, using an \~80 grit sanding disc.
+Sand the slats with your power sander using \~80 grit sandpaper.
 Ensure the top side and adjacent edges are smooth and free of splinters.
-Give the edges a small round-over for comfort and to prevent splintering.
-Holes may be filled with (waterproof) wood filler, but this is optional as long as the hole is not large enough to pose a hazard to small fingers or clothing.
+Give the edges a small round-over (\~1/8 to 1/4 in.) for comfort and to prevent splintering.
+(A router with a round-over bit is fastest, but a sander will work too).
+
+Cavities may optionally be filled with wood filler, especially if the hole is large/sharp enough
+to pose a hazard to small fingers or clothing, and sanded when cured.
 
 <div class="caption right">
-| Bench W. | Hole Dist |
+| Length | Hole Dist |
 | --- | --- |
 | 4-5 ft. | 6 in. |
 | 6-7 ft. | 12 in. |
 | 8 ft. | 18 in. |
 </div>
 
-We will need to drill pilot holes for the screws that will hold the slats to the legs.
+We will need to drill pilot holes for the screws that will hold the slats to the leg frames.
 The template has small pairs of holes which are 6, 12, and 18 in. from the end.
-The hole distance is determined by the width of the bench, as shown in the table to the right.
-Use the small (3/32 to 1/8 in.) drill bit to drill two pairs of pilot holes in each end of the slats (four holes total per slat).
+The hole distance is determined by the length of the bench, as shown in the table to the right.
+Use the small (3/32 to 1/8 in.) drill bit to drill two pairs of vertical pilot holes in each end of the slats (four holes total per slat).
 
-&lt;IMAGE of template&gt;
+<div class="caption right">
+| <Image src={slatHoles} alt='Leg template piece with pairs of small screw holes marked at 6", 12", and 18".' width={300} densities={[1, 1.25, 1.5, 2]} class="dark-invert" /> |
+| --- |
+| Hole positions on the template. |
+</div>
+
 
 At this point the slats are complete.
 You may apply your choice of finish now, or after the bench is assembled, see the [finishing section below](#finishing).
@@ -176,7 +196,7 @@ On the template, the `A` pieces use the two innermost holes, while the `B` piece
 <div class="caption full">
 | <a href={cadCutsRests.src}><Image src={cadCutsRests} alt="A wide image of how to cut the rests and spacers from a single 2x4x8." width={778} densities={[1, 1.25, 1.5, 2]} /></a> |
 | --- |
-| Rests and spacers cut from a single 2x4x8. |
+| Seat rests, backrests, and spacers cut from a single 2x4x8. |
 </div>
 
 Once all pieces are traced, use your 3/8 in. drill bit to drill out all the holes as marked.
@@ -221,7 +241,7 @@ An optional clear coat such as an anti-graffiti epoxy can protect graphics from 
 
 Each leg frame is assembled from the pieces you cut earlier and connected using the 3/8 in. carriage bolts.
 You will need one _long_ 5 in. carriage bolt and four _short_ 3-1/2 in. carriage bolts for each leg frame.
-The pieces can be assembled in pretty much any order, but starting with the legs may be the least confusing.
+The pieces can be assembled in pretty much any order, but starting with the legs may be the least confusing:
 
 <Steps steps={[
   {
@@ -261,3 +281,38 @@ The pieces can be assembled in pretty much any order, but starting with the legs
     alt: "The final assembly with all pieces now properly aligned and attached.",
   },
 ]} />
+
+The last holes may be a bit misaligned, but wood is flexible and can usually bend to accomodate.
+If you cannot force the pieces into alignment, you can try loosining the other bolts to allow for more play.
+
+<div class="caption right">
+| <Image src={cbAssembly} alt="A cross-section view showing a carriage bolt, washer, and nut, holding two pieces together." width={260} densities={[1, 1.25, 1.5, 2]} /> |
+| --- |
+| Properly seated carriage bolt. |
+</div>
+
+One all bolts are in place, add a washer and nut to the opposite side of each bolt.
+Use your impact driver with the 9/16 in. nut driver/hex socket to tighten the nuts.
+Do not overtighten--watch both the washer and the carriage bolt (**on the other side**).
+See the diagram to the right: the washer, and the mushroom head of the carriage bolt should be flat against the wood,
+while the square neck of the carriage bolt should be fully seated in the wood.
+Only a few threads should be visible above the nut.
+
+Once the first leg frame is complete, repeat for the second leg frame **but mirrored**.
+
+<div class="caption full">
+| <Image src={legFrameAssemblyRight} alt="Leg frame assembly steps but mirrored." width={778} densities={[1, 1.25, 1.5, 2]} /> |
+| --- |
+| Mirrored leg frame assembly steps. |
+</div>
+
+## Brace Pieces
+
+Brace pieces connect slats together, sharing the load to preventing inividual slats from sagging or breaking.
+If slats span more than ~4 ft. between leg frames, you should add braces in the middle.
+
+TODO
+
+## Final Assembly
+
+TODO
