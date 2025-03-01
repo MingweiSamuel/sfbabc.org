@@ -1,0 +1,138 @@
+---
+title: Template Guide
+description: Navigating the template.
+order: 99
+---
+
+import { Image } from 'astro:assets';
+import Steps from '../components/Steps.astro';
+import legFrame from '../../public/img/leg_frame.png';
+import cadCutsLegs from '../../public/img/cad_cuts_legs.png';
+import cadCutsRests from '../../public/img/cad_cuts_rests.png';
+import templateRests from '../../public/img/template_rests.png';
+import templateA from '../../public/img/template_a.png';
+import templateB from '../../public/img/template_b.png';
+import templateC from '../../public/img/template_c.png';
+import templateLegs from '../../public/img/template_legs.png';
+import templateL from '../../public/img/template_l.png';
+import templateS from '../../public/img/template_s.png';
+import slatHoles from '../../public/img/slat_holes.svg';
+
+# Template Guide
+
+<div class="caption right">
+| <a href={legFrame.src}><Image src={legFrame} alt="Leg frame diagram with pieces labeled A, B, C, L, and S." width={160} densities={[1, 1.25, 1.5, 2]} class="dark-invert" /></a> |
+| --- |
+| Leg frame side view with labels. |
+</div>
+
+Each bench has two leg frames at each end of the bench (and possibly more in the middle) to support the seat and backrest slats.
+Each _leg frame_ has two legs: a long forwards leg (`L`), and a short backwards leg (`S`),
+as well as a seat rest (`A`), a backrest (`B`), and a center spacer (`C`) positioned between `L` and `S`.
+
+The leg template is also used to position screw pilot holes on the slats (the long planks spanning the length of the bench).
+
+Click on an images to view it in full-size.
+
+## Rests Template
+
+<div class="caption full">
+| <a href={templateRests.src}><Image src={templateRests} alt="A diagram of a template containing various shapes, angles, and holes." width={778} densities={[1, 1.25, 1.5, 2]} /></a> |
+| --- |
+| The rests template. |
+</div>
+
+### Pieces
+
+<div class="caption full no-highlight">
+| <a href={templateA.src}><Image src={templateA} alt="Template with `A` piece traced." width={778} densities={[1, 1.25, 1.5, 2]} /></a> |
+| --- |
+| The `A` _seat rest_ piece. Mark two holes: one at the back (angled side), and one in the middle. |
+</div>
+---
+<div class="caption full no-highlight">
+| <a href={templateB.src}><Image src={templateB} alt="Template with `B` piece traced." width={778} densities={[1, 1.25, 1.5, 2]} /></a> |
+| --- |
+| The `B` _backrest_ piece. Mark the two holes closest to the ends. |
+</div>
+---
+<div class="caption full no-highlight">
+| <a href={templateC.src}><Image src={templateC} alt="Template with `C` piece traced." width={778} densities={[1, 1.25, 1.5, 2]} /></a> |
+| --- |
+| The `C` _center spacer_ piece. Exact hole position is not critical. |
+</div>
+
+### Positioning
+
+Trace two `A` seat rests, two `B` backrests, and two `C` center spacers from the template onto your other 2x4x8.
+The angled back sides of the `A` pieces should touch, as shown, to ensure all pieces fit.
+On the template, the `A` pieces use the two innermost holes, while the `B` pieces use the two outermost holes.
+
+<div class="caption full">
+| <a href={cadCutsRests.src}><Image src={cadCutsRests} alt="A wide image of how to cut the rests and spacers from a single 2x4x8." width={778} densities={[1, 1.25, 1.5, 2]} /></a> |
+| --- |
+| Seat rests, backrests, and spacers cut from a single 2x4x8. |
+</div>
+
+The two `A` pieces must have their angled back sides touching.
+The other pieces can be traced in any order.
+
+## Legs Template
+
+<div class="caption full">
+| <a href={templateLegs.src}><Image src={templateLegs} alt="A diagram of a template with angled edges and various holes." width={778} densities={[1, 1.25, 1.5, 2]} /></a> |
+| --- |
+| The legs template. |
+</div>
+
+### Pieces
+
+Each pieces has three (of the four) holes marked.
+
+<div class="caption full no-highlight">
+| <a href={templateL.src}><Image src={templateL} alt="Template with `L` piece traced." width={778} densities={[1, 1.25, 1.5, 2]} /></a> |
+| --- |
+| The `L` _long leg_ piece. Uses the full template. Mark the **top** three holes (furthest from the angled foot). |
+</div>
+---
+<div class="caption full no-highlight">
+| <a href={templateS.src}><Image src={templateS} alt="Template with `S` piece traced." width={778} densities={[1, 1.25, 1.5, 2]} /></a> |
+| --- |
+| The `S` _short leg_ piece. Mark the **bottom** three holes (closest to the angled foot). |
+</div>
+
+If you plan to [anchor your bench to the ground](install), also mark the two slits near the foot for aligning the mounting brackets.
+
+### Positioning
+
+Trace two short `S` legs and two long `L` legs from the template onto your pressure-treated 2x4x8.
+The angled foot cut of adjacent legs should touch, as shown, to ensure all pieces fit.
+Each leg pieces uses three of the four template holes: the long leg uses the three holes closest to the top, and the short leg uses the three holes closest to the bottom.
+
+<div class="caption full">
+| <a href={cadCutsLegs.src}><Image src={cadCutsLegs} alt="A wide image of how to cut four leg pieces from a single 2x4x8." width={778} densities={[1, 1.25, 1.5, 2]} /></a> |
+| --- |
+| Four legs cut from a single 2x4x8. |
+</div>
+
+The legs can be traced in any order, as long as the angled feet touch.
+
+### Screw Pilot Holes for Slats
+
+<div class="caption right">
+| Length | Hole Dist |
+| --- | --- |
+| 4-5 ft. | 6 in. |
+| 6-7 ft. | 12 in. |
+| 8 ft. | 18 in. |
+</div>
+<div class="caption right">
+| <a href={slatHoles.src}><Image src={slatHoles} alt='Leg template piece with pairs of small screw holes marked at 6", 12", and 18".' width={300} densities={[1, 1.25, 1.5, 2]} class="dark-invert" /></a> |
+| --- |
+| Hole positions on the template. |
+</div>
+
+The leg template is also used to position pilot holes for the screws that hold the slats to the leg frames.
+The template has small pairs of holes which are 6, 12, and 18 in. from the end.
+The hole distance is determined by the length of the bench, as shown in the table to the right.
+Use the small (3/32 to 1/8 in.) drill bit to drill two pairs of vertical pilot holes in each end of the slats (four holes total per slat).

@@ -127,6 +127,10 @@ const mainWidth =
     background-color: rgba(128, 128, 128, 0.1);
     border: 1px solid rgba(128, 128, 128, 0.2);
   }
+  .caption.no-highlight {
+    background-color: transparent;
+    border: none;
+  }
   @meda prefers-contrast: more {
     .caption,
     .highlight {
@@ -167,6 +171,9 @@ const mainWidth =
   }
   .caption td {
     max-width: 0;
+  }
+  .caption:has(+ .caption) {
+    margin-bottom: 0.5em;
   }
 
   iframe {

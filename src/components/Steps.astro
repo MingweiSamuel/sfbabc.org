@@ -11,6 +11,7 @@ interface Step {
 
 interface Props {
   steps: Step[];
+  link?: boolean;
 }
 ---
 
@@ -18,7 +19,13 @@ interface Props {
   {
     Astro.props.steps.map(({ text, img, width, alt }) => (
       <figure class="step">
-        <Image src={img} {alt} {width} densities={[1, 1.25, 1.5, 2]} />
+        {Astro.props.link ? (
+          <a href={img.src} target="_blank" rel="noopener noreferrer">
+            <Image src={img} {alt} {width} densities={[1, 1.25, 1.5, 2]} />
+          </a>
+        ) : (
+          <Image src={img} {alt} {width} densities={[1, 1.25, 1.5, 2]} />
+        )}
         <figcaption>
           <Markdown of={text} />
         </figcaption>
