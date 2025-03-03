@@ -17,44 +17,44 @@ const { Content } = await render(guide);
 ---
 
 <Page title={guide.data.title} upHref="/guides" upNav="Guides">
-  <div style="font-size: 0.9em" class={guide.data.toc ? "has-toc" : ""}>
+  <div style="font-size: 0.9em" class:list={['content', { 'has-toc': guide.data.toc }]}>
     <h1>{guide.data.title}</h1>
     <Content />
   </div>
 </Page>
 
 <style lang="scss">
-  nav.toc {
-    display: none;
-  }
-
-  .has-toc nav.toc {
-    display: block;
-    position: fixed;
-    left: 0;
-    top: 0;
-  }
-
-  nav.toc {
-    li.toc-item > a {
-      opacity: 0.5;
-      transition: opacity 50ms ease-in-out;
-    }
-    li.toc-item.active > a {
-      opacity: 1;
+  .content {
+    &.has-toc :global(nav.toc) {
+      display: block;
+      position: fixed;
+      left: 0;
+      top: 0;
     }
 
-    ol {
-      padding-left: 0;
-      margin-left: 20px;
+    :global(nav.toc) {
+      display: none;
 
-      &:has(> :only-child) {
-        /* Hide single-child subsections. */
-        display: none;
+      li.toc-item > a {
+        opacity: 0.5;
+        transition: opacity 50ms ease-in-out;
+      }
+      li.toc-item.active > a {
+        opacity: 1;
       }
 
-      li {
-        list-style-type: none;
+      ol {
+        padding-left: 0;
+        margin-left: 20px;
+
+        &:has(> :only-child) {
+          /* Hide single-child subsections. */
+          display: none;
+        }
+
+        li {
+          list-style-type: none;
+        }
       }
     }
   }
