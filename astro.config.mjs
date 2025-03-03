@@ -28,10 +28,9 @@ export default defineConfig({
     remarkPlugins: [remarkSectionize],
     rehypePlugins: [
       rehypeSlug,
-      [
-        rehypeToc,
-        // { headings: ["h2", "h3"] }
-      ]
+      // [
+      //   rehypeToc,
+      // ]
     ],
   })],
 
