@@ -2,6 +2,7 @@
 title: Build A Bench
 description: How to build a bench.
 order: 1
+toc: true
 ---
 
 import { Image } from 'astro:assets';
@@ -36,8 +37,6 @@ import assembly5 from '../../public/img/assembly_5.png';
 import assembly6 from '../../public/img/assembly_6.png';
 import diagonalBraces from '../../public/img/diagonal_braces.png';
 
-# Build A Bench
-
 Welcome to the bench build guide!
 The design is a slightly-modified version of the [Duderstadt bench](https://publicbenchproject.wordpress.com/),
 which is perhaps the best, most functional bench design ever created.
@@ -58,7 +57,7 @@ You can choose to finish either before or after assembly.
 
 * Templates (request via contact@bench.builders)
 * Marker or pencil
-* Workbench and sawhorses
+* Workbench and/or sawhorses (optional)
 * Power sander
 * Jigsaw and/or circular saw (both recommended)
 * Impact driver and drill
@@ -67,9 +66,8 @@ You can choose to finish either before or after assembly.
   * DrillBlock with 3/8 in. hole (optional)
   * thin drill bit (between 3/32 in. and 1/8 in.)
 * Rubber mallet
-* 2 bar clamps, 8 in. or larger
 * Tape measure
-* SDS+ rotary hammer (or hammer drill) with 3/8 in. masonry bit (for installation)
+* 2 bar clamps, 8 in. or larger (optional, for assembling solo)
 
 ## Materials
 
@@ -81,10 +79,8 @@ You can choose to finish either before or after assembly.
 
 (Note that nominal 2x4s are actually 1.5 in. by 3.5 in.)
 
-<details>
-<summary>
-#### Lumber Selection
-</summary>
+#### Lumber Selection $HIDE$
+
 <div class="caption right">
 | <Image src={kdHtDfir} alt="Close up of a 2x4 with stamp KD HT and D FIR, among other markings." width={200} densities={[1, 1.25, 1.5, 2]} /> |
 | --- |
@@ -104,7 +100,6 @@ For weather resistance, prefer Southern Yellow Pine ("SYP"), Douglas Fir ("D-FIR
 Redwood and Cedar are even more decay resistant, but 3-4x the cost.
 
 The pressure treated piece is for the feet; look for "ground contact" lumber.
-</details>
 
 ### Prep & Finish
 
@@ -116,17 +111,14 @@ The pressure treated piece is for the feet; look for "ground contact" lumber.
 
 One gallon of product typically covers 5-6 benches (7 ft. wide) with a single coat.
 
-<details>
-<summary>
-#### Prep Notes
-</summary>
+#### Prep Notes $HIDE$
+
 Sanding is necessary to remove splinters and rough edges.
 
 Filling is optional. Most wood fillers are not waterproof (despite "exterior" marketing) and **must be painted over**.
 However epoxy (Bondo or JB-Weld) and CA glue (Starbond) based fillers are waterproof.
 Sander sawdust mixed with a [waterproof wood glue (Titebond III)](https://www.youtube.com/watch?v=k-g3efGa3sI&t=725s)
 makes a somewhat water-resistant (tho hard-to-sand) wood filler.
-</details>
 
 ### Hardware
 
@@ -138,23 +130,22 @@ makes a somewhat water-resistant (tho hard-to-sand) wood filler.
   { qty: 44, name: "#8 x 2-1/2 in. exterior screw", imgs: [{ img: screw, width: 0.75 * 248, alt: "Shiny bronze-colored screw." }]},
 ]} />
 
-<details>
-<summary>
-#### Hardware Notes
-</summary>
+#### Hardware Notes $HIDE$
+
 Hardware is commonly available in a few different materials/coatings with varying weather resistance:
 * Stainless steel ("SS") is the most weather resistant, but is expensive and unncessary unless our bench is near saltwater or we want a nice brushed finish.
 * **Hot-dip galvanized ("HDG") is weather resistant and relatively cheap, so it is what we recommend.**
 * Zinc plated (electro-galvanized) is ok but not very weather resistant.
 
-_Connecting together different types_ of bolts/nuts/washers is not recommended due to [galvanic corrosion](https://en.wikipedia.org/wiki/Galvanic_corrosion).
+Connecting different types of bolts/nuts/washers together is not recommended due to [galvanic corrosion](https://en.wikipedia.org/wiki/Galvanic_corrosion).
 
-3/8 in. hardware is conveniently standard for street furniture including anchor bolts for mounting benches on pavement, but thinner 5/16 in. bolts will also work.
+The original [Public Bench Project design](https://publicbenchproject.wordpress.com/wp-content/uploads/2024/02/bench-plans.pdf)
+uses 5/16 in. carriage bolts instead of 3/8 in. bolts.
+3/8 in. hardware is stronger, and is standard for street furniture anchor bolts.
 
 Screws should be exterior-coated construction/framing screws, or deck screws.
 There are a lot of brands but [GRK, Grip-Rite, and SPAX are good options](https://www.youtube.com/watch?v=eikOUFoIZ-Y).
 Thicker #9 screws will also work, but overly-thick screws can cause wood to split if we don't pre-drill pilot holes.
-</details>
 
 ## Slats Preparation
 
@@ -192,7 +183,7 @@ Use the small (3/32 to 1/8 in.) drill bit to drill two pairs of vertical pilot h
 At this point the slats are complete.
 We may apply the finish now, or after the bench is assembled, see the [finishing guide](finishing).
 
-## Cutting Leg Frame Pieces
+## Cutting Leg Pieces
 
 <div class="caption right">
 | <Image src={legFrame} alt="Leg frame diagram with pieces labeled A, B, C, L, and S." width={160} densities={[1, 1.25, 1.5, 2]} class="dark-invert" /> |

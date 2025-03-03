@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import Page from "../../layouts/Page.astro";
+import Toc from "../../components/Toc.astro";
 
 export async function getStaticPaths() {
   const guides = await getCollection("guides");
@@ -13,11 +14,29 @@ export async function getStaticPaths() {
 export const prerender = true;
 
 const guide = Astro.props;
-const { Content } = await render(guide);
+const { Content, headings } = await render(guide);
 ---
 
 <Page title={guide.data.title} upHref="/guides" upNav="Guides">
+  {guide.data.toc && <div class="toc-col"><Toc headings={headings} /></div>}
   <div style="font-size: 0.9em">
     <Content />
   </div>
 </Page>
+
+<style>
+  .toc-col {
+    display: none;
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -240px;
+    width: 240px;
+  }
+  @media(min-width: 1280px) {
+    .toc-col {
+      display: block;
+    }
+  }
+</style>

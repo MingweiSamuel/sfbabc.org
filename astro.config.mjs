@@ -4,6 +4,8 @@ import cloudflare from '@astrojs/cloudflare';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import { SITES } from './src/data';
+import remarkSectionize from 'remark-sectionize';
+import remarkDetailize from './detailize.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -21,7 +23,9 @@ export default defineConfig({
   },
 
   site: 'https://bench.builders',
-  integrations: [sitemap(), mdx()],
+  integrations: [sitemap(), mdx({
+    remarkPlugins: [remarkSectionize, remarkDetailize],
+  })],
 
   redirects: {
     '/support': '/join',

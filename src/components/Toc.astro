@@ -1,0 +1,59 @@
+---
+import type { MarkdownHeading } from "astro";
+import type { HeadingsTree } from "./TocList.astro";
+import TocList from "./TocList.astro";
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const root = {
+  depth: 0,
+  children: [],
+} as any;
+const stack: HeadingsTree[] = [root];
+for (const heading of Astro.props.headings) {
+  while (heading.depth <= stack[stack.length - 1]!.depth) {
+    stack.pop();
+  }
+  const node = { ...heading, children: [] };
+  stack[stack.length - 1]!.children.push(node);
+  stack.push(node);
+}
+---
+
+<nav class="toc">
+  <TocList children={root.children} />
+</nav>
+
+<style lang="scss">
+  nav.toc {
+    position: sticky;
+    top: 3em;
+    width: 100%;
+  }
+</style>
+
+<script>
+  // ToC script.
+  const toc = document.querySelector("nav.toc")!;
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        // Get id of first child node.
+        const id = entry.target.querySelector("h1, h2, h3, h4, h5, h6")?.id;
+        if (null == id) continue;
+        const el = toc.querySelector(`li a[href="#${id}"]`);
+        if (null == el) continue;
+
+        el.parentElement!.classList.toggle("active", entry.isIntersecting);
+      }
+    },
+    { rootMargin: "0px 0px -50% 0px" },
+  );
+
+  // Track all sections.
+  for (const section of document.querySelectorAll("section")) {
+    observer.observe(section);
+  }
+</script>

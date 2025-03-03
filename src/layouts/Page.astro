@@ -1,14 +1,15 @@
 ---
 import Layout from './Layout.astro';
 
-const { upHref, upNav } = Astro.props;
+const { upHref, upNav, title } = Astro.props;
 ---
 
 <Layout {...Astro.props}>
   <header>
     <a href={upHref || '/'}>{upNav || "Home"}</a>
+    <h1>{title}</h1>
   </header>
-  <main>
+  <main style="position: relative;">
     <slot />
   </main>
 </Layout>
