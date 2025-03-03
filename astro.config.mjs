@@ -4,9 +4,9 @@ import cloudflare from '@astrojs/cloudflare';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import { SITES } from './src/data';
-import remarkSectionize from 'remark-sectionize';
 import rehypeToc from 'rehype-toc';
 import rehypeSlug from 'rehype-slug';
+import remarkSectionize from './sectionize.js'
 
 // https://astro.build/config
 export default defineConfig({
