@@ -22,7 +22,6 @@ const site = (await getSite(+siteId))!;
 ---
 
 <Page title={site.name}>
-  <h1>{site.name}</h1>
   <h3 class="actions">
     <a
       href={`/report?loc=${encodeURIComponent(site.name || "")}&siteId=${siteId}`}
