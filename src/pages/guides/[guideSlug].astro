@@ -13,7 +13,9 @@ export async function getStaticPaths() {
 export const prerender = true;
 
 const guide = Astro.props;
-const { Content } = await render(guide);
+const out = await render(guide);
+console.log('!!', out);
+const { Content } = out;
 ---
 
 <Page title={guide.data.title} upHref="/guides" upNav="Guides">

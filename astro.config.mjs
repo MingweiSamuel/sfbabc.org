@@ -4,9 +4,9 @@ import cloudflare from '@astrojs/cloudflare';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import { SITES } from './src/data';
-import rehypeToc from 'rehype-toc';
 import rehypeSlug from 'rehype-slug';
 import remarkSectionize from './sectionize.js'
+import withToc from "@stefanprobst/rehype-extract-toc"
 
 // https://astro.build/config
 export default defineConfig({
@@ -28,9 +28,10 @@ export default defineConfig({
     remarkPlugins: [remarkSectionize],
     rehypePlugins: [
       rehypeSlug,
-      // [
-      //   rehypeToc,
-      // ]
+      withToc,
+      () => (_tree, vfile) => {
+        vfile.data.astro.frontmatter.foo = vfile.data.toc;
+      }
     ],
   })],
 
