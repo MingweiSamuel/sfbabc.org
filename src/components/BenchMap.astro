@@ -93,52 +93,23 @@ const sites = await SITES;
     });
   }
 
+  const [iconBad, iconOk, iconGood, iconWarn] = [
+    COLOR_BAD,
+    COLOR_OK,
+    COLOR_GOOD,
+    COLOR_WARN,
+  ].map((color) => makePin(color));
+  const icons = {
+    Good: iconGood,
+    Replaced: iconOk,
+    ["Attention Needed"]: iconWarn,
+    Removed: iconBad,
+    Destroyed: iconBad,
+  };
+
   class BenchMap extends HTMLElement {
     connectedCallback() {
-      // Read the message from the data attribute.
-      const sites: Site[] = JSON.parse(this.dataset.sites!);
-
-      const [iconBad, iconOk, iconGood, iconWarn] = [
-        COLOR_BAD,
-        COLOR_OK,
-        COLOR_GOOD,
-        COLOR_WARN,
-      ].map((color) => makePin(color));
-      const icons = {
-        Good: iconGood,
-        Replaced: iconOk,
-        ["Attention Needed"]: iconWarn,
-        Removed: iconBad,
-        Destroyed: iconBad,
-      };
-
-      const div = this.getElementsByTagName("div")[0]!;
-      const map = L.map(div, {
-        center: [37.83, -122.3],
-        zoom: 11,
-        maxZoom: MAX_ZOOM,
-        maxBounds: MAX_BOUNDS,
-        maxBoundsViscosity: 1.0,
-      });
-      L.tileLayer(`/tile/{d}.{z}.{x}.{y}{r}.png`, {
-        maxZoom: MAX_ZOOM,
-        attribution: import.meta.env.PUBLIC_MAP_ATTRIBUTION,
-        d: () => (darkMode() ? "d" : "l"),
-      } as TileLayerOptions).addTo(map);
-
-      const clickPopup = L.popup();
-      map.on("click", (e) => {
-        const { lat, lng } = e.latlng;
-
-        const a = document.createElement("a");
-        a.href = "/request?loc=" + encodeURIComponent(`(${lat}, ${lng})`);
-        if (this.dataset.embed === "true") {
-          a.target = "_top";
-        }
-        a.innerText = "Request A Bench Here";
-
-        clickPopup.setLatLng(e.latlng).setContent(a).openOn(map);
-      });
+      const searchParams = new URLSearchParams(window.location.search);
 
       const clusterOptions: L.MarkerClusterGroupOptions = {
         showCoverageOnHover: false,
@@ -146,7 +117,6 @@ const sites = await SITES;
         disableClusteringAtZoom: MAX_ZOOM,
         maxClusterRadius: 20,
       };
-
       const benchesGroup = L.markerClusterGroup({
         iconCreateFunction(cluster) {
           const childCount = cluster.getChildCount();
@@ -168,7 +138,7 @@ const sites = await SITES;
           return makePin(color, "" + childCount);
         },
         ...clusterOptions,
-      }).addTo(map);
+      });
       const proposedGroup = L.markerClusterGroup({
         iconCreateFunction(cluster) {
           const childCount = cluster.getChildCount();
@@ -182,10 +152,64 @@ const sites = await SITES;
         ...clusterOptions,
       });
 
-      const layerControl = L.control.layers().addTo(map);
-      layerControl.addOverlay(benchesGroup, "Benches");
-      layerControl.addOverlay(proposedGroup, "Proposed Locations");
+      // Add map.
+      const map = L.map(this.getElementsByTagName("div")[0]!, {
+        center: [37.83, -122.3],
+        zoom: 11,
+        maxZoom: MAX_ZOOM,
+        maxBounds: MAX_BOUNDS,
+        maxBoundsViscosity: 1.0,
+        layers: [
+          L.tileLayer(`/tile/{d}.{z}.{x}.{y}{r}.png`, {
+            maxZoom: MAX_ZOOM,
+            attribution: import.meta.env.PUBLIC_MAP_ATTRIBUTION,
+            d: () => (darkMode() ? "d" : "l"),
+          } as TileLayerOptions),
+        ],
+      });
 
+      // Click popup handling.
+      {
+        const clickPopup = L.popup();
+        map.on("click", (e) => {
+          const { lat, lng } = e.latlng;
+
+          const a = document.createElement("a");
+          a.href = "/request?loc=" + encodeURIComponent(`(${lat}, ${lng})`);
+          if (this.dataset.embed === "true") {
+            a.target = "_top";
+          }
+          a.innerText = "Request A Bench Here";
+
+          clickPopup.setLatLng(e.latlng).setContent(a).openOn(map);
+        });
+      }
+
+      // Layer control.
+      L.control
+        .layers(
+          {},
+          {
+            Benches: benchesGroup,
+            "Proposed Locations": proposedGroup,
+          },
+        )
+        .addTo(map);
+      if (!searchParams.has("layer")) {
+        // Default to showing benches.
+        benchesGroup.addTo(map);
+      } else {
+        if (searchParams.has("layer", "benches")) {
+          benchesGroup.addTo(map);
+        }
+        if (searchParams.has("layer", "proposed")) {
+          proposedGroup.addTo(map);
+        }
+      }
+
+      // Add markers to groups.
+      // Read the message from the data attribute.
+      const sites: Site[] = JSON.parse(this.dataset.sites!);
       for (const site of sites) {
         let scale = 0;
         let icon;
@@ -216,9 +240,7 @@ const sites = await SITES;
         if (null != site.id) {
           const a = document.createElement("a");
           a.href = `/${site.id}`;
-          const target = new URLSearchParams(window.location.search).get(
-            "target",
-          );
+          const target = searchParams.get("target");
           a.target = /_[a-z]+/i.test(target!) ? target! : "_self";
           a.appendChild(head);
           head = a;
@@ -306,7 +328,7 @@ const sites = await SITES;
     border: 2.2px solid #000;
     transform: scaleY(1.5) rotate(225deg);
   }
-  bench-map .leaflet-shadow-pane .pin > div:after {
+  bench-map .leaflet-shadow-pane .pin > div::after {
     left: 50%;
     top: 155%;
     width: 100%;

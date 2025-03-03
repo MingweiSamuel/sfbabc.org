@@ -25,6 +25,7 @@ export default defineConfig({
 
   redirects: {
     '/support': '/join',
+    '/map_embed': '/map',
     '/guide': '/guides',
     '/guide/[..._]': '/guides',
     ...Object.fromEntries((await SITES).flatMap(({ id, muni, act, ggt, vta }) => {
