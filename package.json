@@ -23,6 +23,7 @@
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
     "linkedom": "^0.18.5",
+    "sass-embedded": "^1.85.1",
     "typescript": "^5.7.2"
   },
   "devDependencies": {
