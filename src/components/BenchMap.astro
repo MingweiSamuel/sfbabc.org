@@ -43,8 +43,9 @@ const sites = await SITES;
 
   const COLOR_GOOD = "#11734b";
   const COLOR_OK = "#215a6c";
-  const COLOR_BAD = "#b10202";
   const COLOR_WARN = "#753800";
+  const COLOR_INFO = "#5a3286";
+  const COLOR_BAD = "#b10202";
 
   const ShadowDivIcon = L.DivIcon.extend({
     createShadow(oldIcon?: HTMLElement) {
@@ -93,18 +94,20 @@ const sites = await SITES;
     });
   }
 
-  const [iconBad, iconOk, iconGood, iconWarn] = [
-    COLOR_BAD,
-    COLOR_OK,
+  const [iconGood, iconOk, iconWarn, iconInfo, iconBad] = [
     COLOR_GOOD,
+    COLOR_OK,
     COLOR_WARN,
+    COLOR_INFO,
+    COLOR_BAD,
   ].map((color) => makePin(color));
   const icons = {
     Good: iconGood,
     Replaced: iconOk,
     ["Attention Needed"]: iconWarn,
+    Retrieved: iconInfo,
+    Destroyed: iconInfo,
     Removed: iconBad,
-    Destroyed: iconBad,
   };
 
   class BenchMap extends HTMLElement {

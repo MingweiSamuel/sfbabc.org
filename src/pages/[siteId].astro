@@ -43,16 +43,11 @@ const site = (await getSite(+siteId))!;
     <li>Status: {site.benchStatus}</li>
     <li>Adopted? <em>{site.adopted ? "Yes" : "No!"}</em></li>
     {site.benchLength && <li>Length: {site.benchLength} ft</li>}
-    {site.benchNickname && <li>Nickname: {site.benchNickname}</li>}
+    {site.nickname && <li>Nickname: {site.nickname}</li>}
     {
       0 < site.lines.length ? (
         <li>
-          Bus Lines:
-          <ul>
-            {site.lines.map((x) => (
-              <li>{x}</li>
-            ))}
-          </ul>
+          Bus Lines: {site.lines.join(", ")}
         </li>
       ) : null
     }

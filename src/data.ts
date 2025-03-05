@@ -10,14 +10,15 @@ export interface Site {
   adopted: boolean,
   lines: string[],
   avgWeekdayBoardings: number,
+  //
+  nickname: string | null,
   notes: string[],
   //
   benchStatus: BenchStatus,
   benchLength: number | null,
-  benchNickname: string | null,
   benchImageUrl: string | null,
 }
-export type BenchStatus = 'Good' | 'Replaced' | 'Removed' | 'Destroyed' | 'Proposed' | 'Attention Needed';
+export type BenchStatus = 'Good' | 'Attention Needed' | 'Replaced' | 'Retrieved' | 'Destroyed' | 'Removed' | 'Proposed';
 
 export interface News {
   url: string,
@@ -27,36 +28,69 @@ export interface News {
 }
 
 export const SITES: Promise<Site[]> = (async () => {
-  const SHEETS_DB_SITES = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWDmQyR76rCXXmwltSZaa_5iCi-z6IOqkfNkjc52e713Rc5kfF7mDZuMxghsp-nJlAdskl-IBBbhzN/pub?gid=633984574&single=true&output=csv";
-  const res = await fetch(SHEETS_DB_SITES);
+  const SHEETS_DB_BENCHES = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWDmQyR76rCXXmwltSZaa_5iCi-z6IOqkfNkjc52e713Rc5kfF7mDZuMxghsp-nJlAdskl-IBBbhzN/pub?gid=1711079204&single=true&output=csv";
+  const res = await fetch(SHEETS_DB_BENCHES);
   const [head, ...rows] = parseCsv(await res.text());
-  const headIdx = Object.fromEntries(head!.map((col, i) => [col.toUpperCase(), i]));
-  return rows.map(row => {
-    const id = row[headIdx['SITE ID']!];
-    const site: Site = {
-      id: (null == id || 0 === id.length) ? null : +id,
-      act: +row[headIdx['ACT']!]! || null,
-      vta: +row[headIdx['VTA']!]! || null,
-      ggt: +row[headIdx['GGT']!]! || null,
-      muni: +row[headIdx['MUNI']!]! || null,
-      lat: +row[headIdx['LAT']!]!,
-      lon: +row[headIdx['LON']!]!,
-      name: row[headIdx['STOP NAME']!] || null,
-      adopted: !!row[headIdx['ADOPTER']!],
-      lines: row[headIdx['LINES']!]!
-        .split(',')
-        .map(line => line.trim())
-        .filter(note => 0 < note.length),
-      avgWeekdayBoardings: +row[headIdx['AVG WEEKDAY BOARDINGS']!]!,
-      notes: row.slice(headIdx['NOTES']!).filter(note => 0 < note.length),
-      benchStatus: row[headIdx['BENCH STATUS']!]! as BenchStatus,
-      benchLength: +row[headIdx['LENGTH']!]! || null,
-      benchNickname: row[headIdx['NICKNAME']!]! || null,
-      benchImageUrl: row[headIdx['IMAGE URL']!]! || null,
-    };
-    return site;
-  })
-    .filter(site => site.id || (site.lat && site.lon))
+  const headIdx = Object.fromEntries(head!.map((col, i) => [col.toUpperCase().replace(/[^ A-Z0-9]/g, ''), i]));
+
+  const sitesDated = rows
+    .map(row => {
+      const id = row[headIdx['SITE ID']!];
+      const startDate = row[headIdx['START DATE']!];
+      let site: Site = {
+        id: id ? +id : null,
+        act: +row[headIdx['ACT']!]! || null,
+        vta: +row[headIdx['VTA']!]! || null,
+        ggt: +row[headIdx['GGT']!]! || null,
+        muni: +row[headIdx['MUNI']!]! || null,
+        lat: +row[headIdx['LAT']!]!,
+        lon: +row[headIdx['LON']!]!,
+        name: row[headIdx['NAME']!] || null,
+        adopted: !!row[headIdx['ADOPTER']!],
+        lines: row[headIdx['LINES']!]!
+          .split(',')
+          .map(line => line.trim())
+          .filter(line => 0 < line.length),
+        avgWeekdayBoardings: +row[headIdx['AVG ONS WEEKDAY']!]!,
+        nickname: row[headIdx['NICKNAME']!]! || null,
+        notes: [
+          row[headIdx['SITE NOTES']!],
+          ...row.slice(headIdx['BENCH NOTES']!),
+        ].map(note => note?.trim() || "").filter(note => 0 < note.length),
+        benchStatus: (row[headIdx['BENCH STATUS']!] || "Proposed") as BenchStatus,
+        benchLength: +row[headIdx['LENGTH']!]! || null,
+        benchImageUrl: row[headIdx['IMAGES']!]! || null,
+      };
+
+      return {
+        site,
+        startDate: startDate ? new Date(startDate) : null
+      };
+    })
+    .filter(({ site }) => site.id || (site.lat && site.lon))
+    .sort(({ site: a }, { site: b }) => (a.id ?? Number.POSITIVE_INFINITY) - (b.id ?? Number.POSITIVE_INFINITY));
+
+  // Combine sites with the same ID.
+  for (let i = 1; i < sitesDated.length; i++) {
+    const prev = sitesDated[i - 1]!;
+    const next = sitesDated[i]!;
+    if (null == next.site.id) break; // No more sites to combine.
+
+    if (prev.site.id === next.site.id) {
+      // `null` gets coerced to `0` in the comparison.
+      if (prev.startDate! <= next.startDate!) {
+        Object.assign(prev, next);
+        sitesDated.splice(i--, 1);
+      }
+      else {
+        Object.assign(next, prev);
+        sitesDated.splice(--i, 1);
+      }
+    }
+  }
+
+  return sitesDated
+    .map(({ site }) => site)
     .sort((a, b) => (10 * b.lat - b.lon) - (10 * a.lat - a.lon));
 })();
 
