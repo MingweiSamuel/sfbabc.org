@@ -8,6 +8,7 @@ toc: true
 import { Image } from 'astro:assets';
 import PartsTable from '../components/PartsTable.astro';
 import Steps from '../components/Steps.astro';
+import cadBench from '../../public/img/cad_bench.png';
 import cbLong from '../../public/img/cb_long.png';
 import cbShort from '../../public/img/cb_short.png';
 import nut from '../../public/img/nut.png';
@@ -38,20 +39,21 @@ import assembly6 from '../../public/img/assembly_6.png';
 import diagonalBraces from '../../public/img/diagonal_braces.png';
 
 Welcome to the bench build guide!
-The design is a slightly-modified version of the [Duderstadt bench](https://publicbenchproject.wordpress.com/),
-which is perhaps the best, most functional bench design ever created.
-It is easy to build using cheap standard materials, very comfortable to sit on, lightweight & durable, and beautiful.
+The design is a slightly-modified version of the [Duderstadt Bench](https://publicbenchproject.wordpress.com/wp-content/uploads/2024/02/bench-plans.pdf) from the [Public Bench Project](https://publicbenchproject.wordpress.com/) in San Francisco.
+The Duderstadt Bench is perhaps the best, most functional bench design ever created.
+It is easy to build using cheap standard materials, very comfortable to sit on, lightweight & durable, and elegant.
+
+<a href={cadBench.src}><Image class="center" src={cadBench} alt="An axonometric CAD rendering of an elegant bench constructed from cuts of 2x4s." width={778} densities={[1, 1.25, 1.5, 2]} /></a>
 
 This guide is intended for people with minimal woodworking knowledge, and therefore includes a lot of detail.
 Read the guide before starting to get a sense of the process.
+**This guide does NOT include woodworking safety information, so please review how to safely use tools and work with wood before building.**
 
 The first sections cover the tools and materials needed.
 The next sections cover the preparation and assembly of slats, leg frames, and braces--these sections may be done in any order.
 
 Finishing the wood (stain or paint) is not covered by this guide, instead see the [finishing guide](finishing).
 We recommend finishing after cutting and sanding but before assembly, though you can also finish after assembly.
-
-**This guide does NOT include woodworking safety information, so please review how to safely use tools and work with wood before building.**
 
 ## Tools
 
@@ -160,13 +162,7 @@ Give the edges a small round-over (\~1/8 to 3/8 in.) for comfort and to prevent 
 Cavities may optionally be filled with wood filler, especially if the hole is large/sharp enough
 to pose a hazard to small fingers or clothing, then sanded when cured.
 
-<div class="caption right">
-| Length | Hole Dist |
-| --- | --- |
-| 4-5 ft. | 6 in. |
-| 6-7 ft. | 12 in. |
-| 8 ft. | 18 in. |
-</div>
+### Pilot Hole Spacing
 
 <div class="caption right">
 | <a href={slatHoles.src}><Image src={slatHoles} alt='Leg template piece with pairs of small screw holes marked at 6", 12", and 18".' width={320} densities={[1, 1.25, 1.5, 2]} class="dark-invert" /></a> |
@@ -174,10 +170,35 @@ to pose a hazard to small fingers or clothing, then sanded when cured.
 | Hole positions on the template. |
 </div>
 
+<div class="caption right">
+| Bench<br/>length | Hole dist<br/>(2 legs) | Hole dist<br/>(3 legs) |
+| --- | --- | --- |
+| 4-5 ft. | 6 in.   | x       |
+| 6 ft.   | 12 in.  | x       |
+| 7 ft.   | 12 in.* | 6 in.   |
+| 8 ft.   | 18 in.* | 12 in.  |
+| 10 ft.  | x       | 12 in.  |
+| 12 ft.  | x       | 12 in.* |
+</div>
+
 We will need to drill pilot holes for the screws that will hold the slats to the leg frames.
+The leg frames need to be properly spaced to support the entire length of the bench;
+we should avoid any spans between slats greater than 5 ft. to prevent sagging.
+
 The template has small pairs of holes which are 6, 12, and 18 in. from the end.
-The hole distance is determined by the length of the bench, as shown in the table to the right.
-Use the small (3/32 to 1/8 in.) drill bit to drill two pairs of vertical pilot holes in each end of the slats (four holes total per slat).
+The table to the right shows the recommended distance for each bench length.
+"Hole dist" is the distance from the end of the slat to the outer pilot holes.
+Options marked with an asterisk (*) require [brace pieces](#brace-pieces) in the middle of each span to prevent sagging.
+Brace pieces and third leg frames should be spaced evenly between the two outer frames.
+
+Align the square end of the template with the end of the slat and find the correct pair of holes.
+Keep the drill vertical and use the small (3/32 to 1/8 in.) bit to drill each pilot hole.
+Each slat needs a pair of holes for each leg frame and brace piece,
+so for example 4-6 ft. benches need four holes, while 7-8 ft. benches need six holes.
+
+`<TODO: IRL pic here>`
+
+### Finishing
 
 At this point the slats are complete.
 We recommend applying the finish now (though you can also wait until after assembly)-- see the [finishing guide](finishing).
@@ -194,6 +215,8 @@ Each bench has two leg frames at each end of the bench (and possibly more in the
 Each leg frame has two legs: a long forwards leg (`L`), and a short backwards leg (`S`),
 as well as a seat rest (`A`), a backrest (`B`), and a center spacer (`C`) positioned between `L` and `S`.
 
+### Tracing Leg Pieces
+
 Trace two short `S` legs and two long `L` legs from the template onto our pressure-treated 2x4x8.
 The angled foot cut of adjacent legs should touch, as shown, to ensure all pieces fit.
 Each leg pieces uses three of the four template holes: the long leg uses the three holes closest to the top, and the short leg uses the three holes closest to the bottom.
@@ -203,6 +226,8 @@ Each leg pieces uses three of the four template holes: the long leg uses the thr
 | --- |
 | Four legs cut from a single 2x4x8. |
 </div>
+
+### Tracing Rest Pieces
 
 Trace two `A` seat rests, two `B` backrests, and two `C` center spacers from the template onto our other 2x4x8.
 The angled back sides of the `A` pieces should touch, as shown, to ensure all pieces fit.
@@ -214,15 +239,18 @@ On the template, the `A` pieces use the two innermost holes, while the `B` piece
 | Seat rests, backrests, and spacers cut from a single 2x4x8. |
 </div>
 
+### Drilling & Cutting
+
 Once all pieces are traced, use the 3/8 in. drill bit to drill out all the holes as marked.
 A DrillBlock will help keep the holes aligned and vertical.
 The `S` spacer pieces are especially small and difficult to drill after cutting, so make sure to drill the holes first.
 
 Use the jigsaw and/or circular saw to cut out all the pieces as traced.
-Make sure to look up how to use the tools safely.
-Clamp the wood to a stable surface while cutting.
-The seat dent of the `A` piece is particularly tricky to cut with just a circular saw,
-so we may want to start one side of the cut with the circular saw and finish the other side with the jigsaw.
+Make sure to use the tools safely-- clamp the wood to a stable surface while cutting.
+The seat dent of the `A` piece is particularly tricky to cut;
+we may want to start one side of the cut with the circular saw and finish the other side with the jigsaw, or just use the jigsaw and go slowly.
+
+### Finishing
 
 At this point we should sand the sharp-cut edges of our pieces.
 In particular, the front of the `A` piece, top/back of the `B` piece, and the top/back of the `L` piece are all places people may touch.
@@ -234,7 +262,10 @@ We can also seal the end cuts of the leg pieces-- see the [end cuts guide](end_c
 
 Each leg frame is assembled from the pieces we cut earlier and connected using the 3/8 in. carriage bolts.
 We will need one _long_ 5 in. carriage bolt and four _short_ 3-1/2 in. carriage bolts for each leg frame.
-The pieces can be assembled in pretty much any order, but starting with the legs may be the least confusing:
+
+### Assembly Steps
+
+The pieces can be assembled in pretty much any order, but starting with the leg pieces may be the least confusing:
 
 <Steps steps={[
   {
@@ -277,6 +308,8 @@ The pieces can be assembled in pretty much any order, but starting with the legs
 
 The last holes may be a bit misaligned, but wood is flexible and can usually bend to accomodate.
 If we cannot force the pieces into alignment, we can try loosining the other bolts to allow for more play.
+
+### Bolting
 
 <div class="caption right">
 | <Image src={cbAssembly} alt="A cross-section view showing a carriage bolt, washer, and nut, holding two pieces together." width={240} densities={[1, 1.25, 1.5, 2]} /> |

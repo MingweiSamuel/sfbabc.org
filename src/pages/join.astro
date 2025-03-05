@@ -11,69 +11,80 @@ export const prerender = true;
 ---
 
 <Page title="Join The Project">
-  <h2 id="contribute">Contribute</h2>
-  <p>
-    Financial contributions can be made to <Link
-      href="https://ko-fi.com/safestreetrebel">SafeStreetRebel on Ko-Fi</Link
-    >. Please mention the {SHORT_NAME} in your contribution message.
-  </p>
-  <a href="https://safestreetrebel.com" target="_blank">
-    <img
-      src={imgSsr.src}
-      alt="SafeStreetRebel - Not without a fight"
-      style="width:240px"
-    />
-  </a>
-  <h2 id="join">Join Us!</h2>
-  <p>
-    Send us an email at <Link href="mailto:contact@bench.builders"
-      >contact@bench.builders</Link
-    >! We coordinate via <Link href="https://signal.org/">Signal</Link> so please
-    be ready with your Signal <Link
-      href="https://signal.org/blog/phone-number-privacy-usernames/"
-      >username</Link
-    > or phone number.
-  </p>
-  <h2 id="build">Build A Bench!</h2>
-  <p>
-    We use a modified version of the <Link
-      href="https://publicbenchproject.wordpress.com/wp-content/uploads/2024/02/bench-plans.pdf"
-      >Duderstadt Bench design plans</Link
-    >, from the <Link href="https://publicbenchproject.wordpress.com/"
-      >Public Bench Project in San Francisco</Link
-    >.
-  </p>
-  <p>
-    We will soon create a guide for our modified design, but we can provide
-    cut templates now! Contact us at <Link
-      href="mailto:contact@bench.builders">contact@bench.builders</Link
-    >.
-  </p>
-  <a
-    href="https://cad.onshape.com/documents/063344b7fb969929e3aafc3b/w/a576949003c6067b3f8ed69f/e/8d6e05e5c5828399838f220f"
-    target="_blank"
-  >
-    <img src={imgCadCuts.src} alt="CAD overview of the 2x4 cuts" />
-  </a>
-  <p>
-    <Link
-      href="https://cad.onshape.com/documents/063344b7fb969929e3aafc3b/w/a576949003c6067b3f8ed69f/e/9c723042083e15c6871d0b1c"
-      >CAD plans for the bench are on OnShape!</Link
+  <section>
+    <h2 id="atop">Adopt A Bench</h2>
+    <p>
+      We are looking for people to adopt a bench in their neighborhood. This
+      involves keeping an eye on the bench to ensure it is in good condition,
+      and to report any issues if not. See the <a href="guides/adopt"
+        >Adopt A Bench guide</a
+      > for more info!
+    </p>
+  </section>
+  <section>
+    <h2 id="contribute">Contribute</h2>
+    <p>
+      Financial contributions can be made to <Link
+        href="https://ko-fi.com/safestreetrebel">SafeStreetRebel on Ko-Fi</Link
+      >. Please mention the {SHORT_NAME} in your contribution message.
+    </p>
+    <a href="https://safestreetrebel.com" target="_blank">
+      <img
+        src={imgSsr.src}
+        class="center"
+        alt="SafeStreetRebel - Not without a fight"
+        style="width:240px"
+      />
+    </a>
+  </section>
+  <section>
+    <h2 id="build">Build A Bench</h2>
+    <p>
+      <a href="guides/build"
+        >Click here for a detailed guide on how to build a bench!</a
+      >
+    </p>
+    <a href="guides/build">
+      <img
+        src={imgCadBench.src}
+        class="center"
+        alt="CAD view of the bench"
+      /></a
     >
-  </p>
-  <a
-    href="https://cad.onshape.com/documents/063344b7fb969929e3aafc3b/w/a576949003c6067b3f8ed69f/e/9c723042083e15c6871d0b1c"
-    target="_blank"
-  >
-    <img src={imgCadBench.src} alt="CAD view of the bench" /></a
-  >
+    <p>
+      We use a modified version of the <Link
+        href="https://publicbenchproject.wordpress.com/wp-content/uploads/2024/02/bench-plans.pdf"
+        >Duderstadt Bench</Link
+      >, from the <Link href="https://publicbenchproject.wordpress.com/"
+        >Public Bench Project in San Francisco</Link
+      >. We can provide you with templates, just contact us at <Link
+        href="mailto:contact@bench.builders">contact@bench.builders</Link
+      >! <Link
+        href="https://cad.onshape.com/documents/063344b7fb969929e3aafc3b/w/a576949003c6067b3f8ed69f/e/9c723042083e15c6871d0b1c"
+        >CAD plans for the bench are on OnShape</Link
+      >!
+    </p>
+    <a
+      href="https://cad.onshape.com/documents/063344b7fb969929e3aafc3b/w/a576949003c6067b3f8ed69f/e/8d6e05e5c5828399838f220f"
+      target="_blank"
+    >
+      <img
+        src={imgCadCuts.src}
+        class="center"
+        alt="CAD overview of the 2x4 cuts"
+      />
+    </a>
+  </section>
+  <section>
+    <h2 id="join">Join The Organizers!</h2>
+    <p>
+      Send us an email at <Link href="mailto:contact@bench.builders"
+        >contact@bench.builders</Link
+      >! We coordinate via <Link href="https://signal.org/">Signal</Link> so please
+      be ready with your Signal <Link
+        href="https://signal.org/blog/phone-number-privacy-usernames/"
+        >username</Link
+      > or phone number.
+    </p>
+  </section>
 </Page>
-
-<style>
-  img {
-    display: block;
-    height: auto;
-    max-width: 100%;
-    margin: 0 auto;
-  }
-</style>

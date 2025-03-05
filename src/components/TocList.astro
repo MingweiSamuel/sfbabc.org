@@ -23,12 +23,18 @@ interface Props {
 </ol>
 
 <style lang="scss">
-  li > a {
-    opacity: 0.5;
-    transition: opacity 50ms ease-in-out;
+  li {
+    list-style-type: none;
+    & > a {
+      opacity: 0.5;
+      transition: opacity 50ms ease-in-out;
+    }
   }
-  li.active > a {
-    opacity: 1;
+  li.active {
+    list-style-type: ">";
+    & > a {
+      opacity: 1;
+    }
   }
 
   ol {
@@ -38,10 +44,6 @@ interface Props {
     &:has(> :only-child) {
       /* Hide single-child subsections. */
       display: none;
-    }
-
-    li {
-      list-style-type: none;
     }
   }
 </style>

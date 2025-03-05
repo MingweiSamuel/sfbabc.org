@@ -18,7 +18,13 @@ const { Content, headings } = await render(guide);
 ---
 
 <Page title={guide.data.title} upHref="/guides" upNav="Guides">
-  {guide.data.toc && <div class="toc-col"><Toc headings={headings} /></div>}
+  {
+    guide.data.toc && (
+      <div class="toc-col">
+        <Toc headings={headings} />
+      </div>
+    )
+  }
   <div style="font-size: 0.9em">
     <Content />
   </div>
@@ -34,7 +40,7 @@ const { Content, headings } = await render(guide);
     left: -240px;
     width: 240px;
   }
-  @media(min-width: 1280px) {
+  @media (min-width: 1280px) {
     .toc-col {
       display: block;
     }

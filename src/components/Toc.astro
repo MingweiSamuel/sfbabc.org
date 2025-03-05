@@ -29,8 +29,10 @@ for (const heading of Astro.props.headings) {
 <style lang="scss">
   nav.toc {
     position: sticky;
-    top: 3em;
+    top: 1em;
     width: 100%;
+    max-height: calc(100vh - 2em);
+    overflow-y: scroll;
   }
 </style>
 
@@ -47,6 +49,13 @@ for (const heading of Astro.props.headings) {
         if (null == el) continue;
 
         el.parentElement!.classList.toggle("active", entry.isIntersecting);
+        if (entry.isIntersecting) {
+          el.scrollIntoView({
+            block: "nearest",
+            inline: "nearest",
+            behavior: "smooth",
+          });
+        }
       }
     },
     { rootMargin: "0px 0px -50% 0px" },
