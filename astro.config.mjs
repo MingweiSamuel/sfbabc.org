@@ -6,6 +6,7 @@ import mdx from '@astrojs/mdx';
 import { SITES } from './src/data';
 import remarkSectionize from 'remark-sectionize';
 import remarkDetailize from './detailize.mjs';
+import remarkLiftCaptions from './lift-captions.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -24,7 +25,7 @@ export default defineConfig({
 
   site: 'https://bench.builders',
   integrations: [sitemap(), mdx({
-    remarkPlugins: [remarkSectionize, remarkDetailize],
+    remarkPlugins: [remarkSectionize, remarkDetailize, remarkLiftCaptions],
   })],
 
   redirects: {
