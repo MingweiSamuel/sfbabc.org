@@ -157,8 +157,11 @@ const sites = await SITES;
 
       // Add map.
       const map = L.map(this.getElementsByTagName("div")[0]!, {
-        center: [37.83, -122.3],
-        zoom: 11,
+        center: [
+          Number(searchParams.get("lat")) || 37.83,
+          Number(searchParams.get("lon")) || -122.3,
+        ],
+        zoom: Number(searchParams.get("zoom")) || 11,
         maxZoom: MAX_ZOOM,
         maxBounds: MAX_BOUNDS,
         maxBoundsViscosity: 1.0,
@@ -166,7 +169,14 @@ const sites = await SITES;
           L.tileLayer(`/tile/{d}.{z}.{x}.{y}{r}.png`, {
             maxZoom: MAX_ZOOM,
             attribution: import.meta.env.PUBLIC_MAP_ATTRIBUTION,
-            d: () => (darkMode() ? "d" : "l"),
+            d: () =>
+              searchParams.has("mode", "l")
+                ? "l"
+                : searchParams.has("mode", "d")
+                  ? "d"
+                  : darkMode()
+                    ? "d"
+                    : "l",
           } as TileLayerOptions),
         ],
       });
