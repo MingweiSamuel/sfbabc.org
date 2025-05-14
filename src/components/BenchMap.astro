@@ -46,6 +46,7 @@ const sites = await SITES;
   const COLOR_WARN = "#753800";
   const COLOR_INFO = "#5a3286";
   const COLOR_BAD = "#b10202";
+  const COLOR_GOOD_WARN = "#496010";
 
   const ShadowDivIcon = L.DivIcon.extend({
     createShadow(oldIcon?: HTMLElement) {
@@ -126,16 +127,25 @@ const sites = await SITES;
           const benchStatuses = cluster
             .getAllChildMarkers()
             .map(
-              (m) => (m.options as { benchStatus: BenchStatus }).benchStatus,
+              (m) => (m.options as { benchStatus: BenchStatus }).benchStatus
             );
 
-          let color = COLOR_WARN;
-          if (benchStatuses.every((s) => "Good" === s || "Replaced" === s)) {
+          const pctGood =
+            benchStatuses.filter((s) => "Good" === s || "Replaced" === s)
+              .length / benchStatuses.length;
+          const pctBad =
+            benchStatuses.filter((s) => "Removed" === s || "Destroyed" === s)
+              .length / benchStatuses.length;
+
+          let color;
+          if (0.8 <= pctGood) {
             color = COLOR_GOOD;
-          } else if (
-            benchStatuses.every((s) => "Removed" === s || "Destroyed" === s)
-          ) {
+          } else if (0.5 < pctGood) {
+            color = COLOR_GOOD_WARN;
+          } else if (0.9 <= pctBad) {
             color = COLOR_BAD;
+          } else {
+            color = COLOR_WARN;
           }
 
           return makePin(color, "" + childCount);
@@ -205,7 +215,7 @@ const sites = await SITES;
           {
             Benches: benchesGroup,
             "Proposed Locations": proposedGroup,
-          },
+          }
         )
         .addTo(map);
       if (!searchParams.has("layer")) {
@@ -240,7 +250,7 @@ const sites = await SITES;
         }
         console.assert(
           null != icon,
-          `Unknown bench status: ${site.benchStatus}`,
+          `Unknown bench status: ${site.benchStatus}`
         );
 
         const marker = L.marker([site.lat, site.lon], {
