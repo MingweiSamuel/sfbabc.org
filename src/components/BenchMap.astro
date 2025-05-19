@@ -119,7 +119,7 @@ const sites = await SITES;
         showCoverageOnHover: false,
         spiderfyOnMaxZoom: false,
         disableClusteringAtZoom: MAX_ZOOM,
-        maxClusterRadius: 20,
+        maxClusterRadius: searchParams.get('nocluster') ? 0 : 20,
       };
       const benchesGroup = L.markerClusterGroup({
         iconCreateFunction(cluster) {
