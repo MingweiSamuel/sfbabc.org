@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import { parseHTML } from "linkedom/worker";
+import thumb from "../../public/img/thumb.png?url";
 
 interface Props {
   url: string;
@@ -13,7 +14,7 @@ const { url, date, title, description } = Astro.props;
 
 const resp = await fetch(url).then(
   (resp) => (2 === resp.status / 100 ? resp : fetch(url)),
-  (_e) => fetch(url),
+  (_e) => fetch(url)
 );
 const text = await resp.text();
 const { document } = parseHTML(text);
@@ -46,22 +47,24 @@ const dateString = date?.toLocaleDateString("en-US", {
   month: "long",
   day: "numeric",
 });
+
+const width = 600;
+const height = 315;
+const densities = [1, 1.25, 1.5, 2];
 ---
 
 {
   finalTitle ? (
     <article class="link-preview">
-      {image ? (
-        <div class="image">
-          <Image
-            src={image}
-            alt={imageAlt || ""}
-            width="600"
-            height="315"
-            densities={[1, 1.25, 1.5, 2]}
-          />
-        </div>
-      ) : null}
+      <div class="image" class:list={{ 'dark-invert': null == image }}>
+        <Image
+          src={image || thumb}
+          alt={imageAlt || "Thumbnail image"}
+          {width}
+          {height}
+          {densities}
+        />
+      </div>
       <div class="content">
         <header>
           <small>{domain}</small>
