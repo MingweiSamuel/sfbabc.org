@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /cdn-cgi/
 
-Sitemap: https://bench.builders/sitemap-index.xml
+Sitemap: https://sfbabc.org/sitemap-index.xml

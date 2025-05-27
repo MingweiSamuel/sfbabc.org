@@ -23,7 +23,7 @@ export default defineConfig({
     remotePatterns: [{ protocol: "https" }],
   },
 
-  site: 'https://bench.builders',
+  site: 'https://sfbabc.org',
   integrations: [sitemap(), mdx({
     remarkPlugins: [remarkSectionize, remarkDetailize, remarkLiftCaptions],
   })],
