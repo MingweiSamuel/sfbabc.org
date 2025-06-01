@@ -27,8 +27,8 @@ export interface News {
   description: string | null,
 }
 
-let SITES: Promise<Site[]> | null = null;
-export const getSites: () => Promise<Site[]> = () => SITES = SITES ?? (async () => {
+let cachedSites: Promise<Site[]> | null = null;
+export const getSites: () => Promise<Site[]> = () => cachedSites = cachedSites ?? (async () => {
   const res = await fetch(import.meta.env.VITE_SHEET_BENCHES);
   const [head, ...rows] = parseCsv(await res.text());
   const headIdx = Object.fromEntries(head!.map((col, i) => [col.toUpperCase().replace(/[^ A-Z0-9]/g, ''), i]));
@@ -98,8 +98,8 @@ export const getSite = async (sid: number) =>
   (await getSites()).find(site => sid === site.id);
 
 
-let NEWS: Promise<News[]> | null = null;
-export const getNews: () => Promise<News[]> = () => NEWS = NEWS ?? (async () => {
+let cachedNews: Promise<News[]> | null = null;
+export const getNews: () => Promise<News[]> = () => cachedNews = cachedNews ?? (async () => {
   const res = await fetch(import.meta.env.VITE_SHEET_NEWS);
   const [head, ...rows] = parseCsv(await res.text());
   const headIdx = Object.fromEntries(head!.map((col, i) => [col.toUpperCase(), i]));
