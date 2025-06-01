@@ -1,5 +1,5 @@
 ---
-import { SITES } from "../data";
+import { getSites } from "../data";
 
 interface Props {
   highlightSiteId?: number;
@@ -9,7 +9,7 @@ interface Props {
 const { highlightSiteId } = Astro.props;
 const height = Astro.props.height || "600px";
 
-const sites = await SITES;
+const sites = await getSites();
 ---
 
 <bench-map data-sites={JSON.stringify(sites)} data-highlight={highlightSiteId}>

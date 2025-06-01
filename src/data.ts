@@ -27,9 +27,9 @@ export interface News {
   description: string | null,
 }
 
-export const SITES: Promise<Site[]> = (async () => {
-  const SHEETS_DB_BENCHES = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWDmQyR76rCXXmwltSZaa_5iCi-z6IOqkfNkjc52e713Rc5kfF7mDZuMxghsp-nJlAdskl-IBBbhzN/pub?gid=1711079204&single=true&output=csv";
-  const res = await fetch(SHEETS_DB_BENCHES);
+let cachedSites: Promise<Site[]> | null = null;
+export const getSites: () => Promise<Site[]> = () => cachedSites = cachedSites ?? (async () => {
+  const res = await fetch(import.meta.env.VITE_SHEET_BENCHES);
   const [head, ...rows] = parseCsv(await res.text());
   const headIdx = Object.fromEntries(head!.map((col, i) => [col.toUpperCase().replace(/[^ A-Z0-9]/g, ''), i]));
 
@@ -95,11 +95,12 @@ export const SITES: Promise<Site[]> = (async () => {
 })();
 
 export const getSite = async (sid: number) =>
-  (await SITES).find(site => sid === site.id);
+  (await getSites()).find(site => sid === site.id);
 
-export const NEWS: Promise<News[]> = (async () => {
-  const SHEETS_DB_NEWS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWDmQyR76rCXXmwltSZaa_5iCi-z6IOqkfNkjc52e713Rc5kfF7mDZuMxghsp-nJlAdskl-IBBbhzN/pub?gid=6743625&single=true&output=csv";
-  const res = await fetch(SHEETS_DB_NEWS);
+
+let cachedNews: Promise<News[]> | null = null;
+export const getNews: () => Promise<News[]> = () => cachedNews = cachedNews ?? (async () => {
+  const res = await fetch(import.meta.env.VITE_SHEET_NEWS);
   const [head, ...rows] = parseCsv(await res.text());
   const headIdx = Object.fromEntries(head!.map((col, i) => [col.toUpperCase(), i]));
   return rows

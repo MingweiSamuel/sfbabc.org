@@ -22,9 +22,7 @@ export const prerender = true;
 
 <script>
   function formUrl(embedded?: boolean, loc?: string | null): string {
-    const url = new URL(
-      "https://docs.google.com/forms/d/e/1FAIpQLSeoh_bZOndFPvSpkW468EsgudlD8OeXM2h7TpL_yCX9HKjH3A/viewform",
-    );
+    const url = new URL(import.meta.env.PUBLIC_FORM_REQUEST);
     if (embedded) url.searchParams.append("embedded", "true");
     if (null != loc) url.searchParams.append("entry.1000004130", loc);
     return url.toString();

@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
-import { SITES } from './src/data';
+import { getSites } from './src/data';
 import remarkSectionize from 'remark-sectionize';
 import remarkDetailize from './detailize.mjs';
 import remarkLiftCaptions from './lift-captions.mjs';
@@ -33,7 +33,7 @@ export default defineConfig({
     '/map_embed': '/map',
     '/guide': '/guides',
     '/guide/[..._]': '/guides',
-    ...Object.fromEntries((await SITES).flatMap(({ id, muni, act, ggt, vta }) => {
+    ...Object.fromEntries((await getSites()).flatMap(({ id, muni, act, ggt, vta }) => {
       return [
         muni, act, ggt, vta
       ].filter(stopId => stopId).map(stopId => ['/' + stopId, '/' + id])
