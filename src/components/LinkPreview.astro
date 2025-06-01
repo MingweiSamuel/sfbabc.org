@@ -29,16 +29,17 @@ const finalDesc =
   description ||
   getMeta("og:description") ||
   getContent(document.querySelector(`meta[name="description"]`));
-const image =
+const image = (
   getMeta("og:image:secure_url") ||
   getMeta("og:image:url") ||
-  getMeta("og:image");
+  getMeta("og:image")
+)?.replace(/^http:\/\//, "https://");
 const imageAlt = getMeta("og:image:alt");
 const domainUrl =
   getMeta("og:url") ||
   document.querySelector("link[rel='canonical']")?.getAttribute("href") ||
   url;
-const domain = domainUrl
+const domainText = domainUrl
   ? new URL(domainUrl).hostname.replace(/^www\./, "")
   : "";
 
@@ -56,7 +57,7 @@ const densities = [1, 1.25, 1.5, 2];
 {
   finalTitle ? (
     <article class="link-preview">
-      <div class="image" class:list={{ 'dark-invert': null == image }}>
+      <div class="image" class:list={{ "dark-invert": null == image }}>
         <Image
           src={image || thumb}
           alt={imageAlt || "Thumbnail image"}
@@ -67,7 +68,7 @@ const densities = [1, 1.25, 1.5, 2];
       </div>
       <div class="content">
         <header>
-          <small>{domain}</small>
+          <small>{domainText}</small>
           <a href={url} target="_blank">
             {finalTitle}
           </a>{" "}
