@@ -7,7 +7,11 @@ import { SHORT_NAME } from "../vars";
 
 export const prerender = true;
 
-const FIRST_NEWS = (await getNews())[0]!;
+const allNews = await getNews();
+// Take all news that is within one week of the most recent news.
+const recentNews = allNews.filter(
+  (news) => allNews[0]!.date.getTime() - news.date.getTime() <= 7 * 24 * 3600 * 1000
+);
 ---
 
 <Layout>
@@ -30,6 +34,7 @@ const FIRST_NEWS = (await getNews())[0]!;
     <h2>Bench Map</h2>
     <BenchMap />
     <h2><a href="/news">News</a></h2>
-    <LinkPreview url={FIRST_NEWS.url} date={FIRST_NEWS.date} />
+    {recentNews.map((props) => <LinkPreview {...props} />)}
+    <a href="/news">See all news</a>
   </main>
 </Layout>

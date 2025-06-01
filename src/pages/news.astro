@@ -5,7 +5,7 @@ import { getNews } from "../data";
 
 export const prerender = true;
 
-const NEWS_ALL = await getNews();
+const allNews = await getNews();
 ---
 
 <Layout title="News">
@@ -14,6 +14,6 @@ const NEWS_ALL = await getNews();
     <h1>News</h1>
   </header>
   <main>
-    {NEWS_ALL.map((props) => <LinkPreview {...props} />)}
+    {allNews.map((props) => <LinkPreview {...props} />)}
   </main>
 </Layout>
