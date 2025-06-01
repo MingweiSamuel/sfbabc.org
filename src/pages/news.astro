@@ -1,11 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import LinkPreview from "../components/LinkPreview.astro";
-import { NEWS } from "../data";
+import { getNews } from "../data";
 
 export const prerender = true;
 
-const NEWS_ALL = await NEWS;
+const NEWS_ALL = await getNews();
 ---
 
 <Layout title="News">

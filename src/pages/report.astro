@@ -26,9 +26,7 @@ export const prerender = true;
     loc?: string | null,
     siteId?: `${number}` | null,
   ): string {
-    const url = new URL(
-      "https://docs.google.com/forms/d/e/1FAIpQLSeQPKKgqx_tR4Yp9kNynRpriRlsPerugbziuBVWjTHAdff_Kw/viewform",
-    );
+    const url = new URL(import.meta.env.PUBLIC_FORM_REPORT);
     if (embedded) url.searchParams.append("embedded", "true");
     if (null != loc) url.searchParams.append("entry.1051599017", loc);
     if (null != siteId) url.searchParams.append("entry.757375298", `${siteId}`);

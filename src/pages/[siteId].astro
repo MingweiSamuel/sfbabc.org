@@ -2,13 +2,13 @@
 import { Image } from "astro:assets";
 import Page from "../layouts/Page.astro";
 import type { GetStaticPaths } from "astro";
-import { SITES, getSite } from "../data";
+import { getSites, getSite } from "../data";
 import BenchMap from "../components/BenchMap.astro";
 
 export const prerender = true;
 export const getStaticPaths = (async () => {
-  return (await SITES)
-    .map((site) => site.id)
+  return (await getSites())
+    .map(({ id }) => id)
     .filter((siteId) => null != siteId)
     .map((siteId) => ({
       params: {
@@ -156,7 +156,7 @@ const site = (await getSite(+siteId))!;
   <BenchMap highlightSiteId={siteId} />
   <h2>Admin</h2>
   <p>
-    <a href={`https://script.google.com/macros/s/AKfycbxu9WHMmJUFORzjYkIPSB0vgVx2kfrA8--Rf8dAdkia/dev/upkeep?siteId=${siteId}`}>Submit Upkeep (Admin Only)</a>
+    <a href={`${import.meta.env.PUBLIC_SCRIPT_UPKEEP}?siteId=${siteId}`}>Submit Upkeep (Admin Only)</a>
   </p>
   <details>
     <summary>Raw Data</summary>
