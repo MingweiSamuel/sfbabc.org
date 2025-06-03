@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <form>
+      <p>
+        <label>
+          Site ID
+          <input required type="number" name="siteId" min="0" step="1" pattern="[0-9]+" value="<?= siteId ?>" />
+        </label>
+      </p>
+      <p>
+        <label>
+          Date/Time
+          <input required type="datetime-local" name="date" value="<?= now ?>" />
+        </label>
+      </p>
+      <p>
+        <label>
+          Inspector Name
+          <input required type="text" name="inspector" maxlength="100" />
+        </label>
+      </p>
+      <hr />
+      <p>
+        <label>
+          Work Done
+          <select multiple name="work">
+            <option selected value="Inspection">Inspection</option>
+            <option value="Buffing Graffiti">Buffing Graffiti</option>
+            <option value="Anchoring Repairs">Anchoring Repairs</option>
+            <option value="Structural Repairs">Structural Repairs</option>
+            <option value="Repainting">Repainting</option>
+            <option value="Litter Cleanup">Litter Cleanup</option>
+            <option value="Mowing/Trimming">Mowing/Trimming</option>
+            <option value="Bench Retrieval">Bench Retrieval</option>
+          </select>
+        </label>
+      </p>
+      <p>
+        <label>
+          Resultant Bench Status
+          <select required name="status">
+            <option disabled selected value> -- select an option -- </option>
+            <option value="Good">Good</option>
+            <option value="Replaced">Replaced</option>
+            <option value="Attention Needed">Attention Needed</option>
+            <option value="Retrieved">Retrieved</option>
+            <option value="Destroyed">Destroyed</option>
+            <option value="Removed">Removed</option>
+          </select>
+        </label>
+      </p>
+      <p>
+        <label>
+          Additional Notes
+        </label>
+        <textarea name="notes" rows="5" cols="33"></textarea>
+      </p>
+      <p>
+        <input type="submit" value="Submit" />
+      </p>
+    </form>
+    <script>
+      const work = document.getElementsByName('work')[0];
+      work.size = work.childElementCount;
+
+      const inspector = document.getElementsByName('inspector')[0];
+      inspector.value = localStorage.getItem('inspector');
+      inspector.onchange = () => {
+        localStorage.setItem('inspector', inspector.value);
+      };
+
+      document.forms[0].onsubmit = e => {
+        console.log(e);
+        e.preventDefault();
+        google.script.run
+          .withSuccessHandler(msg => {
+            document.body.innerHTML = `Success: ${msg}`;
+          })
+          .withFailureHandler(err => {
+            alert(`Failure: ${err.message}`);
+          })
+          .submitUpkeep(e.target);
+      };
+    </script>
+  </body>
+</html>

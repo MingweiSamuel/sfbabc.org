@@ -1,0 +1,14 @@
+{
+    "name": "@sfbabc/appsscript",
+    "type": "module",
+    "version": "0.0.0",
+    "scripts": {
+        "build": "tsc && cp src/{appsscript.json,Upkeep.html} dist/",
+        "deploy": "pnpm run build && clasp push"
+    },
+    "devDependencies": {
+        "@google/clasp": "^3.0.6-alpha",
+        "@types/google-apps-script": "^1.0.97",
+        "typescript": "^5.8.3"
+    }
+}
