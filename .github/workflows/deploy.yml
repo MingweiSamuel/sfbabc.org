@@ -15,16 +15,14 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-
-      - run: npm ci
-      - run: npm run build
-
-      - name: Deploy
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: pages deploy
+      - uses: pnpm/action-setup@v4
+      - run: pnpm i
+      - run: pnpm run build
+      - name: Setup Clasp Auth
+        run: echo '${{ secrets.CLASPRC_JSON }}' > ~/.clasprc.json
+      - run: pnpm run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

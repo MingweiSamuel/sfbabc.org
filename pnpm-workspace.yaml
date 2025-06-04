@@ -1,0 +1,4 @@
+packages:
+  - 'appsscript'
+  - 'web'
+shellEmulator: true

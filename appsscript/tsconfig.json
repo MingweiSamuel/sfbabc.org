@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "none",
+        "types": ["google-apps-script"],
+        "target": "ES2023",
+        "lib": ["ES2023"],
+        "outDir": "${configDir}/dist",
+        "sourceMap": true,
+        "declaration": true,
+        "declarationMap": true,
+
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "strict": true,
+        "strictNullChecks": true
+    },
+    "include": ["${configDir}/src/**/*"]
+}
