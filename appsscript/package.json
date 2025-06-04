@@ -4,7 +4,9 @@
     "version": "0.0.0",
     "scripts": {
         "build": "tsc && cp src/{appsscript.json,Upkeep.html} dist/",
-        "deploy": "pnpm run build && clasp push"
+        "clasp": "clasp",
+        "dev": "pnpm run build && clasp push",
+        "deploy": "pnpm run dev && clasp deploy --deploymentId AKfycbya0kbYTepAvSmlOxjRLGbdHAWgYXDhpj6n3WUnmGmDKp1wgeMxCA_Q5lWWmJJTV89rrA --description Prod"
     },
     "devDependencies": {
         "@google/clasp": "^3.0.6-alpha",

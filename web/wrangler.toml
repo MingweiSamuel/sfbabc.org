@@ -3,3 +3,6 @@ name = "bench-builders"
 compatibility_date = "2024-11-12"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = "./dist"
+
+[vars]
+PUBLIC_SCRIPT_UPKEEP = "https://script.google.com/macros/s/AKfycbya0kbYTepAvSmlOxjRLGbdHAWgYXDhpj6n3WUnmGmDKp1wgeMxCA_Q5lWWmJJTV89rrA/exec"
