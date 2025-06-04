@@ -16,6 +16,7 @@
     "keywords": [],
     "packageManager": "pnpm@10.10.0",
     "scripts": {
-        "dev": "pnpm -r run dev"
+        "dev": "pnpm -r run dev",
+        "build": "pnpm -r run build"
     }
 }
