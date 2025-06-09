@@ -168,10 +168,10 @@ const sites = await getSites();
       // Add map.
       const map = L.map(this.getElementsByTagName("div")[0]!, {
         center: [
-          Number(searchParams.get("lat")) || 37.83,
+          Number(searchParams.get("lat")) || 37.82,
           Number(searchParams.get("lon")) || -122.3,
         ],
-        zoom: Number(searchParams.get("zoom")) || 11,
+        zoom: Number(searchParams.get("zoom")) || 10,
         maxZoom: MAX_ZOOM,
         maxBounds: MAX_BOUNDS,
         maxBoundsViscosity: 1.0,
