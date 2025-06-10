@@ -10,7 +10,8 @@ export const prerender = true;
 const allNews = await getNews();
 // Take all news that is within one week of the most recent news.
 const recentNews = allNews.filter(
-  (news) => allNews[0]!.date.getTime() - news.date.getTime() <= 7 * 24 * 3600 * 1000
+  (news) =>
+    allNews[0]!.date.getTime() - news.date.getTime() <= 7 * 24 * 3600 * 1000
 );
 ---
 
@@ -31,6 +32,14 @@ const recentNews = allNews.filter(
       &bull;
       <a href="/request">Request A Bench</a>
     </h3>
+    <h2>About Us</h2>
+    <p>
+      The Bench Collective is decentralized collaboration of local residents who
+      build, install, and maintain much-needed benches, mainly at bus stops. If
+      you would like to add a bench to the map, learn how to build a bench, or
+      help a local build, please <a href="/join">join us</a>! If you see a bench
+      that has any problems, please <a href="/report">report it</a>!
+    </p>
     <h2>Bench Map</h2>
     <BenchMap />
     <h2><a href="/news">News</a></h2>
