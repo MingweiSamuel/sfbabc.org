@@ -119,7 +119,7 @@ const sites = await getSites();
         showCoverageOnHover: false,
         spiderfyOnMaxZoom: false,
         disableClusteringAtZoom: MAX_ZOOM,
-        maxClusterRadius: searchParams.get('nocluster') ? 0 : 20,
+        maxClusterRadius: searchParams.get("nocluster") ? 0 : 20,
       };
       const benchesGroup = L.markerClusterGroup({
         iconCreateFunction(cluster) {
@@ -289,6 +289,23 @@ const sites = await getSites();
           map.setView([site.lat, site.lon], MAX_ZOOM);
         }
       }
+
+      // Blacklist areas.
+      L.polygon(
+        [
+          [37.7505, -122.443],
+          [37.7519, -122.421],
+          [37.7455, -122.4204],
+          [37.736, -122.427],
+          [37.7445, -122.4405],
+        ],
+        {
+          color: "red",
+          opacity: 0.2,
+          fillColor: "red",
+          fillOpacity: 0.2,
+        }
+      ).addTo(map);
     }
   }
 
