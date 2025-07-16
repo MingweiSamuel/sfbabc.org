@@ -46,3 +46,17 @@ const { Content, headings } = await render(guide);
     }
   }
 </style>
+
+<script>
+  // Expand all <details> elements when printing, restore their state after.
+  window.addEventListener("beforeprint", (_) =>
+    document
+      .querySelectorAll("details:not([open])")
+      .forEach((details) => details.setAttribute("open", "print"))
+  );
+  window.addEventListener("afterprint", (_) =>
+    document
+      .querySelectorAll("details[open='print']")
+      .forEach((details) => details.removeAttribute("open"))
+  );
+</script>
