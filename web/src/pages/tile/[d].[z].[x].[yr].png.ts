@@ -4,8 +4,8 @@ import { notFound } from "../../data";
 export const MAX_ZOOM = 18;
 
 export const MIN_LAT = 37.2;
-export const MAX_LAT = 38.2;
-export const MIN_LON = -122.7;
+export const MAX_LAT = 38.4;
+export const MIN_LON = -122.9;
 export const MAX_LON = -121.7;
 
 export const MAX_BOUNDS: [[number, number], [number, number]] = [

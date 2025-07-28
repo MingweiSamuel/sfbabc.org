@@ -151,6 +151,18 @@ const site = (await getSite(+siteId))!;
         </li>
       )
     }
+    {
+      site.otherStopId && (
+        <li>
+          <a
+            target="_blank"
+            href={`https://sfbaytransit.org/search?q=${site.otherStopId}`}
+          >
+            SF Bay Transit - Stop ID {site.otherStopId}
+          </a>
+        </li>
+      )
+    }
   </ul>
   <h2>Bench Map</h2>
   <BenchMap highlightSiteId={siteId} />
