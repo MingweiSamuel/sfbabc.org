@@ -38,5 +38,6 @@ export default defineConfig({
         muni, act, ggt, vta
       ].filter(stopId => stopId).map(stopId => ['/' + stopId, '/' + id])
     })),
+    '/guides/template2025': '/guides/template',
   },
 });
