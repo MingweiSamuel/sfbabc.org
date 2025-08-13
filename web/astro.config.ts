@@ -32,7 +32,6 @@ export default defineConfig({
     '/support': '/join',
     '/map_embed': '/map',
     '/guide': '/guides',
-    '/guide/[..._]': '/guides',
     ...Object.fromEntries((await getSites()).flatMap(({ id, muni, act, ggt, vta }) => {
       return [
         muni, act, ggt, vta
