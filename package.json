@@ -2,6 +2,20 @@
   "name": "@sfbabc/web",
   "type": "module",
   "version": "0.0.1",
+  "license": "GPL-3.0",
+  "homepage": "https://github.com/MingweiSamuel/sfbabc.org#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MingweiSamuel/sfbabc.org.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MingweiSamuel/sfbabc.org/issues"
+  },
+  "contributors": [
+    "Mingwei Samuel <mingwei.samuel@gmail.com>"
+  ],
+  "keywords": [],
+  "packageManager": "pnpm@10.10.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
