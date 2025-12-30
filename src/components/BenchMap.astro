@@ -46,7 +46,6 @@ const sites = await getSites();
   const COLOR_WARN = "#753800";
   const COLOR_INFO = "#5a3286";
   const COLOR_BAD = "#b10202";
-  const COLOR_GOOD_WARN = "#496010";
 
   const ShadowDivIcon = L.DivIcon.extend({
     createShadow(oldIcon?: HTMLElement) {
@@ -109,7 +108,7 @@ const sites = await getSites();
     Retrieved: iconInfo,
     Destroyed: iconInfo,
     Removed: iconBad,
-  };
+  } as { [key in Exclude<BenchStatus, "Proposed">]: DivIcon };
 
   class BenchMap extends HTMLElement {
     connectedCallback() {
@@ -119,39 +118,9 @@ const sites = await getSites();
         showCoverageOnHover: false,
         spiderfyOnMaxZoom: false,
         disableClusteringAtZoom: MAX_ZOOM,
-        maxClusterRadius: searchParams.get('nocluster') ? 0 : 20,
+        maxClusterRadius: searchParams.get("nocluster") ? 0 : 20,
       };
-      const benchesGroup = L.markerClusterGroup({
-        iconCreateFunction(cluster) {
-          const childCount = cluster.getChildCount();
-          const benchStatuses = cluster
-            .getAllChildMarkers()
-            .map(
-              (m) => (m.options as { benchStatus: BenchStatus }).benchStatus
-            );
 
-          const pctGood =
-            benchStatuses.filter((s) => "Good" === s || "Replaced" === s)
-              .length / benchStatuses.length;
-          const pctBad =
-            benchStatuses.filter((s) => "Removed" === s || "Destroyed" === s)
-              .length / benchStatuses.length;
-
-          let color;
-          if (0.8 <= pctGood) {
-            color = COLOR_GOOD;
-          } else if (0.5 < pctGood) {
-            color = COLOR_GOOD_WARN;
-          } else if (0.9 <= pctBad) {
-            color = COLOR_BAD;
-          } else {
-            color = COLOR_WARN;
-          }
-
-          return makePin(color, "" + childCount);
-        },
-        ...clusterOptions,
-      });
       const proposedGroup = L.markerClusterGroup({
         iconCreateFunction(cluster) {
           const childCount = cluster.getChildCount();
@@ -164,6 +133,25 @@ const sites = await getSites();
         },
         ...clusterOptions,
       });
+
+      function createBenchClusterGroup(color: string) {
+        return L.markerClusterGroup({
+          iconCreateFunction(cluster) {
+            const childCount = cluster.getChildCount();
+            return makePin(color, "" + childCount);
+          },
+          ...clusterOptions,
+        });
+      }
+      const benchGroups = {
+        Good: createBenchClusterGroup(COLOR_GOOD),
+        Replaced: createBenchClusterGroup(COLOR_OK),
+        "Attention Needed": createBenchClusterGroup(COLOR_WARN),
+        Retrieved: createBenchClusterGroup(COLOR_INFO),
+        Destroyed: createBenchClusterGroup(COLOR_INFO),
+        Removed: createBenchClusterGroup(COLOR_BAD),
+        Proposed: proposedGroup,
+      } as { [key in BenchStatus]: MarkerClusterGroup };
 
       // Add map.
       const map = L.map(this.getElementsByTagName("div")[0]!, {
@@ -208,56 +196,31 @@ const sites = await getSites();
         });
       }
 
-      // Layer control.
-      L.control
-        .layers(
-          {},
-          {
-            Benches: benchesGroup,
-            "Proposed Locations": proposedGroup,
-          }
-        )
-        .addTo(map);
-      if (!searchParams.has("layer")) {
-        // Default to showing benches.
-        benchesGroup.addTo(map);
-      } else {
-        if (searchParams.has("layer", "benches")) {
-          benchesGroup.addTo(map);
-        }
-        if (searchParams.has("layer", "proposed")) {
-          proposedGroup.addTo(map);
-        }
-      }
-
-      // Add markers to groups.
-      // Read the message from the data attribute.
+      // Add markers to groups and count by status.
       const sites: Site[] = JSON.parse(this.dataset.sites!);
+
       for (const site of sites) {
         let scale = 0;
         let icon;
-        let group: LayerGroup | MarkerClusterGroup;
         if ("Proposed" === site.benchStatus) {
           const c = 0.04;
           scale = Math.log2(c * site.avgWeekdayBoardings + 1);
           scale /= Math.log2(c * 150 + 1); // Scale so that 150 riders is 100%.
           scale = Math.max(0, Math.min(1, scale));
           icon = makeFlag(scale);
-          group = proposedGroup;
         } else {
           icon = icons[site.benchStatus];
-          group = benchesGroup;
         }
         console.assert(
           null != icon,
-          `Unknown bench status: ${site.benchStatus}`
+          `Unknown bench status: ${site.benchStatus}`,
         );
 
         const marker = L.marker([site.lat, site.lon], {
           icon,
           benchStatus: site.benchStatus,
           scale,
-        } as MarkerOptions).addTo(group);
+        } as MarkerOptions).addTo(benchGroups[site.benchStatus]);
 
         let head: Node = document.createTextNode(site.name || "Unknown");
         if (null != site.id) {
@@ -287,6 +250,31 @@ const sites = await getSites();
         if (this.dataset.highlight === `${site.id}`) {
           popup.openPopup();
           map.setView([site.lat, site.lon], MAX_ZOOM);
+        }
+      }
+
+      // Layer control.
+      L.control
+        .layers(
+          {},
+          Object.fromEntries(
+            Object.entries(benchGroups).map(([key, group]) => [
+              `${key} (${group.getLayers().length})`,
+              group,
+            ]),
+          ),
+        )
+        .addTo(map);
+      // Add groups in reverse order so "Good" is on top (when breaking Y-coord ties).
+      if (!searchParams.has("layer") || searchParams.has("layer", "benches")) {
+        // Default to showing "Good", "Replaced", and "Attention Needed".
+        benchGroups["Attention Needed"].addTo(map);
+        benchGroups.Replaced.addTo(map);
+        benchGroups.Good.addTo(map);
+      }
+      for (const [key, group] of Object.entries(benchGroups).reverse()) {
+        if (searchParams.has("layer", key.toLowerCase())) {
+          group.addTo(map);
         }
       }
     }
