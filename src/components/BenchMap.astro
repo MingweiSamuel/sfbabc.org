@@ -257,38 +257,24 @@ const sites = await getSites();
       L.control
         .layers(
           {},
-          Object.fromEntries([
-            ...Object.entries(benchGroups).map(([key, group]) => [
+          Object.fromEntries(
+            Object.entries(benchGroups).map(([key, group]) => [
               `${key} (${group.getLayers().length})`,
               group,
             ]),
-            [
-              `Proposed Locations (${proposedGroup.getLayers().length})`,
-              proposedGroup,
-            ],
-          ]),
+          ),
         )
         .addTo(map);
       // Add groups in reverse order so "Good" is on top (when breaking Y-coord ties).
-      if (!searchParams.has("layer")) {
+      if (!searchParams.has("layer") || searchParams.has("layer", "benches")) {
         // Default to showing "Good", "Replaced", and "Attention Needed".
         benchGroups["Attention Needed"].addTo(map);
         benchGroups.Replaced.addTo(map);
         benchGroups.Good.addTo(map);
-      } else {
-        if (searchParams.has("layer", "proposed")) {
-          proposedGroup.addTo(map);
-        }
-        if (searchParams.has("layer", "benches")) {
-          Object.values(benchGroups)
-            .reverse()
-            .forEach((group) => group.addTo(map));
-        } else {
-          for (const [key, group] of Object.entries(benchGroups).reverse()) {
-            if (searchParams.has("layer", key.toLowerCase())) {
-              group.addTo(map);
-            }
-          }
+      }
+      for (const [key, group] of Object.entries(benchGroups).reverse()) {
+        if (searchParams.has("layer", key.toLowerCase())) {
+          group.addTo(map);
         }
       }
     }
