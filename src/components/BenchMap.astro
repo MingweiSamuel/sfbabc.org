@@ -108,7 +108,7 @@ const sites = await getSites();
     Retrieved: iconInfo,
     Destroyed: iconInfo,
     Removed: iconBad,
-  };
+  } as { [key in Exclude<BenchStatus, "Proposed">]: DivIcon };
 
   class BenchMap extends HTMLElement {
     connectedCallback() {
@@ -120,25 +120,6 @@ const sites = await getSites();
         disableClusteringAtZoom: MAX_ZOOM,
         maxClusterRadius: searchParams.get("nocluster") ? 0 : 20,
       };
-
-      function createBenchClusterGroup(color: string) {
-        return L.markerClusterGroup({
-          iconCreateFunction(cluster) {
-            const childCount = cluster.getChildCount();
-            return makePin(color, "" + childCount);
-          },
-          ...clusterOptions,
-        });
-      }
-
-      const benchGroups = {
-        Good: createBenchClusterGroup(COLOR_GOOD),
-        Replaced: createBenchClusterGroup(COLOR_OK),
-        "Attention Needed": createBenchClusterGroup(COLOR_WARN),
-        Retrieved: createBenchClusterGroup(COLOR_INFO),
-        Destroyed: createBenchClusterGroup(COLOR_INFO),
-        Removed: createBenchClusterGroup(COLOR_BAD),
-      } as { [key in BenchStatus]: L.MarkerClusterGroup };
 
       const proposedGroup = L.markerClusterGroup({
         iconCreateFunction(cluster) {
@@ -152,6 +133,25 @@ const sites = await getSites();
         },
         ...clusterOptions,
       });
+
+      function createBenchClusterGroup(color: string) {
+        return L.markerClusterGroup({
+          iconCreateFunction(cluster) {
+            const childCount = cluster.getChildCount();
+            return makePin(color, "" + childCount);
+          },
+          ...clusterOptions,
+        });
+      }
+      const benchGroups = {
+        Good: createBenchClusterGroup(COLOR_GOOD),
+        Replaced: createBenchClusterGroup(COLOR_OK),
+        "Attention Needed": createBenchClusterGroup(COLOR_WARN),
+        Retrieved: createBenchClusterGroup(COLOR_INFO),
+        Destroyed: createBenchClusterGroup(COLOR_INFO),
+        Removed: createBenchClusterGroup(COLOR_BAD),
+        Proposed: proposedGroup,
+      } as { [key in BenchStatus]: MarkerClusterGroup };
 
       // Add map.
       const map = L.map(this.getElementsByTagName("div")[0]!, {
@@ -202,17 +202,14 @@ const sites = await getSites();
       for (const site of sites) {
         let scale = 0;
         let icon;
-        let group: LayerGroup | MarkerClusterGroup;
         if ("Proposed" === site.benchStatus) {
           const c = 0.04;
           scale = Math.log2(c * site.avgWeekdayBoardings + 1);
           scale /= Math.log2(c * 150 + 1); // Scale so that 150 riders is 100%.
           scale = Math.max(0, Math.min(1, scale));
           icon = makeFlag(scale);
-          group = proposedGroup;
         } else {
           icon = icons[site.benchStatus];
-          group = benchGroups[site.benchStatus];
         }
         console.assert(
           null != icon,
@@ -223,7 +220,7 @@ const sites = await getSites();
           icon,
           benchStatus: site.benchStatus,
           scale,
-        } as MarkerOptions).addTo(group);
+        } as MarkerOptions).addTo(benchGroups[site.benchStatus]);
 
         let head: Node = document.createTextNode(site.name || "Unknown");
         if (null != site.id) {
