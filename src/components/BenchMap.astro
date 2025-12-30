@@ -20,12 +20,7 @@ const sites = await getSites();
 <script>
   import "leaflet/dist/leaflet.css";
   import L, { MarkerClusterGroup } from "leaflet";
-  import type {
-    TileLayerOptions,
-    LayerGroup,
-    MarkerOptions,
-    DivIcon,
-  } from "leaflet";
+  import type { TileLayerOptions, MarkerOptions, DivIcon } from "leaflet";
   import "leaflet.markercluster";
   import { Hsluv } from "hsluv";
   import type { BenchStatus, Site } from "../data";
