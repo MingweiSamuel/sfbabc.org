@@ -198,15 +198,6 @@ const sites = await getSites();
 
       // Add markers to groups and count by status.
       const sites: Site[] = JSON.parse(this.dataset.sites!);
-      const counts = {
-        Good: 0,
-        Replaced: 0,
-        "Attention Needed": 0,
-        Retrieved: 0,
-        Destroyed: 0,
-        Removed: 0,
-        Proposed: 0,
-      } as { [key in BenchStatus]: number };
 
       for (const site of sites) {
         let scale = 0;
@@ -219,11 +210,9 @@ const sites = await getSites();
           scale = Math.max(0, Math.min(1, scale));
           icon = makeFlag(scale);
           group = proposedGroup;
-          counts.Proposed++;
         } else {
           icon = icons[site.benchStatus];
           group = benchGroups[site.benchStatus];
-          counts[site.benchStatus]++;
         }
         console.assert(
           null != icon,
@@ -273,30 +262,36 @@ const sites = await getSites();
           {},
           Object.fromEntries([
             ...Object.entries(benchGroups).map(([key, group]) => [
-              `${key} (${counts[key as BenchStatus]})`,
+              `${key} (${group.getLayers().length})`,
               group,
             ]),
-            [`Proposed Locations (${counts.Proposed})`, proposedGroup],
+            [
+              `Proposed Locations (${proposedGroup.getLayers().length})`,
+              proposedGroup,
+            ],
           ]),
         )
         .addTo(map);
+      // Add groups in reverse order so "Good" is on top (when breaking Y-coord ties).
       if (!searchParams.has("layer")) {
         // Default to showing "Good", "Replaced", and "Attention Needed".
-        benchGroups.Good.addTo(map);
-        benchGroups.Replaced.addTo(map);
         benchGroups["Attention Needed"].addTo(map);
+        benchGroups.Replaced.addTo(map);
+        benchGroups.Good.addTo(map);
       } else {
+        if (searchParams.has("layer", "proposed")) {
+          proposedGroup.addTo(map);
+        }
         if (searchParams.has("layer", "benches")) {
-          Object.values(benchGroups).forEach((group) => group.addTo(map));
+          Object.values(benchGroups)
+            .reverse()
+            .forEach((group) => group.addTo(map));
         } else {
-          for (const [key, group] of Object.entries(benchGroups)) {
+          for (const [key, group] of Object.entries(benchGroups).reverse()) {
             if (searchParams.has("layer", key.toLowerCase())) {
               group.addTo(map);
             }
           }
-        }
-        if (searchParams.has("layer", "proposed")) {
-          proposedGroup.addTo(map);
         }
       }
     }
