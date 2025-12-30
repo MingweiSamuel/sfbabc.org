@@ -28,7 +28,7 @@ const sites = await getSites();
   } from "leaflet";
   import "leaflet.markercluster";
   import { Hsluv } from "hsluv";
-  import type { Site } from "../data";
+  import type { BenchStatus, Site } from "../data";
   import { darkMode } from "../browser";
   import { MAX_BOUNDS, MAX_ZOOM } from "../pages/tile/[d].[z].[x].[yr].png";
 
@@ -118,7 +118,7 @@ const sites = await getSites();
         showCoverageOnHover: false,
         spiderfyOnMaxZoom: false,
         disableClusteringAtZoom: MAX_ZOOM,
-        maxClusterRadius: searchParams.get('nocluster') ? 0 : 20,
+        maxClusterRadius: searchParams.get("nocluster") ? 0 : 20,
       };
 
       function createBenchClusterGroup(color: string) {
@@ -138,7 +138,7 @@ const sites = await getSites();
         Retrieved: createBenchClusterGroup(COLOR_INFO),
         Destroyed: createBenchClusterGroup(COLOR_INFO),
         Removed: createBenchClusterGroup(COLOR_BAD),
-      } as const;
+      } as { [key in BenchStatus]: L.MarkerClusterGroup };
 
       const proposedGroup = L.markerClusterGroup({
         iconCreateFunction(cluster) {
@@ -206,7 +206,7 @@ const sites = await getSites();
         Destroyed: 0,
         Removed: 0,
         Proposed: 0,
-      };
+      } as { [key in BenchStatus]: number };
 
       for (const site of sites) {
         let scale = 0;
@@ -227,7 +227,7 @@ const sites = await getSites();
         }
         console.assert(
           null != icon,
-          `Unknown bench status: ${site.benchStatus}`
+          `Unknown bench status: ${site.benchStatus}`,
         );
 
         const marker = L.marker([site.lat, site.lon], {
@@ -271,43 +271,29 @@ const sites = await getSites();
       L.control
         .layers(
           {},
-          {
-            [`Good (${counts.Good})`]: benchGroups.Good,
-            [`Replaced (${counts.Replaced})`]: benchGroups.Replaced,
-            [`Attention Needed (${counts["Attention Needed"]})`]: benchGroups["Attention Needed"],
-            [`Retrieved (${counts.Retrieved})`]: benchGroups.Retrieved,
-            [`Destroyed (${counts.Destroyed})`]: benchGroups.Destroyed,
-            [`Removed (${counts.Removed})`]: benchGroups.Removed,
-            [`Proposed Locations (${counts.Proposed})`]: proposedGroup,
-          }
+          Object.fromEntries([
+            ...Object.entries(benchGroups).map(([key, group]) => [
+              `${key} (${counts[key as BenchStatus]})`,
+              group,
+            ]),
+            [`Proposed Locations (${counts.Proposed})`, proposedGroup],
+          ]),
         )
         .addTo(map);
       if (!searchParams.has("layer")) {
-        // Default to showing Good, Replaced, and Attention Needed.
+        // Default to showing "Good", "Replaced", and "Attention Needed".
         benchGroups.Good.addTo(map);
         benchGroups.Replaced.addTo(map);
         benchGroups["Attention Needed"].addTo(map);
       } else {
         if (searchParams.has("layer", "benches")) {
           Object.values(benchGroups).forEach((group) => group.addTo(map));
-        }
-        if (searchParams.has("layer", "good")) {
-          benchGroups.Good.addTo(map);
-        }
-        if (searchParams.has("layer", "replaced")) {
-          benchGroups.Replaced.addTo(map);
-        }
-        if (searchParams.has("layer", "attention")) {
-          benchGroups["Attention Needed"].addTo(map);
-        }
-        if (searchParams.has("layer", "retrieved")) {
-          benchGroups.Retrieved.addTo(map);
-        }
-        if (searchParams.has("layer", "destroyed")) {
-          benchGroups.Destroyed.addTo(map);
-        }
-        if (searchParams.has("layer", "removed")) {
-          benchGroups.Removed.addTo(map);
+        } else {
+          for (const [key, group] of Object.entries(benchGroups)) {
+            if (searchParams.has("layer", key.toLowerCase())) {
+              group.addTo(map);
+            }
+          }
         }
         if (searchParams.has("layer", "proposed")) {
           proposedGroup.addTo(map);
