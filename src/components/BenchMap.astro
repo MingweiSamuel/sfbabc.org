@@ -28,7 +28,7 @@ const sites = await getSites();
   } from "leaflet";
   import "leaflet.markercluster";
   import { Hsluv } from "hsluv";
-  import type { BenchStatus, Site } from "../data";
+  import type { Site } from "../data";
   import { darkMode } from "../browser";
   import { MAX_BOUNDS, MAX_ZOOM } from "../pages/tile/[d].[z].[x].[yr].png";
 
@@ -46,7 +46,6 @@ const sites = await getSites();
   const COLOR_WARN = "#753800";
   const COLOR_INFO = "#5a3286";
   const COLOR_BAD = "#b10202";
-  const COLOR_GOOD_WARN = "#496010";
 
   const ShadowDivIcon = L.DivIcon.extend({
     createShadow(oldIcon?: HTMLElement) {
@@ -121,37 +120,26 @@ const sites = await getSites();
         disableClusteringAtZoom: MAX_ZOOM,
         maxClusterRadius: searchParams.get('nocluster') ? 0 : 20,
       };
-      const benchesGroup = L.markerClusterGroup({
-        iconCreateFunction(cluster) {
-          const childCount = cluster.getChildCount();
-          const benchStatuses = cluster
-            .getAllChildMarkers()
-            .map(
-              (m) => (m.options as { benchStatus: BenchStatus }).benchStatus
-            );
 
-          const pctGood =
-            benchStatuses.filter((s) => "Good" === s || "Replaced" === s)
-              .length / benchStatuses.length;
-          const pctBad =
-            benchStatuses.filter((s) => "Removed" === s || "Destroyed" === s)
-              .length / benchStatuses.length;
+      function createBenchClusterGroup(color: string) {
+        return L.markerClusterGroup({
+          iconCreateFunction(cluster) {
+            const childCount = cluster.getChildCount();
+            return makePin(color, "" + childCount);
+          },
+          ...clusterOptions,
+        });
+      }
 
-          let color;
-          if (0.8 <= pctGood) {
-            color = COLOR_GOOD;
-          } else if (0.5 < pctGood) {
-            color = COLOR_GOOD_WARN;
-          } else if (0.9 <= pctBad) {
-            color = COLOR_BAD;
-          } else {
-            color = COLOR_WARN;
-          }
+      const benchGroups = {
+        Good: createBenchClusterGroup(COLOR_GOOD),
+        Replaced: createBenchClusterGroup(COLOR_OK),
+        "Attention Needed": createBenchClusterGroup(COLOR_WARN),
+        Retrieved: createBenchClusterGroup(COLOR_INFO),
+        Destroyed: createBenchClusterGroup(COLOR_INFO),
+        Removed: createBenchClusterGroup(COLOR_BAD),
+      } as const;
 
-          return makePin(color, "" + childCount);
-        },
-        ...clusterOptions,
-      });
       const proposedGroup = L.markerClusterGroup({
         iconCreateFunction(cluster) {
           const childCount = cluster.getChildCount();
@@ -208,31 +196,18 @@ const sites = await getSites();
         });
       }
 
-      // Layer control.
-      L.control
-        .layers(
-          {},
-          {
-            Benches: benchesGroup,
-            "Proposed Locations": proposedGroup,
-          }
-        )
-        .addTo(map);
-      if (!searchParams.has("layer")) {
-        // Default to showing benches.
-        benchesGroup.addTo(map);
-      } else {
-        if (searchParams.has("layer", "benches")) {
-          benchesGroup.addTo(map);
-        }
-        if (searchParams.has("layer", "proposed")) {
-          proposedGroup.addTo(map);
-        }
-      }
-
-      // Add markers to groups.
-      // Read the message from the data attribute.
+      // Add markers to groups and count by status.
       const sites: Site[] = JSON.parse(this.dataset.sites!);
+      const counts = {
+        Good: 0,
+        Replaced: 0,
+        "Attention Needed": 0,
+        Retrieved: 0,
+        Destroyed: 0,
+        Removed: 0,
+        Proposed: 0,
+      };
+
       for (const site of sites) {
         let scale = 0;
         let icon;
@@ -244,9 +219,11 @@ const sites = await getSites();
           scale = Math.max(0, Math.min(1, scale));
           icon = makeFlag(scale);
           group = proposedGroup;
+          counts.Proposed++;
         } else {
           icon = icons[site.benchStatus];
-          group = benchesGroup;
+          group = benchGroups[site.benchStatus];
+          counts[site.benchStatus]++;
         }
         console.assert(
           null != icon,
@@ -287,6 +264,53 @@ const sites = await getSites();
         if (this.dataset.highlight === `${site.id}`) {
           popup.openPopup();
           map.setView([site.lat, site.lon], MAX_ZOOM);
+        }
+      }
+
+      // Layer control.
+      L.control
+        .layers(
+          {},
+          {
+            [`Good (${counts.Good})`]: benchGroups.Good,
+            [`Replaced (${counts.Replaced})`]: benchGroups.Replaced,
+            [`Attention Needed (${counts["Attention Needed"]})`]: benchGroups["Attention Needed"],
+            [`Retrieved (${counts.Retrieved})`]: benchGroups.Retrieved,
+            [`Destroyed (${counts.Destroyed})`]: benchGroups.Destroyed,
+            [`Removed (${counts.Removed})`]: benchGroups.Removed,
+            [`Proposed Locations (${counts.Proposed})`]: proposedGroup,
+          }
+        )
+        .addTo(map);
+      if (!searchParams.has("layer")) {
+        // Default to showing Good, Replaced, and Attention Needed.
+        benchGroups.Good.addTo(map);
+        benchGroups.Replaced.addTo(map);
+        benchGroups["Attention Needed"].addTo(map);
+      } else {
+        if (searchParams.has("layer", "benches")) {
+          Object.values(benchGroups).forEach((group) => group.addTo(map));
+        }
+        if (searchParams.has("layer", "good")) {
+          benchGroups.Good.addTo(map);
+        }
+        if (searchParams.has("layer", "replaced")) {
+          benchGroups.Replaced.addTo(map);
+        }
+        if (searchParams.has("layer", "attention")) {
+          benchGroups["Attention Needed"].addTo(map);
+        }
+        if (searchParams.has("layer", "retrieved")) {
+          benchGroups.Retrieved.addTo(map);
+        }
+        if (searchParams.has("layer", "destroyed")) {
+          benchGroups.Destroyed.addTo(map);
+        }
+        if (searchParams.has("layer", "removed")) {
+          benchGroups.Removed.addTo(map);
+        }
+        if (searchParams.has("layer", "proposed")) {
+          proposedGroup.addTo(map);
         }
       }
     }
