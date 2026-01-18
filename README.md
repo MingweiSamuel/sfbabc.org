@@ -14,6 +14,13 @@ To install dependencies:
 pnpm i
 ```
 
+To configure environment variables for local development:
+```bash
+cp .dev.vars.example .dev.vars
+```
+
+**Note:** The `.dev.vars` file is required for local development with Cloudflare Pages. It contains the tile server URLs (`MAP_URL_LIGHT` and `MAP_URL_DARK`) used by the mapping functionality. By default, it uses OpenStreetMap tiles. You can customize these URLs if you have a Thunderforest API key or want to use a different tile provider.
+
 To run a local development server:
 ```bash
 pnpm dev
