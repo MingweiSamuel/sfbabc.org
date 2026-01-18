@@ -31,12 +31,14 @@ export default defineConfig({
   redirects: {
     '/support': '/join',
     '/map_embed': '/map',
-    '/guide': '/guides',
+    '/guide': '/docs',
+    '/guides': '/docs',
+    '/guides/*': '/docs/:splat',
     ...Object.fromEntries((await getSites()).flatMap(({ id, muni, act, ggt, vta }) => {
       return [
         muni, act, ggt, vta
       ].filter(stopId => stopId).map(stopId => ['/' + stopId, '/' + id])
     })),
-    '/guides/template2025': '/guides/template',
+    '/docs/template2025': '/docs/template',
   },
 });

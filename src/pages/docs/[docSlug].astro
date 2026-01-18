@@ -4,22 +4,22 @@ import Page from "../../layouts/Page.astro";
 import Toc from "../../components/Toc.astro";
 
 export async function getStaticPaths() {
-  const guides = await getCollection("guides");
-  return guides.map((guide) => ({
-    params: { guideSlug: guide.id },
-    props: guide,
+  const docs = await getCollection("docs");
+  return docs.map((doc) => ({
+    params: { docSlug: doc.id },
+    props: doc,
   }));
 }
 
 export const prerender = true;
 
-const guide = Astro.props;
-const { Content, headings } = await render(guide);
+const doc = Astro.props;
+const { Content, headings } = await render(doc);
 ---
 
-<Page title={guide.data.title} upHref="/guides" upNav="Guides">
+<Page title={doc.data.title} upHref="/docs" upNav="All Docs">
   {
-    guide.data.toc && (
+    doc.data.toc && (
       <div class="toc-col">
         <Toc headings={headings} />
       </div>
