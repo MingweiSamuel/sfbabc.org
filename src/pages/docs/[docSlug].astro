@@ -17,7 +17,7 @@ const doc = Astro.props;
 const { Content, headings } = await render(doc);
 ---
 
-<Page title={doc.data.title} upHref="/docs" upNav="Documentation">
+<Page title={doc.data.title} upHref="/docs" upNav="All Docs">
   {
     doc.data.toc && (
       <div class="toc-col">
