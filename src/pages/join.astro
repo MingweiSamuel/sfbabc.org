@@ -7,6 +7,13 @@ import imgCadCuts from "../../public/img/cad_cuts.png";
 import imgCadBench from "../../public/img/cad_bench.png";
 import Link from "../components/Link.astro";
 
+import pdf01 from "../../public/img/10-benches-p01.jpg";
+import pdf11 from "../../public/img/10-benches-p11.jpg";
+import pdf16 from "../../public/img/10-benches-p16.jpg";
+import pdf22 from "../../public/img/10-benches-p22.jpg";
+import pdf27 from "../../public/img/10-benches-p27.jpg";
+import pdf34 from "../../public/img/10-benches-p34.jpg";
+
 export const prerender = true;
 ---
 
@@ -42,6 +49,25 @@ export const prerender = true;
         style="width:240px"
       />
     </a>
+  </section>
+  <section>
+    <h2 id="party">10 Benches in 2 Days</h2>
+    
+    <p>
+        We host weekend bench-builds around the Bay Area for volunteers to assemble and install ten benches.
+        <a href="https://img.sfbabc.org/2026-01-18_sfbabc-10-benches-2-days.pdf">Check out our document describing the process we follow.</a>
+    </p>
+    
+    <p>
+      <a href="https://img.sfbabc.org/2026-01-18_sfbabc-10-benches-2-days.pdf" style="text-decoration: none">
+        <img src={pdf01.src} alt="sample page from the document" style="width:32%" />
+        <img src={pdf11.src} alt="sample page from the document" style="width:32%" />
+        <img src={pdf16.src} alt="sample page from the document" style="width:32%" />
+        <img src={pdf22.src} alt="sample page from the document" style="width:32%" />
+        <img src={pdf27.src} alt="sample page from the document" style="width:32%" />
+        <img src={pdf34.src} alt="sample page from the document" style="width:32%" />
+      </a>
+    </p>
   </section>
   <section>
     <h2 id="build">Build A Bench</h2>
