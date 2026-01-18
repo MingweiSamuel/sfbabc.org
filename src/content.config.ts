@@ -1,8 +1,8 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders'; // Not available with legacy API
 
-const guides = defineCollection({
-  loader: glob({ pattern: "*.mdx", base: "./src/guides" }),
+const docs = defineCollection({
+  loader: glob({ pattern: "*.mdx", base: "./src/docs" }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -11,4 +11,4 @@ const guides = defineCollection({
   }),
 });
 
-export const collections = { guides };
+export const collections = { docs };

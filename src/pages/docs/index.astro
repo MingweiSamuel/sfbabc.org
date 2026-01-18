@@ -2,20 +2,20 @@
 import { getCollection } from "astro:content";
 import Page from "../../layouts/Page.astro";
 
-const guides = (await getCollection("guides")).sort(
+const docs = (await getCollection("docs")).sort(
     (a, b) => a.data.order - b.data.order,
 );
 
 export const prerender = true
 ---
 
-<Page title="Guides">
+<Page title="Documentation">
     <ul>
         {
-            guides.map((guide) => (
+            docs.map((doc) => (
                 <li>
-                    <a href={`/guides/${guide.id}`}>
-                        {guide.data.title}: {guide.data.description}
+                    <a href={`/docs/${doc.id}`}>
+                        {doc.data.title}: {doc.data.description}
                     </a>
                 </li>
             ))
