@@ -8,9 +8,10 @@ interface Props {
   date?: Date | null;
   title?: string | null;
   description?: string | null;
+  image?: string | null;
 }
 
-const { url, date, title, description } = Astro.props;
+const { url, date, title, description, image } = Astro.props;
 
 const resp = await fetch(url).then(
   (resp) => (2 === resp.status / 100 ? resp : fetch(url)),
@@ -29,7 +30,7 @@ const finalDesc =
   description ||
   getMeta("og:description") ||
   getContent(document.querySelector(`meta[name="description"]`));
-const image = (
+const thumbImage = image || (
   getMeta("og:image:secure_url") ||
   getMeta("og:image:url") ||
   getMeta("og:image")
@@ -57,9 +58,9 @@ const densities = [1, 1.25, 1.5, 2];
 {
   finalTitle ? (
     <article class="link-preview">
-      <div class="image" class:list={{ "dark-invert": null == image }}>
+      <div class="image" class:list={{ "dark-invert": null == thumbImage }}>
         <Image
-          src={image || thumb}
+          src={thumbImage || thumb}
           alt={imageAlt || "Thumbnail image"}
           {width}
           {height}

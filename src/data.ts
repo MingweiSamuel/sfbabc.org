@@ -26,6 +26,7 @@ export interface News {
   date: Date,
   title: string | null,
   description: string | null,
+  image: string | null,
 }
 
 let cachedSites: Promise<Site[]> | null = null;
@@ -112,6 +113,7 @@ export const getNews: () => Promise<News[]> = () => cachedNews = cachedNews ?? (
         date: new Date(row[headIdx['DATE']!]!),
         title: row[headIdx['TITLE']!] || null,
         description: row[headIdx['DESCRIPTION']!] || null,
+        image: row[headIdx['IMAGE']!] || null,
       };
       return news;
     })
