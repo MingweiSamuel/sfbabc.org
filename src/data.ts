@@ -49,7 +49,7 @@ export const getSites: () => Promise<Site[]> = () => cachedSites = cachedSites ?
         lat: +row[headIdx['LAT']!]!,
         lon: +row[headIdx['LON']!]!,
         name: row[headIdx['NAME']!] || null,
-        adopted: !!row[headIdx['ADOPTER']!],
+        adopted: "TRUE" === row[headIdx['ADOPTED']!],
         lines: row[headIdx['LINES']!]!
           .split(',')
           .map(line => line.trim())
