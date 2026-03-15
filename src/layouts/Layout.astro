@@ -5,12 +5,15 @@ import { LONG_NAME, SHORT_NAME } from "../vars";
 interface Props {
   title?: string | null;
   mainWidth?: string | null;
+  ogImage?: string | null;
 }
 
 const title =
   null == Astro.props.title
     ? SHORT_NAME
     : `${Astro.props.title} - ${SHORT_NAME}`;
+
+const ogImage = Astro.props.ogImage;
 
 const mainWidth =
   Astro.props.mainWidth ||
@@ -27,6 +30,7 @@ const mainWidth =
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
     <title>{title}</title>
   </head>
   <body>
