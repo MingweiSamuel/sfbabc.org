@@ -21,7 +21,7 @@ const { siteId } = Astro.params;
 const site = (await getSite(+siteId))!;
 ---
 
-<Page title={site.name}>
+<Page title={site.name} ogImage={site.benchImageUrl}>
   <h3 class="actions">
     <a
       href={`/report?loc=${encodeURIComponent(site.name || "")}&siteId=${siteId}`}
