@@ -40,5 +40,6 @@ export default defineConfig({
       ].filter(stopId => stopId).map(stopId => ['/' + stopId, '/' + id])
     })),
     '/docs/template2025': '/docs/template',
+    '/docs/end_cuts': '/docs/end-cuts',
   },
 });
