@@ -30,3 +30,6 @@ pnpm-debug.log*
 # clasp credentials
 .clasprc.json
 client_secret.json
+
+# Downloaded bench images (fetched from R2 at build time)
+src/assets/bench-images/

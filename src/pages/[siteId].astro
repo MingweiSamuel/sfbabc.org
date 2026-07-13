@@ -5,6 +5,20 @@ import type { GetStaticPaths } from "astro";
 import { getSites, getSite } from "../data";
 import BenchMap from "../components/BenchMap.astro";
 
+// Pre-import all local bench images downloaded from R2
+const benchImages = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/bench-images/*.{jpg,jpeg,png,webp,gif}",
+  { eager: true }
+);
+
+function getLocalImage(url: string | null) {
+  if (!url) return null;
+  const match = url.match(/img\.sfbabc\.org\/(.+)$/);
+  if (!match) return null;
+  const key = `../assets/bench-images/${match[1]}`;
+  return benchImages[key]?.default ?? null;
+}
+
 export const prerender = true;
 export const getStaticPaths = (async () => {
   return (await getSites())
@@ -19,6 +33,7 @@ export const getStaticPaths = (async () => {
 
 const { siteId } = Astro.params;
 const site = (await getSite(+siteId))!;
+const localImage = getLocalImage(site.benchImageUrl);
 ---
 
 <Page title={site.name} ogImage={site.benchImageUrl}>
@@ -29,7 +44,16 @@ const site = (await getSite(+siteId))!;
     >
   </h3>
   {
-    site.benchImageUrl && (
+    site.benchImageUrl && localImage && (
+      <Image
+        src={localImage}
+        alt="Photo of the bench."
+        width={1.5 * 800}
+      />
+    )
+  }
+  {
+    site.benchImageUrl && !localImage && (
       <Image
         src={site.benchImageUrl}
         alt="Photo of the bench."
